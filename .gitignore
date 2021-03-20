@@ -25,3 +25,4 @@ pnpm-debug.log*
 ui-debug.log
 database-debug.log
 firestore-debug.log
+firebase-debug.log
