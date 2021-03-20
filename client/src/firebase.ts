@@ -32,3 +32,5 @@ export const googleSignIn = (): Promise<firebase.auth.UserCredential> => {
   const provider = new firebase.auth.GoogleAuthProvider();
   return auth.signInWithPopup(provider);
 };
+
+export default firebase;
