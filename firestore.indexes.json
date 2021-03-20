@@ -1,0 +1,37 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "games",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hasStarted",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "beginDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "games",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hasStarted",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "safeForWork",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "beginDate",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
