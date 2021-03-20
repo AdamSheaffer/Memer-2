@@ -1,18 +1,32 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <p>{{username}}</p>
+    <b-button v-if="!isLoggedIn" @click="signIn">LOGIN</b-button>
+    <b-button v-else @click="signOut">LOGOUT</b-button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue';
+import { namespace } from 'vuex-class';
+import { googleSignIn, signOut } from '@/firebase';
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class Home extends Vue {}
+const userStore = namespace('user');
+
+@Component
+export default class Home extends Vue {
+  @userStore.Getter
+  public isLoggedIn!: boolean
+
+  @userStore.State((state) => state.user?.username)
+  public username!: string
+
+  async signIn(): Promise<void> {
+    await googleSignIn();
+  }
+
+  async signOut(): Promise<void> {
+    return signOut();
+  }
+}
 </script>

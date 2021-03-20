@@ -8,6 +8,37 @@
   </div>
 </template>
 
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+import { auth } from '@/firebase';
+import { User } from '@/store/user/types';
+
+const userStore = namespace('user');
+
+@Component
+export default class App extends Vue {
+  @userStore.Mutation
+  public setUser!: (u: User | null) => void
+
+  created(): void {
+    auth.onAuthStateChanged((newUserState) => {
+      if (!newUserState) {
+        this.setUser(null);
+      } else {
+        const { displayName, uid, photoURL } = newUserState;
+        this.setUser({
+          uid,
+          photoURL,
+          fullName: displayName,
+          username: displayName,
+        });
+      }
+    });
+  }
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
