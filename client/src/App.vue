@@ -10,9 +10,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { auth } from '@/firebase';
-import { User } from '@/store/user/types';
+import { namespace, Mutation } from 'vuex-class';
+import { auth, realtimeDb } from '@/firebase';
+import { User } from '@/types/User';
+import handleSignIn from '@/services/auth';
+import { detectOnlinePresence } from '@/services/onlineDetection';
 
 const userStore = namespace('user');
 
@@ -21,19 +23,24 @@ export default class App extends Vue {
   @userStore.Mutation
   public setUser!: (u: User | null) => void
 
+  @Mutation setPlayersOnline!: (count: number) => void;
+
   created(): void {
-    auth.onAuthStateChanged((newUserState) => {
+    this.trackOnlinePlayers();
+    auth.onAuthStateChanged(async (newUserState) => {
       if (!newUserState) {
         this.setUser(null);
       } else {
-        const { displayName, uid, photoURL } = newUserState;
-        this.setUser({
-          uid,
-          photoURL,
-          fullName: displayName,
-          username: displayName,
-        });
+        const profile = await handleSignIn(newUserState);
+        detectOnlinePresence(profile.uid);
+        this.setUser(profile);
       }
+    });
+  }
+
+  trackOnlinePlayers(): void {
+    realtimeDb.ref('playersOnline').on('value', (snapshot) => {
+      this.setPlayersOnline(snapshot.val());
     });
   }
 }
