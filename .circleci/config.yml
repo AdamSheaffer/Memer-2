@@ -57,20 +57,17 @@ jobs:
           keys:
             - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
-          name: Look in client directory
-          command: cd client
-      - run:
           name: show directory
           command: pwd
       - run:
           name: Install Firebase
-          command: npm install --save-dev firebase-tools
+          command: cd client && npm install --save-dev firebase-tools
       - run:
           name: look in directory
           command: ls -ltr
       - run:
           name: Deploy Master to Firebase
-          command: npm run deploy -- --token=$FIREBASE_DEPLOY_TOKEN
+          command: cd client && npm run deploy -- --token=$FIREBASE_DEPLOY_TOKEN
 
 workflows:
   version: 2
