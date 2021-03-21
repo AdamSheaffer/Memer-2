@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { realtimeDb, firestore } from '@/firebase';
 import { OnlineStatus } from '@/types/OnlineStatus';
 

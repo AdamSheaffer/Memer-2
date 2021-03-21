@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/client/dist
 
 
 # local env files
@@ -26,3 +27,4 @@ ui-debug.log
 database-debug.log
 firestore-debug.log
 firebase-debug.log
+hosting.*.cache
