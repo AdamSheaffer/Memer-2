@@ -46,6 +46,9 @@ jobs:
             - functions/package.json
             - firebase.json
             - .firebaserc
+            - database.rules.json
+            - firestore.rules
+            - firestore.indexes.json
           key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
 
   deploy-job:
