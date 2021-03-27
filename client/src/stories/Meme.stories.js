@@ -25,4 +25,4 @@ const Template = (args, { argTypes }) => ({
   template: '<meme v-bind="$props" />',
 });
 
-export const Primary = Template.bind({});
+export const Basic = Template.bind({});
