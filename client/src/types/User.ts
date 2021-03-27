@@ -12,13 +12,13 @@ export interface Roles {
 }
 
 export interface User {
-  uid: string
-  fullName?: string | null
-  gamesPlayed?: number | null
-  lastChanged?: Date | null
-  photoURL?: string | null
-  presence?: Presence | null
-  roles?: Roles | null
-  totalPoints?: number | null
-  username?: string | null
+  // uid: string
+  // fullName?: string | null
+  // gamesPlayed?: number | null
+  // lastChanged?: Date | null
+  // photoURL?: string | null
+  // presence?: Presence | null
+  // roles?: Roles | null
+  // totalPoints?: number | null
+  // username?: string | null
 }
