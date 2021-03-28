@@ -1,9 +1,9 @@
 import firebase from 'firebase/app';
-import { firestore } from '@/firebase';
+import { db } from '@/firebase';
 import { User } from '@/types/User';
 
 const getUser = async (uid: string) => {
-  const userSnapshot = await firestore.doc(`users/${uid}`).get();
+  const userSnapshot = await db.doc(`users/${uid}`).get();
 
   if (!userSnapshot.exists) return null;
 
@@ -20,7 +20,7 @@ const createUserProfile = async (user: firebase.User): Promise<User> => {
     roles: { player: true },
     totalPoints: 0,
   };
-  await firestore.doc(`users/${user.uid}`).set(profile);
+  await db.doc(`users/${user.uid}`).set(profile);
   return profile;
 };
 
