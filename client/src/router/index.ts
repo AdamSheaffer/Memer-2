@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import store from '@/store/index';
+import { auth } from '@/firebase';
 import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
@@ -29,8 +29,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const isLoggedIn: boolean = store.getters['user/isLoggedIn'];
-    if (!isLoggedIn) {
+    if (!auth.currentUser) {
       next({
         path: '/',
         query: { redirect: to.fullPath },

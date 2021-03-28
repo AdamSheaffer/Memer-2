@@ -27,7 +27,7 @@ export default class GameCreate extends Mixins(UserMixin) {
     };
 
     const gameId = await gameService.create(game);
-    console.log('GAME CREATED', gameId);
+    await gameService.joinGame(gameId, this.user);
     this.$router.push(`game/${gameId}`);
   }
 }

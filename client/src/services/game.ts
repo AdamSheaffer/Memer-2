@@ -1,5 +1,6 @@
 import firebase, { db } from '@/firebase';
 import { Game, GameUpdate } from '@/types/Game';
+import { User } from '@/types/User';
 
 const create = async (game: Game): Promise<string> => {
   const uid = db.collection('games').doc().id;
@@ -9,8 +10,8 @@ const create = async (game: Game): Promise<string> => {
     lastUpdated: firebase.firestore.Timestamp.now(),
     ...game,
   };
-  const res = await db.collection('games').add(payload);
-  return res.id;
+  await db.doc(`games/${uid}`).set(payload);
+  return uid;
 };
 
 const update = (game: GameUpdate): Promise<void> => {
@@ -21,7 +22,12 @@ const update = (game: GameUpdate): Promise<void> => {
   return db.doc(`games/${game.uid}`).update(payload);
 };
 
+const joinGame = (gameId: string, user: User): Promise<void> => db
+  .doc(`games/${gameId}/players/${user.uid}`)
+  .set(user);
+
 export default {
   create,
   update,
+  joinGame,
 };

@@ -5,7 +5,7 @@
     <b-button v-if="!isLoggedIn" @click="signIn">LOGIN</b-button>
     <b-button v-else @click="signOut">LOGOUT</b-button>
     Available Games
-    <open-game-list :games="games" />
+    <open-game-list :games="games" @join="join" />
   </div>
 </template>
 
@@ -16,6 +16,7 @@ import { googleSignIn, signOut, db } from '@/firebase';
 import UserMixin from '@/mixins/UserMixin';
 import { Game } from '@/types/Game';
 import OpenGameList from '@/components/OpenGameList.vue';
+import gameService from '@/services/game';
 
 @Component({
   components: { OpenGameList },
@@ -34,8 +35,16 @@ export default class Home extends Mixins(UserMixin) {
     });
   }
 
-  destroy(): void {
+  destroyed(): void {
     if (this.openGameUnsubscribe) this.openGameUnsubscribe();
+  }
+
+  async join(gameId: string): Promise<void> {
+    if (!this.user) {
+      throw Error('Cannot join game while unauthenticated');
+    }
+    await gameService.joinGame(gameId, this.user);
+    this.$router.push(`game/${gameId}`);
   }
 
   async signIn(): Promise<void> {
