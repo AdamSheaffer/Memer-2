@@ -2,8 +2,8 @@
   <div class="home">
     <p v-if="isLoggedIn">{{user.username}}</p>
     <p>Players Online: {{playersOnline}}</p>
-    <b-button v-if="!isLoggedIn" @click="signIn">LOGIN</b-button>
-    <b-button v-else @click="signOut">LOGOUT</b-button>
+    <b-button type="is-primary" v-if="!isLoggedIn" @click="signIn">LOGIN</b-button>
+    <b-button type="is-primary" v-else @click="signOut">LOGOUT</b-button>
     Available Games
     <open-game-list :games="games" @join="join" />
   </div>
