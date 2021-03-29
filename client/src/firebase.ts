@@ -15,13 +15,13 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-export const firestore = firebase.firestore();
+export const db = firebase.firestore();
 export const realtimeDb = firebase.database();
 export const auth = firebase.auth();
 
 if (process.env.NODE_ENV === 'development') {
   console.info('Now Meme-ing with Firebase Emulators...');
-  firestore.useEmulator('localhost', 8000);
+  db.useEmulator('localhost', 8000);
   realtimeDb.useEmulator('localhost', 9000);
   auth.useEmulator('http://localhost:9099');
 }

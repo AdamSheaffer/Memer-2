@@ -1,0 +1,13 @@
+@import "~bulma/sass/utilities/_all";
+
+$purple-1: #3e426d;
+$purple-2: #21233e;
+$primary: #9b59b6;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+$twitter: #4099ff;
+$twitter-invert: findColorInvert($twitter);
+$accent: #1cbc9c;
+$accent-light: findLightColor($accent);
+$accent-dark: findDarkColor($accent);

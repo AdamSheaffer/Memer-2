@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { realtimeDb, firestore } from '@/firebase';
+import { realtimeDb, db } from '@/firebase';
 import { OnlineStatus } from '@/types/OnlineStatus';
 
 interface Presence {
@@ -39,7 +39,7 @@ export const detectOnlinePresence = (userId: string): void => {
 
   presence.userId = userId;
   presence.userStatusDbRef = realtimeDb.ref(`status/${userId}`);
-  const firestoreUserRef = firestore.doc(`users/${userId}`);
+  const firestoreUserRef = db.doc(`users/${userId}`);
 
   presence.onlineStatusRef = realtimeDb.ref('.info/connected');
   presence.onlineStatusRef.on('value', async (snapshot) => {

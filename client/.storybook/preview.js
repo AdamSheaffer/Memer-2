@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Buefy from 'buefy';
-import 'buefy/dist/buefy.css';
+import '../src/styles/_global.scss'
 
 Vue.use(Buefy);
 
