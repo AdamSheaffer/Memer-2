@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import Meme from '../components/Meme.vue';
 
 export default {
