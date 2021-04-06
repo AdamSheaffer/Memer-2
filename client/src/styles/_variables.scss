@@ -2,6 +2,7 @@
 
 $purple-1: #3e426d;
 $purple-2: #21233e;
+$yellow: #f2cd1c;
 $primary: #9b59b6;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
@@ -11,3 +12,9 @@ $twitter-invert: findColorInvert($twitter);
 $accent: #1cbc9c;
 $accent-light: findLightColor($accent);
 $accent-dark: findDarkColor($accent);
+
+@mixin impact-text {
+  color: $white;
+  font-family: "Anton", sans-serif;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
