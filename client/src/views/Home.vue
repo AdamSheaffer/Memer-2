@@ -52,7 +52,8 @@ export default class Home extends Mixins(UserMixin) {
   }
 
   async signOut(): Promise<void> {
-    return signOut();
+    await signOut();
+    this.$router.push('/login');
   }
 }
 </script>
