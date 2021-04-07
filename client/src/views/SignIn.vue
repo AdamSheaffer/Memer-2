@@ -1,15 +1,21 @@
 <template>
   <div class="sign-in px-5">
     <div class="columns is-centered">
-      <div class="column is-one-third-desktop is-half">
+      <div class="column is-two-fifths-desktop is-three-fifths">
         <div class="tile-outer">
           <div class="tile-inner pt-6 px-6">
             <div>
               <h1 class="is-size-1">MEMER</h1>
-              <h2 class="accent">THE ONLINE GAME FOR MEME LORDS</h2>
+              <h2>THE ONLINE GAME FOR MEME LORDS</h2>
             </div>
             <div>
-              <b-button expanded type="is-primary" @click="signIn">SIGN IN WITH GOOGLE</b-button>
+              <b-button
+                size="is-large"
+                expanded
+                type="is-primary"
+                @click="signIn">
+                SIGN IN WITH GOOGLE
+              </b-button>
             </div>
             <div class="giphy-logo">
               <b-image
@@ -58,7 +64,11 @@ export default class Home extends Vue {
 .tile-inner {
   border: 5px solid $purple-1;
   border-radius: $tile-border-radius;
+<<<<<<< HEAD
   height: 500px;
+=======
+  height: 600px;
+>>>>>>> signin-page
   color: $white;
   display: grid;
   grid-template-rows: 60% 1fr 3fr;
