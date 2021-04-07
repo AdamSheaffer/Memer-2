@@ -48,4 +48,14 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import '@/styles/_global.scss';
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  font-family: "Anton", sans-serif;;
+}
+
+button {
+  font-family: "Anton", sans-serif;;
+}
 </style>

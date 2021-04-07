@@ -33,11 +33,11 @@
   background: $purple-2;
   height: 100%;
   width: 100%;
-  border-radius: 2em;
-  box-shadow: 1rem 2rem 1rem rgba($purple-2, .7);
+  border-radius: $tile-border-radius;
   grid-template-columns: 1fr 90% 1fr;
   grid-template-rows: 1fr 80% 1fr;
   display: grid;
+  @include box-shadow;
 }
 
 .mat {
@@ -46,6 +46,6 @@
   width: 100%;
   height: 100%;
   background: $purple-1;
-  border-radius: 25em;
+  border-radius: 25rem;
 }
 </style>
