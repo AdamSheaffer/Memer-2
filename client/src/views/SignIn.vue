@@ -64,11 +64,7 @@ export default class Home extends Vue {
 .tile-inner {
   border: 5px solid $purple-1;
   border-radius: $tile-border-radius;
-<<<<<<< HEAD
-  height: 500px;
-=======
   height: 600px;
->>>>>>> signin-page
   color: $white;
   display: grid;
   grid-template-rows: 60% 1fr 3fr;
