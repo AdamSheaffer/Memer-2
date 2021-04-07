@@ -13,8 +13,14 @@ $accent: #1cbc9c;
 $accent-light: findLightColor($accent);
 $accent-dark: findDarkColor($accent);
 
+$tile-border-radius: 2rem;
+
 @mixin impact-text {
   color: $white;
   font-family: "Anton", sans-serif;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+@mixin box-shadow($x: 1rem, $y: 2rem, $color: $purple-2) {
+  box-shadow: $x $y 1rem rgba($color, 0.7);
 }

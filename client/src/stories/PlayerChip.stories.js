@@ -34,3 +34,9 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const Inactive = Template.bind({});
+
+export const Active = Template.bind({});
+Active.args = {
+  ...Inactive.args,
+  active: true,
+};
