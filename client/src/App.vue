@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/create">New Game</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
@@ -48,4 +44,14 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import '@/styles/_global.scss';
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  font-family: "Anton", sans-serif;;
+}
+
+button {
+  font-family: "Anton", sans-serif;;
+}
 </style>
