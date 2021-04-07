@@ -3,13 +3,20 @@
     <div class="columns is-centered">
       <div class="column is-one-third-desktop is-half">
         <div class="tile-outer">
-          <div class="tile-inner pt-6 px-5">
+          <div class="tile-inner pt-6 px-6">
             <div>
               <h1 class="is-size-1">MEMER</h1>
-              <h2>THE ONLINE GAME FOR MEME LORDS</h2>
+              <h2 class="accent">THE ONLINE GAME FOR MEME LORDS</h2>
             </div>
             <div>
               <b-button expanded type="is-primary" @click="signIn">SIGN IN WITH GOOGLE</b-button>
+            </div>
+            <div class="giphy-logo">
+              <b-image
+                :responsive="false"
+                :src="require('@/assets/PoweredbyGiphy_100px.png')"
+                alt="Powered by Giphy"
+              />
             </div>
           </div>
         </div>
@@ -51,9 +58,14 @@ export default class Home extends Vue {
 .tile-inner {
   border: 5px solid $purple-1;
   border-radius: $tile-border-radius;
-  height: 400px;
+  height: 500px;
   color: $white;
   display: grid;
-  grid-template-rows: 60% 1fr;
+  grid-template-rows: 60% 1fr 3fr;
+}
+
+.giphy-logo {
+  align-self: center;
+  justify-self: center;
 }
 </style>
