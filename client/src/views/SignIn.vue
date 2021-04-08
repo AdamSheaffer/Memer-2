@@ -1,7 +1,7 @@
 <template>
-  <div class="sign-in px-5">
+  <div class="sign-in">
     <div class="columns is-centered">
-      <div class="column is-two-fifths-desktop is-three-fifths">
+      <div class="column is-two-fifths-desktop is-three-fifths is-full-mobile">
         <div class="tile-outer">
           <div class="tile-inner pt-6 px-6">
             <div>
@@ -52,19 +52,22 @@ export default class Home extends Vue {
   background: $purple-1;
   display: grid;
   align-content: center;
+  padding: 1rem;
 }
 
 .tile-outer {
   background: $purple-2;
-  padding: 2rem;
   border-radius: $tile-border-radius;
   @include box-shadow;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .tile-inner {
   border: 5px solid $purple-1;
   border-radius: $tile-border-radius;
   height: 600px;
+  margin: 2rem;
   color: $white;
   display: grid;
   grid-template-rows: 60% 1fr 3fr;

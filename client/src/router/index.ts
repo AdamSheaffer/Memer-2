@@ -15,6 +15,9 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/create',
@@ -36,7 +39,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!auth.currentUser) {
       next({
-        path: '/',
+        path: '/login',
         query: { redirect: to.fullPath },
       });
     } else {
