@@ -1,12 +1,27 @@
 <template>
-  <div class="home">
-    <p v-if="isLoggedIn">{{user.username}}</p>
-    <p>Players Online: {{playersOnline}}</p>
-    <b-button type="is-primary" v-if="!isLoggedIn" @click="signIn">LOGIN</b-button>
-    <b-button type="is-primary" v-else @click="signOut">LOGOUT</b-button>
-    Available Games
-    <open-game-list :games="games" @join="join" />
-  </div>
+  <gameroom-background class="home">
+    <div class="home-container">
+      <div class="home-container-content">
+        <avatar class="avatar" :imageURL="user.photoURL"/>
+        <h1 class="has-text-white is-size-3 has-text-centered">
+          WELCOME BACK {{ user.username.toUpperCase() }}
+        </h1>
+        <div class="action-buttons">
+          <b-button type="is-primary" inverted class="my-3" expanded>
+            JOIN GAME
+          </b-button>
+          <b-button type="is-primary" inverted class="my-3" expanded>
+            CREATE NEW GAME
+          </b-button>
+          <b-button type="is-primary" outlined class="my-3" expanded @click="signOut">
+            LOGOUT
+          </b-button>
+        </div>
+        Available Games
+        <open-game-list :games="games" @join="join" />
+      </div>
+    </div>
+  </gameroom-background>
 </template>
 
 <script lang="ts">
@@ -16,10 +31,12 @@ import { googleSignIn, signOut, db } from '@/firebase';
 import UserMixin from '@/mixins/UserMixin';
 import { Game } from '@/types/Game';
 import OpenGameList from '@/components/OpenGameList.vue';
+import GameroomBackground from '@/components/GameroomBackground.vue';
+import Avatar from '@/components/Avatar.vue';
 import gameService from '@/services/game';
 
 @Component({
-  components: { OpenGameList },
+  components: { OpenGameList, GameroomBackground, Avatar },
 })
 export default class Home extends Mixins(UserMixin) {
   @State playersOnline!: number
@@ -57,3 +74,28 @@ export default class Home extends Mixins(UserMixin) {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.home {
+  height: 100%;
+}
+.home-container {
+  display: grid;
+  grid-template-columns: 1fr 80% 1fr;
+  grid-template-rows: 1fr 80% 1fr;
+  grid-template-columns: 1fr 90% 1fr;
+  align-items: center;
+  justify-items: center;
+  height: 100%;
+  width: 100%;
+}
+.home-container-content {
+  grid-column-start: 2;
+  grid-row-start: 2;
+  width: clamp(300px, 70%, 450px);
+}
+.avatar {
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
