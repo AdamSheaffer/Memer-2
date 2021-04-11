@@ -2,7 +2,8 @@
   <div class="image-container" :style="styles">
     <b-image
       class="img"
-      :src="imageURL"
+      :src="image"
+      :src-fallback="fallbackURL"
       ratio="1by1"
       rounded>
     </b-image>
@@ -18,6 +19,8 @@ export default class Avatar extends Vue {
 
   @Prop({ required: false, default: '7rem' }) private size!: string
 
+  private readonly fallbackURL = '/images/fallback_image.jpeg'
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get styles(): any {
     return {
@@ -25,6 +28,10 @@ export default class Avatar extends Vue {
       width: this.size,
       'border-radius': this.size,
     };
+  }
+
+  get image(): string {
+    return this.imageURL || this.fallbackURL;
   }
 }
 </script>
