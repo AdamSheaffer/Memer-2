@@ -1,14 +1,22 @@
 <template>
   <div>
-    <div v-for="game in games" :key="game.uid">
-      <div class="columns">
-        <p class="column">
-          {{ game.hostPhotoURL }}
-          <b-button @click="join(game)">JOIN</b-button>
-        </p>
-        <p class="column">{{ game.uid }}</p>
-        <p class="column">{{ timeAgo(game.beginDate) }}</p>
-        <p class="column">{{ game.hostId }}</p>
+    <div v-for="game in games" :key="game.uid" class="box tile my-3">
+      <div class="game-listing">
+        <div class="thumbnail">
+          <avatar :imageURL="game.hostPhotoURL" size="60px"/>
+        </div>
+        <div>
+          <p class="is-size-7">
+            <span>Created</span>
+            <span>
+              {{ timeAgo(game.beginDate) }}
+            </span>
+          </p>
+          <open-game-tags :game="game" class="is-hidden-mobile" />
+        </div>
+        <div>
+          <b-button type="is-primary" outline expanded @click="join(game)">JOIN</b-button>
+        </div>
       </div>
     </div>
   </div>
@@ -20,8 +28,12 @@ import {
 } from 'vue-property-decorator';
 import { Game } from '@/types/Game';
 import DateTimeMixin from '@/mixins/DateTimeMixin';
+import Avatar from '@/components/Avatar.vue';
+import OpenGameTags from '@/components/OpenGameTags.vue';
 
-@Component
+@Component({
+  components: { Avatar, OpenGameTags },
+})
 export default class OpenGameList extends Mixins(DateTimeMixin) {
   @Prop({ required: true }) readonly games!: Game[]
 
@@ -35,6 +47,19 @@ export default class OpenGameList extends Mixins(DateTimeMixin) {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+@import '../styles/_variables';
 
+.tile {
+  padding: 10px;
+  background: $purple-2;
+  color: $white;
+}
+.game-listing {
+  display: grid;
+  grid-template-columns: 80px 1fr 100px;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+}
 </style>
