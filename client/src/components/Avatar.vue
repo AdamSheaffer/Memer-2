@@ -1,5 +1,5 @@
 <template>
-  <div class="image-container">
+  <div class="image-container" :style="styles">
     <b-image
       class="img"
       :src="imageURL"
@@ -13,8 +13,19 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Meme extends Vue {
+export default class Avatar extends Vue {
   @Prop({ required: true }) private imageURL!: string
+
+  @Prop({ required: false, default: '7rem' }) private size!: string
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get styles(): any {
+    return {
+      height: this.size,
+      width: this.size,
+      'border-radius': this.size,
+    };
+  }
 }
 </script>
 
@@ -22,9 +33,6 @@ export default class Meme extends Vue {
 @import '../styles/_variables';
 
 .image-container {
-  height: 7rem;
-  width: 7rem;
   border: 3px solid $yellow;
-  border-radius: 8rem;
 }
 </style>
