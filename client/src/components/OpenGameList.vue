@@ -1,5 +1,20 @@
 <template>
   <div>
+    <div v-if="!games.length">
+      <div class="box tile tile--empty my-3">
+        <b-icon
+          type="is-primary"
+          size="is-large"
+          icon="dizzy" />
+        <h3 class="ml-3">
+          Hmmm, there aren't any open games right now...
+          <br>
+          <router-link to="/create" class="has-text-primary">
+            Start a new game
+          </router-link>
+        </h3>
+      </div>
+    </div>
     <div v-for="game in games" :key="game.uid" class="box tile my-3">
       <div class="game-listing">
         <div class="thumbnail">
@@ -54,6 +69,9 @@ export default class OpenGameList extends Mixins(DateTimeMixin) {
   padding: 10px;
   background: $purple-2;
   color: $white;
+  &.tile--empty {
+
+  }
 }
 .game-listing {
   display: grid;

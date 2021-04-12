@@ -20,7 +20,7 @@
               icon="user-friends"
               size="is-small" />
           </b-tag>
-          <b-tag type="is-primary is-light">{{ game.pointsToWin }}</b-tag>
+          <b-tag type="is-primary is-light">{{ game.maxPlayers }}</b-tag>
         </b-taglist>
       </b-tooltip>
     </div>
