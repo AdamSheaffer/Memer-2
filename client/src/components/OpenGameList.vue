@@ -69,9 +69,6 @@ export default class OpenGameList extends Mixins(DateTimeMixin) {
   padding: 10px;
   background: $purple-2;
   color: $white;
-  &.tile--empty {
-
-  }
 }
 .game-listing {
   display: grid;

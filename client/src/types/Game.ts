@@ -4,7 +4,7 @@ export interface Game {
   uid?: string
   beginDate?: firebase.firestore.Timestamp
   hasStarted: boolean
-  hostId: string
+  hostId?: string | null
   maxPlayers: number
   hostPhotoURL?: string | null,
   pointsToWin: number,

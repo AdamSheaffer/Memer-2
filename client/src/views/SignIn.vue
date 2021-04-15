@@ -28,6 +28,12 @@
         </div>
       </div>
     </div>
+    <b-image
+      class="dog-logo is-hidden-mobile"
+      :responsive="false"
+      :src="require('@/assets/dogologo.svg')"
+      alt="Memer Logo"
+    />
   </div>
 </template>
 
@@ -76,5 +82,12 @@ export default class Home extends Vue {
 .giphy-logo {
   align-self: center;
   justify-self: center;
+}
+
+.dog-logo {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 35%;
 }
 </style>
