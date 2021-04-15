@@ -3,15 +3,14 @@
     <div v-if="!games.length">
       <div class="box tile tile--empty my-3">
         <b-icon
+          class="is-hidden-mobile"
           type="is-primary"
           size="is-large"
           icon="dizzy" />
         <h3 class="ml-3">
           Hmmm, there aren't any open games right now...
           <br>
-          <router-link to="/create" class="has-text-primary">
-            Start a new game
-          </router-link>
+          <span class="has-text-primary">Try hosting a new game</span>
         </h3>
       </div>
     </div>
@@ -69,6 +68,7 @@ export default class OpenGameList extends Mixins(DateTimeMixin) {
   padding: 10px;
   background: $purple-2;
   color: $white;
+  border: 2px solid $primary;
 }
 .game-listing {
   display: grid;

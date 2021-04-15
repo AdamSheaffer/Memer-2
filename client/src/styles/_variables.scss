@@ -24,3 +24,10 @@ $tile-border-radius: 2rem;
 @mixin box-shadow($x: 1rem, $y: 2rem, $color: $purple-2) {
   box-shadow: $x $y 1rem rgba($color, 0.7);
 }
+
+@mixin absolute-doggo($width: 35%) {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: $width;
+}

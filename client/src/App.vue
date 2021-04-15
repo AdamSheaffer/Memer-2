@@ -47,7 +47,7 @@ export default class App extends Vue {
 
 html, body, #app {
   height: 100%;
-  width: 100%;
+  width: 100vw;
   font-family: "Anton", sans-serif;;
 }
 
