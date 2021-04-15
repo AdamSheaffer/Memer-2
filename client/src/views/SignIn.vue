@@ -85,9 +85,6 @@ export default class Home extends Vue {
 }
 
 .dog-logo {
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  width: 35%;
+  @include absolute-doggo;
 }
 </style>

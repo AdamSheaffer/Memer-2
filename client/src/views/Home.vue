@@ -2,11 +2,11 @@
   <gameroom-background class="home">
     <div v-if="isLoggedIn" class="home-container">
       <div class="home-container-content">
-        <avatar class="avatar" :imageURL="user.photoURL"/>
-        <h1 class="has-text-white is-size-3 has-text-centered mt-2">
-          WELCOME BACK {{ user.username.toUpperCase() }}
-        </h1>
         <div v-if="!showOpenGames">
+          <avatar class="avatar" :imageURL="user.photoURL"/>
+          <h1 class="has-text-white is-size-3 has-text-centered mt-2">
+            WELCOME BACK {{ user.username.toUpperCase() }}
+          </h1>
           <div class="action-buttons">
             <b-button
               @click="showOpenGames = true"
@@ -26,7 +26,7 @@
               class="my-3"
               expanded
             >
-              CREATE NEW GAME
+              HOST NEW GAME
             </b-button>
             <b-button
               size="is-medium"
@@ -43,10 +43,36 @@
         <transition name="slide-fade">
           <div v-if="showOpenGames" class="open-games">
             <open-game-list :games="games" @join="join" />
+            <divider class="px-6 pt-3" text="or" />
+            <b-button
+              tag="router-link"
+              to="/create"
+              type="is-primary"
+              inverted
+              size="is-medium"
+              class="my-3"
+              expanded
+            >
+              HOST NEW GAME
+            </b-button>
+            <b-button
+              size="is-medium"
+              type="is-primary"
+              class="my-3"
+              expanded
+              @click="signOut"
+            >
+              LOGOUT
+            </b-button>
           </div>
         </transition>
       </div>
     </div>
+    <b-image
+      class="dog-logo is-hidden-mobile"
+      :src="require('@/assets/dogologo.svg')"
+      alt="Memer Logo"
+    />
   </gameroom-background>
 </template>
 
@@ -58,11 +84,14 @@ import UserMixin from '@/mixins/UserMixin';
 import { Game } from '@/types/Game';
 import OpenGameList from '@/components/OpenGameList.vue';
 import GameroomBackground from '@/components/GameroomBackground.vue';
+import Divider from '@/components/Divider.vue';
 import Avatar from '@/components/Avatar.vue';
 import gameService from '@/services/game';
 
 @Component({
-  components: { OpenGameList, GameroomBackground, Avatar },
+  components: {
+    OpenGameList, GameroomBackground, Avatar, Divider,
+  },
 })
 export default class Home extends Mixins(UserMixin) {
   @State playersOnline!: number
@@ -76,7 +105,7 @@ export default class Home extends Mixins(UserMixin) {
   mounted(): void {
     const openGames = db.collection('games')
       .where('hasStarted', '==', false)
-      .limit(10);
+      .limit(5);
     this.openGameUnsubscribe = openGames.onSnapshot((snapshot) => {
       this.games = snapshot.docs.map((d) => d.data() as Game);
     });
@@ -106,6 +135,8 @@ export default class Home extends Mixins(UserMixin) {
 </script>
 
 <style scoped lang="scss">
+@import '../styles/_variables';
+
 .home {
   height: 100%;
 }
@@ -138,5 +169,9 @@ export default class Home extends Mixins(UserMixin) {
 .slide-fade-enter, .slide-fade-leave-to {
   transform: translateX(80px);
   opacity: 0;
+}
+
+.dog-logo {
+  @include absolute-doggo(25%);
 }
 </style>
