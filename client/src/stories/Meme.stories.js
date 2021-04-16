@@ -1,13 +1,10 @@
 import Meme from '../components/Meme.vue';
+import GameroomBackground from '../components/GameroomBackground.vue';
 
 export default {
   title: 'Memer/Meme',
   component: Meme,
   argTypes: {
-    imageURL: {
-      control: { type: 'text' },
-      defaultValue: 'https://media.giphy.com/media/AcfTF7tyikWyroP0x7/giphy.gif',
-    },
     top: {
       control: { type: 'text' },
       defaultValue: 'Hello',
@@ -16,13 +13,23 @@ export default {
       control: { type: 'text' },
       defaultValue: 'Hello',
     },
+    imageURL: {
+      control: { type: 'text' },
+      defaultValue: 'https://media.giphy.com/media/dw7lCpFmsyfS0/giphy.gif',
+    },
   },
 };
 
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
-  components: { Meme },
-  template: '<meme v-bind="$props" />',
+  components: { Meme, GameroomBackground },
+  template: `
+    <gameroom-background>
+      <div style="height: 500px">
+        <meme v-bind="$props" />
+      </div>
+    </gameroom-background>
+  `,
 });
 
-export const Basic = Template.bind({});
+export const Default = Template.bind({});
