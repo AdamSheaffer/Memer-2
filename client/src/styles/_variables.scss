@@ -4,6 +4,7 @@ $purple-1: #3e426d;
 $purple-2: #21233e;
 $yellow: #f2cd1c;
 $primary: #9b59b6;
+$info: $purple-1;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
@@ -15,6 +16,9 @@ $accent-dark: findDarkColor($accent);
 
 $tile-border-radius: 2rem;
 
+// bulma overrides
+$modal-background-background-color: inherit;
+
 @mixin impact-text {
   color: $white;
   font-family: "Anton", sans-serif;
@@ -23,6 +27,10 @@ $tile-border-radius: 2rem;
 
 @mixin box-shadow($x: 1rem, $y: 2rem, $color: $purple-2) {
   box-shadow: $x $y 1rem rgba($color, 0.7);
+}
+
+@mixin background-blur {
+  backdrop-filter: blur(8px);
 }
 
 @mixin absolute-doggo($width: 35%) {
