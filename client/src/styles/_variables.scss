@@ -4,6 +4,7 @@ $purple-1: #3e426d;
 $purple-2: #21233e;
 $yellow: #f2cd1c;
 $primary: #9b59b6;
+$info: $purple-1;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
@@ -12,8 +13,15 @@ $twitter-invert: findColorInvert($twitter);
 $accent: #1cbc9c;
 $accent-light: findLightColor($accent);
 $accent-dark: findDarkColor($accent);
+$success: $accent;
+$warning: $yellow;
 
 $tile-border-radius: 2rem;
+$family-2: sans-serif;
+
+// bulma overrides
+$family-primary: "Anton", sans-serif;
+$modal-background-background-color: inherit;
 
 @mixin impact-text {
   color: $white;
@@ -25,9 +33,28 @@ $tile-border-radius: 2rem;
   box-shadow: $x $y 1rem rgba($color, 0.7);
 }
 
+@mixin background-blur {
+  backdrop-filter: blur(8px);
+}
+
 @mixin absolute-doggo($width: 35%) {
   position: absolute;
   bottom: 2rem;
   right: 2rem;
   width: $width;
+}
+
+@function stroke($stroke, $color) {
+  $shadow: ();
+  $from: $stroke * -1;
+  @for $i from $from through $stroke {
+    @for $j from $from through $stroke {
+      $shadow: append($shadow, $i * 1px $j * 1px 0 $color, comma);
+    }
+  }
+  @return $shadow;
+}
+
+@mixin stroke($stroke, $color) {
+  text-shadow: stroke($stroke, $color);
 }

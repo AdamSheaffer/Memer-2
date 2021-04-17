@@ -1,34 +1,43 @@
 <template>
   <div class="home">
-    <b-button v-if="isLoggedIn" @click="createGame">CREATE GAME</b-button>
+    <gameroom-background>
+      <setup-wizard @on-complete="createGame" @on-cancel="returnToLobby" />
+    </gameroom-background>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import SetupWizard from '@/components/SetupWizard.vue';
+import GameroomBackground from '@/components/GameroomBackground.vue';
 import { Game } from '@/types/Game';
 import UserMixin from '@/mixins/UserMixin';
 import gameService from '@/services/game';
 
-@Component
+@Component({
+  components: { SetupWizard, GameroomBackground },
+})
 export default class GameCreate extends Mixins(UserMixin) {
-  async createGame(): Promise<void> {
+  async createGame(gameSettings: Game): Promise<void> {
+    debugger;
     if (!this.user) {
       throw Error('Cannot create game without an authenticated user');
     }
+
     const game: Game = {
-      maxPlayers: 7,
+      ...gameSettings,
       hasStarted: false,
       hostId: this.user.uid,
       hostPhotoURL: this.user.photoURL,
-      safeForWork: false,
-      reverseRoundFrequency: 0,
-      pointsToWin: 7,
     };
 
     const gameId = await gameService.create(game);
     await gameService.joinGame(gameId, this.user);
     this.$router.push(`game/${gameId}`);
+  }
+
+  returnToLobby(): void {
+    this.$router.push('/');
   }
 }
 </script>
