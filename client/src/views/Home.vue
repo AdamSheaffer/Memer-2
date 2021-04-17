@@ -48,7 +48,6 @@
               tag="router-link"
               to="/create"
               type="is-primary"
-              inverted
               size="is-medium"
               class="my-3"
               expanded
@@ -58,6 +57,7 @@
             <b-button
               size="is-medium"
               type="is-primary"
+              inverted
               class="my-3"
               expanded
               @click="signOut"

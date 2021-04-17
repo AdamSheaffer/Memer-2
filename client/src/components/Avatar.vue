@@ -1,5 +1,5 @@
 <template>
-  <div class="image-container" :style="styles">
+  <div :class="{ border: border }" :style="styles">
     <b-image
       class="img"
       :src="image"
@@ -18,6 +18,8 @@ export default class Avatar extends Vue {
   @Prop({ required: true }) private imageURL!: string
 
   @Prop({ required: false, default: '7rem' }) private size!: string
+
+  @Prop({ required: false, default: true }) border!: boolean
 
   private readonly fallbackURL = '/images/fallback_image.jpeg'
 
@@ -39,7 +41,7 @@ export default class Avatar extends Vue {
 <style scoped lang="scss">
 @import '../styles/_variables';
 
-.image-container {
+.border {
   border: 3px solid $yellow;
 }
 </style>

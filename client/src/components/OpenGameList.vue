@@ -17,7 +17,7 @@
     <div v-for="game in games" :key="game.uid" class="box tile my-3">
       <div class="game-listing">
         <div class="thumbnail">
-          <avatar :imageURL="game.hostPhotoURL" size="60px"/>
+          <avatar :imageURL="game.hostPhotoURL" size="60px" :border="false"/>
         </div>
         <div>
           <p class="is-size-7">
@@ -29,7 +29,7 @@
           <open-game-tags :game="game" class="is-hidden-mobile" />
         </div>
         <div>
-          <b-button type="is-primary" outline expanded @click="join(game)">JOIN</b-button>
+          <b-button type="is-success" outline expanded @click="join(game)">JOIN</b-button>
         </div>
       </div>
     </div>

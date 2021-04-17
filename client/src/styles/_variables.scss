@@ -13,6 +13,8 @@ $twitter-invert: findColorInvert($twitter);
 $accent: #1cbc9c;
 $accent-light: findLightColor($accent);
 $accent-dark: findDarkColor($accent);
+$success: $accent;
+$warning: $yellow;
 
 $tile-border-radius: 2rem;
 $family-2: sans-serif;
