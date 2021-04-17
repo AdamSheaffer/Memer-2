@@ -4,10 +4,10 @@
       <h2 class="step-header is-size-2">{{ header }}</h2>
       <span class="step-subheader is-size-7">{{ subheader }}</span>
       <div class="options">
-        <div class="option is-size-3" v-for="(option, index) in options" :key="index">
+        <div class="option" v-for="(option, index) in options" :key="index">
           <span
             @click="selectOption(option)"
-            :class="{'option--active': option.value === value }"
+            :class="{'option--active': option.value === value, 'small': small }"
           >
             {{ option.text }}
           </span>
@@ -30,6 +30,8 @@ export default class SetupWizard extends Vue {
   @Prop({ required: true }) subheader!: string
 
   @Prop({ required: true }) options!: SetupOption[]
+
+  @Prop({ required: false, default: false }) small!: boolean
 
   selectOption({ value }: SetupOption): void {
     this.$emit('input', value);
@@ -56,10 +58,11 @@ export default class SetupWizard extends Vue {
 
 .step-subheader {
   color: $purple-2;
+  font-family: $family-2;
 }
 
 .options {
-  margin: 40px 20px 20px;
+  margin: 40px 0 20px;
   display: flex;
   justify-content: space-between;
 
@@ -73,11 +76,22 @@ export default class SetupWizard extends Vue {
     -o-transition: all .1s ease-out;
     transition: all .1s ease-out;
     color: $primary;
-  }
+    font-size: 2rem;
 
-  .option--active {
-    font-size: 3rem;
-    color: $yellow;
+    &.small {
+      font-size: 1.2rem;
+    }
+
+    &.option--active {
+      font-size: 3rem;
+      color: $yellow;
+      @include stroke(1, $primary);
+
+      &.small {
+        font-size: 2rem;
+      }
+    }
+
   }
 }
 

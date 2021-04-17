@@ -3,13 +3,14 @@ import firebase from 'firebase/app';
 export interface Game {
   uid?: string
   beginDate?: firebase.firestore.Timestamp
-  hasStarted: boolean
+  hasStarted?: boolean
   hostId?: string | null
   maxPlayers: number
   hostPhotoURL?: string | null,
   pointsToWin: number,
   safeForWork: boolean,
   reverseRoundFrequency: number
+  timeLimit?: number
   lastUpdated?: firebase.firestore.Timestamp
 }
 
@@ -18,6 +19,6 @@ export interface GameUpdate {
   beginDate?: firebase.firestore.Timestamp
   hasStarted?: boolean
   hostId?: string
-  hostPhotoURL?: string | null,
+  hostPhotoURL?: string | null
   lastUpdated?: firebase.firestore.Timestamp
 }

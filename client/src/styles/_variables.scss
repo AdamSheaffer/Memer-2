@@ -15,8 +15,10 @@ $accent-light: findLightColor($accent);
 $accent-dark: findDarkColor($accent);
 
 $tile-border-radius: 2rem;
+$family-2: sans-serif;
 
 // bulma overrides
+$family-primary: "Anton", sans-serif;
 $modal-background-background-color: inherit;
 
 @mixin impact-text {
@@ -38,4 +40,19 @@ $modal-background-background-color: inherit;
   bottom: 2rem;
   right: 2rem;
   width: $width;
+}
+
+@function stroke($stroke, $color) {
+  $shadow: ();
+  $from: $stroke * -1;
+  @for $i from $from through $stroke {
+    @for $j from $from through $stroke {
+      $shadow: append($shadow, $i * 1px $j * 1px 0 $color, comma);
+    }
+  }
+  @return $shadow;
+}
+
+@mixin stroke($stroke, $color) {
+  text-shadow: stroke($stroke, $color);
 }

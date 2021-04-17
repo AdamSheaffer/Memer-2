@@ -1,5 +1,10 @@
 import {
-  faHeart, faUserFriends, faBriefcase, faCocktail, faDizzy,
+  faHeart,
+  faUserFriends,
+  faBriefcase,
+  faCocktail,
+  faDizzy,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 export default [
@@ -8,4 +13,5 @@ export default [
   faBriefcase,
   faCocktail,
   faDizzy,
+  faTimes,
 ];

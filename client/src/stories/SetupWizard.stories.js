@@ -12,7 +12,9 @@ const Template = (args, { argTypes }) => ({
   template: `
     <gameroom-background>
       <div style="height: 100vh; width: 100vw">
-        <setup-wizard v-bind="$props" />
+        <div style="height: 80vh; width: 400px">
+          <setup-wizard v-bind="$props" />
+        </div>
       </div>
     </gameroom-background>
   `,
