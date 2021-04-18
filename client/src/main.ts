@@ -7,6 +7,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import { auth } from './firebase';
+import handleSignIn from './services/auth';
 
 library.add(...icons);
 
@@ -32,8 +33,12 @@ Vue.config.productionTip = false;
 
 let userLoaded = false;
 
-auth.onAuthStateChanged(() => {
+auth.onAuthStateChanged(async (user) => {
   if (!userLoaded) {
+    if (user) {
+      const profile = await handleSignIn(user);
+      store.commit('user/setUser', profile);
+    }
     new Vue({
       router,
       store,

@@ -38,7 +38,10 @@ const joinGame = (gameId: string, user: User): Promise<void> => db
   .doc(`games/${gameId}/players/${user.uid}`)
   .set(user);
 
-const startGame = (gameId: string): Promise<void> => update({ hasStarted: true }, gameId);
+const startGame = (gameId: string, playerId: string): Promise<void> => update({
+  hasStarted: true,
+  turn: playerId,
+}, gameId);
 
 const createHands = async (handsNeeded: number): Promise<Card[][]> => {
   const snapshot = await captionsRef.get();

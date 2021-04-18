@@ -1,3 +1,4 @@
+import { Card } from '@/types/Card';
 import { Game } from '@/types/Game';
 import { Player } from '@/types/Player';
 import { MutationTree } from 'vuex';
@@ -9,6 +10,9 @@ const mutations: MutationTree<ModuleState> = {
   },
   setPlayers(state, payload: Player[]) {
     state.players = payload;
+  },
+  setHand(state, payload: Card[]) {
+    state.hand = payload;
   },
 };
 

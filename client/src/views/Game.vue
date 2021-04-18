@@ -1,6 +1,6 @@
 <template>
-  <div id="game-root">
-    <gameroom-background>
+  <gameroom-background>
+    <div v-if="game && players.length" id="game-root">
       <player-chip
         v-for="player in players"
         :key="player.uid"
@@ -8,29 +8,34 @@
         :active="false"
         :pointsToWin="game.pointsToWin"/>
 
-        <b-button v-if="showStartButton" @click="startGame">START</b-button>
-    </gameroom-background>
-  </div>
+      <div v-for="card in hand" :key="card.id" class="card">
+        {{ card.top }} {{ card.bottom }}
+      </div>
+
+      <b-button v-if="showStartButton" @click="startGame">START</b-button>
+      <action-header :game="game" :players="players" :userId="user.uid" />
+    </div>
+  </gameroom-background>
 </template>
 
 <script lang="ts">
 import { Mixins, Component, Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
-import { db } from '@/firebase';
+import GameroomBackground from '@/components/GameroomBackground.vue';
+import PlayerChip from '@/components/PlayerChip.vue';
+import ActionHeader from '@/components/ActionHeader.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
-import GameroomBackground from '@/components/GameroomBackground.vue';
-import PlayerChip from '@/components/PlayerChip.vue';
+import HandMixin from '@/mixins/HandMixin';
 import { Game } from '@/types/Game';
 import gameService from '@/services/game';
 
-const gameStore = namespace('game');
-
 @Component({
-  components: { GameroomBackground, PlayerChip },
+  components: { GameroomBackground, PlayerChip, ActionHeader },
 })
-export default class GameRoom extends Mixins(UserMixin, GameMixin, PlayerMixin) {
+export default class GameRoom extends Mixins(
+  UserMixin, GameMixin, PlayerMixin, HandMixin,
+) {
   get gameId(): string {
     return this.$route.params.gameId;
   }
@@ -51,10 +56,11 @@ export default class GameRoom extends Mixins(UserMixin, GameMixin, PlayerMixin) 
   mounted(): void {
     this.trackGame(this.gameId);
     this.trackPlayers(this.gameId);
+    this.trackPlayerHand(this.gameId, this.user.uid);
   }
 
   startGame(): void {
-    gameService.startGame(this.gameId);
+    gameService.startGame(this.gameId, this.user.uid);
   }
 
   dealCards(): void {

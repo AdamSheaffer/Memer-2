@@ -7,6 +7,7 @@ import mutations from './mutations';
 const state: ModuleState = {
   game: null,
   players: [],
+  hand: [],
 };
 
 const gameModule: Module<ModuleState, RootState> = {

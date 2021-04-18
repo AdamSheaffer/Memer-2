@@ -21,5 +21,6 @@ export const gameFull = functions.firestore
 
       gameRef.update({
         hasStarted: true,
+        turn: game.hostId,
       });
     });
