@@ -28,3 +28,4 @@ database-debug.log
 firestore-debug.log
 firebase-debug.log
 hosting.*.cache
+emulator_data

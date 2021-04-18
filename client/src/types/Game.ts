@@ -20,19 +20,10 @@ export interface Game {
   captionDeck?: Card[]
   winner?: Player | null
   roundType?: RoundType | null
-  maxPlayers: number
-  pointsToWin: number,
-  safeForWork: boolean,
-  reverseRoundFrequency: number
+  maxPlayers?: number
+  pointsToWin?: number,
+  safeForWork?: boolean,
+  reverseRoundFrequency?: number
   timeLimit?: number
-  lastUpdated?: firebase.firestore.Timestamp
-}
-
-export interface GameUpdate {
-  uid: string,
-  beginDate?: firebase.firestore.Timestamp
-  hasStarted?: boolean
-  hostId?: string
-  hostPhotoURL?: string | null
   lastUpdated?: firebase.firestore.Timestamp
 }
