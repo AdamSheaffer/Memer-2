@@ -27,6 +27,14 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
     },
   },
+  {
+    path: '/game/:gameId',
+    name: 'Game',
+    component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({

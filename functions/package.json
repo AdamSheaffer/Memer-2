@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
-    "serve": "npm run build && firebase emulators:start",
+    "serve": "npm run build && firebase emulators:start --export-on-exit=../emulator_data --import=../emulator_data",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",

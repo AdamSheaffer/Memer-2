@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex, { MutationTree } from 'vuex';
 import { RootState } from './types';
 import user from './user';
+import game from './game';
 
 Vue.use(Vuex);
 
@@ -19,5 +20,5 @@ const mutations: MutationTree<RootState> = {
 export default new Vuex.Store<RootState>({
   state: rootState,
   mutations,
-  modules: { user },
+  modules: { user, game },
 });

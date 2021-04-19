@@ -10,6 +10,6 @@ class UserMixin extends Vue {
   public isLoggedIn!: boolean
 
   @userStore.State((state) => state.user)
-  public user?: User
+  public user!: User
 }
 export default UserMixin;

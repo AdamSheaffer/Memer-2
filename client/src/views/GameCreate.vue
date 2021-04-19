@@ -19,7 +19,6 @@ import gameService from '@/services/game';
 })
 export default class GameCreate extends Mixins(UserMixin) {
   async createGame(gameSettings: Game): Promise<void> {
-    debugger;
     if (!this.user) {
       throw Error('Cannot create game without an authenticated user');
     }

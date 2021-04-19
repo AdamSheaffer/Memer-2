@@ -1,20 +1,20 @@
 <template>
   <div class="pill" :class="{ active }">
     <b-image
-      :src="player.photoURL"
-      :src-fallback="require('../assets/logo.png')"
+      :src="player.photoURL || require('../assets/this_is_fine.jpeg')"
+      :src-fallback="require('../assets/this_is_fine.jpeg')"
       ratio="1by1"
       rounded
       class="avatar"
       :class="{ active }"
     >
       <template #placeholder>
-        <b-loading :is-full-page="false" active="true" />
+        <b-loading class="avatar" :is-full-page="false" :active="true" />
       </template>
     </b-image>
     <div class="pill-content mt-2 ml-2">
       <p class="is-size-6">{{ player.username }}</p>
-      <p class="is-size-7">{{ player.score }}/{{ pointsToWin }}</p>
+      <p class="is-size-7">{{ player.score || 0 }}/{{ pointsToWin }}</p>
       <b-icon
         v-for="i in pointsToWin"
         :key="i"
