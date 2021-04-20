@@ -1,21 +1,14 @@
 <template>
-  <gameroom-background>
-    <div v-if="game && players.length" id="game-root">
-      <player-chip
-        v-for="player in players"
-        :key="player.uid"
-        :player="player"
-        :active="false"
-        :pointsToWin="game.pointsToWin"/>
-
-      <div v-for="card in hand" :key="card.id" class="card">
-        {{ card.top }} {{ card.bottom }}
-      </div>
+  <div id="game-root">
+    <gameroom-background />
+    <div v-if="game && players.length" class="game-container">
+      <players :game="game" :players="players" :current-player-id="user.uid" />
 
       <b-button v-if="showStartButton" @click="startGame">START</b-button>
+      <!-- <player-hand :cards="hand" /> -->
       <action-header :game="game" :players="players" :userId="user.uid" />
     </div>
-  </gameroom-background>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,6 +16,8 @@ import { Mixins, Component, Watch } from 'vue-property-decorator';
 import GameroomBackground from '@/components/GameroomBackground.vue';
 import PlayerChip from '@/components/PlayerChip.vue';
 import ActionHeader from '@/components/ActionHeader.vue';
+import PlayerHand from '@/components/PlayerHand.vue';
+import Players from '@/components/Players.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
@@ -31,7 +26,9 @@ import { Game } from '@/types/Game';
 import gameService from '@/services/game';
 
 @Component({
-  components: { GameroomBackground, PlayerChip, ActionHeader },
+  components: {
+    GameroomBackground, PlayerChip, ActionHeader, PlayerHand, Players,
+  },
 })
 export default class GameRoom extends Mixins(
   UserMixin, GameMixin, PlayerMixin, HandMixin,
@@ -86,7 +83,7 @@ export default class GameRoom extends Mixins(
 
 <style lang="scss" scoped>
 
-#game-root {
+#game-root, .game-container {
   width: 100%;
   height: 100%;
 }
