@@ -1,49 +1,26 @@
 <template>
-  <div class="pill" :class="{ active }">
-    <b-image
-      :src="player.photoURL || require('../assets/this_is_fine.jpeg')"
-      :src-fallback="require('../assets/this_is_fine.jpeg')"
-      ratio="1by1"
-      rounded
-      class="avatar"
-      :class="{ active }"
-    >
-      <template #placeholder>
-        <b-loading class="avatar" :is-full-page="false" :active="true" />
-      </template>
-    </b-image>
-    <div class="pill-content mt-2 ml-2">
-      <p class="is-size-6">{{ player.username }}</p>
-      <p class="is-size-7">{{ player.score || 0 }}/{{ pointsToWin }}</p>
-      <b-icon
-        v-for="i in pointsToWin"
-        :key="i"
-        :type="i <= player.score ? 'is-danger' : 'is-white'"
-        icon="heart"
-        size="is-small" />
-    </div>
+  <div class="test">
+    hello
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Player } from '@/types/Player';
+import { Vue, Prop, Component } from "vue-property-decorator";
+//import { Player } from "@/types/Player";
 
 @Component
-export default class PlayerChip extends Vue {
-  @Prop({ required: true }) player!: Player
+export default class Button extends Vue {
+  //@Prop({ required: true }) player!: Player;
 
-  @Prop({ required: true }) pointsToWin!: number
-
-  @Prop({ default: false, required: false }) active!: boolean
+  @Prop({ default: true, required: false }) rounded!: boolean;
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/_variables';
+@import "../styles/_variables";
 
 $pill-radius: 5rem;
-$transition: border .15s ease-out;
+$transition: border 0.15s ease-out;
 
 .pill {
   width: 15rem;
@@ -64,6 +41,11 @@ $transition: border .15s ease-out;
   &.active {
     border-left: 0;
   }
+}
+
+.test {
+  height: 500px;
+  width: 100px;
 }
 
 .pill-content {
