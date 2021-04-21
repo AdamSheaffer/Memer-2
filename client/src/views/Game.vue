@@ -1,12 +1,19 @@
 <template>
   <div id="game-root">
     <gameroom-background />
-    <div v-if="game && players.length" class="game-container">
+    <div v-if="dataLoaded">
       <players :game="game" :players="players" :current-player-id="user.uid" />
-
-      <b-button v-if="showStartButton" @click="startGame">START</b-button>
-      <!-- <player-hand :cards="hand" /> -->
-      <action-header :game="game" :players="players" :userId="user.uid" />
+    </div>
+    <div v-if="dataLoaded" class="game-table">
+      <div class="game">
+        <div class="game-container">
+          <b-button v-if="showStartButton" @click="startGame">START</b-button>
+          <div class="hand">
+            <player-hand :cards="hand" />
+            <action-header :game="game" :players="players" :userId="user.uid" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +42,10 @@ export default class GameRoom extends Mixins(
 ) {
   get gameId(): string {
     return this.$route.params.gameId;
+  }
+
+  get dataLoaded(): boolean {
+    return !!this.game && !!this.players && !!this.players.length;
   }
 
   get isHost(): boolean {
@@ -83,9 +94,29 @@ export default class GameRoom extends Mixins(
 
 <style lang="scss" scoped>
 
-#game-root, .game-container {
+#game-root, .game-container, .game-table {
   width: 100%;
   height: 100%;
 }
 
+.game-table {
+  grid-template-columns: 1fr 80% 1fr;
+  grid-template-rows: 1fr 80% 1fr;
+  display: grid;
+
+}
+
+.game-container {
+  display: grid;
+}
+
+.game {
+  grid-row-start: 2;
+  grid-column-start: 2;
+}
+
+.hand {
+  align-self: end;
+  margin: 8% 15%;
+}
 </style>

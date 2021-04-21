@@ -47,6 +47,7 @@ export default class Players extends Vue {
   width: 100%;
   height: 100%;
   position: absolute;
+  z-index: -800;
 }
 
 .players {
