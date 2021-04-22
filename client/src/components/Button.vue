@@ -1,7 +1,5 @@
 <template>
-  <div class="test">
-    hello
-  </div>
+  <div class="test">hello</div>
 </template>
 
 <script lang="ts">
@@ -56,4 +54,6 @@ $transition: border 0.15s ease-out;
   border: 3px solid $yellow;
   transition: $transition;
 }
+
+//test
 </style>
