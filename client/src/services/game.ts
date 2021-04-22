@@ -47,7 +47,8 @@ const createHands = async (handsNeeded: number): Promise<Card[][]> => {
   const snapshot = await captionsRef.get();
   const deck = snapshot.docs.map((doc) => doc.data() as Card);
   const shuffled = shuffle(deck);
-  const hands = chunk(shuffled, handsNeeded).slice(0, handsNeeded);
+  const chunkSize = Math.floor(shuffled.length / handsNeeded);
+  const hands = chunk(shuffled, chunkSize);
   return hands;
 };
 

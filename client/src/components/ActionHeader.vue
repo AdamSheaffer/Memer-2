@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="mt-3">
     <div v-if="isCurrentPlayersTurn">
-      <h1>{{ currentPlayer.username }} IT'S YOUR TURN</h1>
-      <b-button>START</b-button>
+      <h1 class="has-text-centered has-text-success">
+        IT'S YOUR TURN!
+      </h1>
     </div>
   </div>
 </template>

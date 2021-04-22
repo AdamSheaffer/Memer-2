@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Card } from '@/types/Card';
+
 @Component
 export default class PlayerChip extends Vue {
   @Prop({ required: true }) cards!: Card[]
