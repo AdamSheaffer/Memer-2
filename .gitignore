@@ -2,6 +2,7 @@
 node_modules
 /dist
 /client/dist
+/client/storybook-static
 
 
 # local env files
