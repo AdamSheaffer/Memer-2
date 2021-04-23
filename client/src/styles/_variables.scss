@@ -33,8 +33,8 @@ $modal-background-background-color: inherit;
   box-shadow: $x $y 1rem rgba($color, 0.7);
 }
 
-@mixin background-blur {
-  backdrop-filter: blur(8px);
+@mixin background-blur($amount: 8px) {
+  backdrop-filter: blur($amount);
 }
 
 @mixin absolute-doggo($width: 35%) {

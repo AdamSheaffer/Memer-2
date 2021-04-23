@@ -1,89 +1,85 @@
 <template>
-  <b-modal :width="450" active custom-class="setup-modal">
-    <div class="setup-wizard setup-wizard-outer">
-      <div class="setup-wizard-inner">
-        <div class="close-btn is-pulled-right" @click="cancel" title="Cancel">
-          <b-icon
-            size="is-small"
-            type="is-info"
-            icon="times" />
-        </div>
-        <b-tabs v-model="currentStep">
-          <b-tab-item>
-            <setup-wizard-step
-              v-model="maxPlayers"
-              :options="maxPlayersOptions"
-              header="PLAYERS"
-              subheader="HOW MANY PLAYERS, PLAYER?"
-            />
-          </b-tab-item>
-          <b-tab-item>
-            <setup-wizard-step
-              v-model="pointsToWin"
-              :options="pointsToWinOptions"
-              header="SCORES"
-              subheader="HOW MANY POINTS TO WIN?"
-            />
-          </b-tab-item>
-          <b-tab-item>
-            <setup-wizard-step
-              v-model="reverseRoundFrequency"
-              :options="reverseRoundOptions"
-              header="REVERSE"
-              subheader="HOW OFTEN DO YOU WANT REVERSE ROUNDS?"
-              :small="true"
-            />
-          </b-tab-item>
-          <b-tab-item>
-            <setup-wizard-step
-              v-model="timeLimit"
-              :options="timerOptions"
-              header="TIMER"
-              subheader="HOW LONG SHOULD ONE ROUND LAST?"
-              :small="true"
-            />
-          </b-tab-item>
-          <b-tab-item>
-            <setup-wizard-step
-              v-model="safeForWork"
-              :options="safeForWorkOptions"
-              header="NSFW"
-              subheader="YOU DOWN TO PARTY?"
-              :small="true"
-            />
-          </b-tab-item>
-        </b-tabs>
-
-        <div class="mt-6 mb-3 is-flex is-justify-content-flex-end">
-          <b-button
-            v-if="!isFirstStep"
-            @click="currentStep -= 1"
-            class="mr-3 btn"
-            type="is-info"
-            outlined
-          >
-            BACK
-          </b-button>
-          <b-button
-            v-if="!isLastStep"
-            @click="currentStep += 1"
-            type="is-info"
-            class="btn"
-          >
-            NEXT
-          </b-button>
-          <b-button
-            v-else
-            @click="complete"
-            type="is-success"
-            class="btn"
-          >
-            START
-          </b-button>
-        </div>
-      </div>
+  <modal :blur="true">
+    <div class="close-btn is-pulled-right" @click="cancel" title="Cancel">
+      <b-icon
+        size="is-small"
+        type="is-info"
+        icon="times" />
     </div>
-  </b-modal>
+    <b-tabs v-model="currentStep">
+      <b-tab-item>
+        <setup-wizard-step
+          v-model="maxPlayers"
+          :options="maxPlayersOptions"
+          header="PLAYERS"
+          subheader="HOW MANY PLAYERS, PLAYER?"
+        />
+      </b-tab-item>
+      <b-tab-item>
+        <setup-wizard-step
+          v-model="pointsToWin"
+          :options="pointsToWinOptions"
+          header="SCORES"
+          subheader="HOW MANY POINTS TO WIN?"
+        />
+      </b-tab-item>
+      <b-tab-item>
+        <setup-wizard-step
+          v-model="reverseRoundFrequency"
+          :options="reverseRoundOptions"
+          header="REVERSE"
+          subheader="HOW OFTEN DO YOU WANT REVERSE ROUNDS?"
+          :small="true"
+        />
+      </b-tab-item>
+      <b-tab-item>
+        <setup-wizard-step
+          v-model="timeLimit"
+          :options="timerOptions"
+          header="TIMER"
+          subheader="HOW LONG SHOULD ONE ROUND LAST?"
+          :small="true"
+        />
+      </b-tab-item>
+      <b-tab-item>
+        <setup-wizard-step
+          v-model="safeForWork"
+          :options="safeForWorkOptions"
+          header="NSFW"
+          subheader="YOU DOWN TO PARTY?"
+          :small="true"
+        />
+      </b-tab-item>
+    </b-tabs>
+
+    <div class="mt-6 mb-3 is-flex is-justify-content-flex-end">
+      <b-button
+        v-if="!isFirstStep"
+        @click="currentStep -= 1"
+        class="mr-3 btn"
+        type="is-info"
+        outlined
+      >
+        BACK
+      </b-button>
+      <b-button
+        v-if="!isLastStep"
+        @click="currentStep += 1"
+        type="is-info"
+        class="btn"
+      >
+        NEXT
+      </b-button>
+      <b-button
+        v-else
+        @click="complete"
+        type="is-success"
+        class="btn"
+      >
+        START
+      </b-button>
+    </div>
+  </modal>
 </template>
 
 <script lang="ts">
@@ -91,9 +87,10 @@ import { Component, Vue, Emit } from 'vue-property-decorator';
 import { SetupOption } from '@/types/SetupOption';
 import { Game } from '@/types/Game';
 import SetupWizardStep from './SetupWizardStep.vue';
+import Modal from './Modal.vue';
 
 @Component({
-  components: { SetupWizardStep },
+  components: { SetupWizardStep, Modal },
 })
 export default class SetupWizard extends Vue {
   currentStep = 0;

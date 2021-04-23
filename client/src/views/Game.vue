@@ -8,9 +8,15 @@
       <div class="game">
         <div class="game-container">
           <b-button v-if="showStartButton" @click="startGame">START</b-button>
+          <category-select
+            class="border-clear-top pt-5"
+            v-if="isPickingTags"
+            @select="categorySelect"
+            :options="game.tagOptions"
+            :isPicking="isYourTurn"
+            :turnUsername="playerTurn && playerTurn.username"/>
           <div class="hand">
-            <player-hand :cards="hand" />
-            <action-header :game="game" :players="players" :userId="user.uid" />
+            <player-hand v-show="showHand" :cards="hand" />
           </div>
         </div>
       </div>
@@ -25,31 +31,70 @@ import PlayerChip from '@/components/PlayerChip.vue';
 import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
+import CategorySelect from '@/components/CategorySelect.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
 import HandMixin from '@/mixins/HandMixin';
+import CategoryMixin from '@/mixins/CategoryMixin';
 import { Game } from '@/types/Game';
+import { Player } from '@/types/Player';
 import gameService from '@/services/game';
 
 @Component({
   components: {
-    GameroomBackground, PlayerChip, ActionHeader, PlayerHand, Players,
+    GameroomBackground,
+    PlayerChip,
+    ActionHeader,
+    PlayerHand,
+    Players,
+    CategorySelect,
   },
 })
 export default class GameRoom extends Mixins(
-  UserMixin, GameMixin, PlayerMixin, HandMixin,
+  UserMixin, GameMixin, PlayerMixin, HandMixin, CategoryMixin,
 ) {
   get gameId(): string {
     return this.$route.params.gameId;
   }
 
   get dataLoaded(): boolean {
-    return !!this.game && !!this.players && !!this.players.length;
+    return (
+      !!this.game
+      && !!this.players
+      && !!this.players.length
+      && !!this.allCategories);
   }
 
   get isHost(): boolean {
     return this.game?.hostId === this.user?.uid;
+  }
+
+  get isYourTurn(): boolean {
+    return this.game?.turn === this.user.uid;
+  }
+
+  get isPickingTags(): boolean {
+    if (!this.dataLoaded) return false;
+
+    return !!this.game?.tagOptions?.length && !this.game?.tagSelection;
+  }
+
+  get isPickingGif(): boolean {
+    if (!this.dataLoaded) return false;
+
+    return !!this.game?.tagSelection && !this.game.memeTemplate;
+  }
+
+  get playerTurn(): Player | undefined {
+    return this.players?.find((p) => p.uid === this.game?.turn);
+  }
+
+  get showHand(): boolean {
+    if (this.isPickingTags) return false;
+    if (this.isPickingGif && this.isHost) return false;
+
+    return true;
   }
 
   get showStartButton(): boolean {
@@ -61,10 +106,11 @@ export default class GameRoom extends Mixins(
       && this.players.length > 1);
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
     this.trackGame(this.gameId);
     this.trackPlayers(this.gameId);
     this.trackPlayerHand(this.gameId, this.user.uid);
+    await this.getCategories();
   }
 
   startGame(): void {
@@ -79,14 +125,30 @@ export default class GameRoom extends Mixins(
     gameService.dealToAllPlayers(this.gameId, playerIds);
   }
 
+  categorySelect(category: string): void {
+    gameService.update({ tagSelection: category }, this.gameId);
+  }
+
   @Watch('game')
-  gameChanged(newVal: Game, oldVal: Game | null): void {
+  async gameChanged(newVal: Game, oldVal: Game | null): Promise<void> {
     if (!oldVal) return;
 
     const justStarted = newVal.hasStarted && !oldVal.hasStarted;
 
     if (justStarted && this.isHost) {
       this.dealCards();
+    }
+  }
+
+  @Watch('isYourTurn')
+  turnChange(isYourTurn: boolean, wasYourTurn: boolean | null): void {
+    console.log('it just became your turn');
+    if (!this.dataLoaded) return;
+
+    if (isYourTurn && !wasYourTurn) {
+      const tagOptions = this.randomTagOptions();
+
+      gameService.update({ tagOptions }, this.gameId);
     }
   }
 }
@@ -118,5 +180,9 @@ export default class GameRoom extends Mixins(
 .hand {
   align-self: end;
   margin: 8% 15%;
+}
+
+.border-clear-top {
+  margin-top: 5%;
 }
 </style>
