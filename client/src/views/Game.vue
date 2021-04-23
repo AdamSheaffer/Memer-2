@@ -8,10 +8,15 @@
       <div class="game">
         <div class="game-container">
           <b-button v-if="showStartButton" @click="startGame">START</b-button>
-          <tag-options v-if="true" :options="game.tagOptions" :disabled="!isYourTurn" />
+          <category-select
+            class="border-clear-top pt-5"
+            v-if="isPickingTags"
+            @select="categorySelect"
+            :options="game.tagOptions"
+            :isPicking="isYourTurn"
+            :turnUsername="playerTurn && playerTurn.username"/>
           <div class="hand">
-            <player-hand :cards="hand" />
-            <action-header :game="game" :players="players" :userId="user.uid" />
+            <player-hand v-show="showHand" :cards="hand" />
           </div>
         </div>
       </div>
@@ -26,13 +31,14 @@ import PlayerChip from '@/components/PlayerChip.vue';
 import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
-import TagOptions from '@/components/TagOptions.vue';
+import CategorySelect from '@/components/CategorySelect.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
 import HandMixin from '@/mixins/HandMixin';
 import CategoryMixin from '@/mixins/CategoryMixin';
 import { Game } from '@/types/Game';
+import { Player } from '@/types/Player';
 import gameService from '@/services/game';
 
 @Component({
@@ -42,7 +48,7 @@ import gameService from '@/services/game';
     ActionHeader,
     PlayerHand,
     Players,
-    TagOptions,
+    CategorySelect,
   },
 })
 export default class GameRoom extends Mixins(
@@ -71,7 +77,24 @@ export default class GameRoom extends Mixins(
   get isPickingTags(): boolean {
     if (!this.dataLoaded) return false;
 
-    return !!this.game?.tagOptions && !this.game?.tagSelection;
+    return !!this.game?.tagOptions?.length && !this.game?.tagSelection;
+  }
+
+  get isPickingGif(): boolean {
+    if (!this.dataLoaded) return false;
+
+    return !!this.game?.tagSelection && !this.game.memeTemplate;
+  }
+
+  get playerTurn(): Player | undefined {
+    return this.players?.find((p) => p.uid === this.game?.turn);
+  }
+
+  get showHand(): boolean {
+    if (this.isPickingTags) return false;
+    if (this.isPickingGif && this.isHost) return false;
+
+    return true;
   }
 
   get showStartButton(): boolean {
@@ -100,6 +123,10 @@ export default class GameRoom extends Mixins(
     }
     const playerIds = this.players.map((p) => p.uid);
     gameService.dealToAllPlayers(this.gameId, playerIds);
+  }
+
+  categorySelect(category: string): void {
+    gameService.update({ tagSelection: category }, this.gameId);
   }
 
   @Watch('game')
@@ -153,5 +180,9 @@ export default class GameRoom extends Mixins(
 .hand {
   align-self: end;
   margin: 8% 15%;
+}
+
+.border-clear-top {
+  margin-top: 5%;
 }
 </style>

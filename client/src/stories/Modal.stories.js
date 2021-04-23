@@ -9,6 +9,10 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
+    dark: {
+      control: { type: 'boolean' },
+      defaultValue: false,
+    },
   },
 };
 

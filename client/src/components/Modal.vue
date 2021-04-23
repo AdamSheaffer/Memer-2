@@ -1,7 +1,7 @@
 <template>
   <b-modal :width="450" active :custom-class="blur ? 'blur': ''">
-    <div class="setup-wizard setup-wizard-outer">
-      <div class="setup-wizard-inner">
+    <div class="modal-window modal-window-outer" :class="{ dark: dark }">
+      <div class="modal-window-inner">
         <slot />
       </div>
     </div>
@@ -14,6 +14,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component
 export default class Modal extends Vue {
   @Prop({ required: false, default: false }) blur!: boolean
+
+  @Prop({ required: false, default: false }) dark!: boolean
 }
 </script>
 
@@ -21,19 +23,23 @@ export default class Modal extends Vue {
 @import '../styles/_variables';
 
 .blur {
-  @include background-blur;
+  @include background-blur(3px);
 }
 
-.setup-wizard {
+.modal-window {
   background: $white;
   border-radius: $tile-border-radius;
+
+  &.dark {
+    background: $purple-2;
+  }
 }
 
-.setup-wizard-outer {
+.modal-window-outer {
   padding: 1rem;
 }
 
-.setup-wizard-inner {
+.modal-window-inner {
   border: 1px solid $primary;
   border-radius: $tile-border-radius;
   padding: 2rem 1rem;
