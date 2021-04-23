@@ -4,6 +4,7 @@ import firebase, { db } from '@/firebase';
 import { Game } from '@/types/Game';
 import { User } from '@/types/User';
 import { Card } from '@/types/Card';
+import { Category } from '@/types/Category';
 
 const gameRef = (gameId: string) => db.doc(`games/${gameId}`);
 const playersRef = (gameId: string) => gameRef(gameId).collection('players');
@@ -67,10 +68,15 @@ const dealToAllPlayers = async (gameId: string, playerIds: string[]): Promise<vo
   });
 };
 
+const pickRandomTagOptions = (categories: Category[], num: number): string[] => shuffle(categories)
+  .map((c) => c.description)
+  .slice(0, num);
+
 export default {
   create,
   update,
   joinGame,
   startGame,
   dealToAllPlayers,
+  pickRandomTagOptions,
 };

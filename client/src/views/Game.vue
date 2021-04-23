@@ -8,6 +8,7 @@
       <div class="game">
         <div class="game-container">
           <b-button v-if="showStartButton" @click="startGame">START</b-button>
+          <tag-options v-if="true" :options="game.tagOptions" :disabled="!isYourTurn" />
           <div class="hand">
             <player-hand :cards="hand" />
             <action-header :game="game" :players="players" :userId="user.uid" />
@@ -25,31 +26,52 @@ import PlayerChip from '@/components/PlayerChip.vue';
 import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
+import TagOptions from '@/components/TagOptions.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
 import HandMixin from '@/mixins/HandMixin';
+import CategoryMixin from '@/mixins/CategoryMixin';
 import { Game } from '@/types/Game';
 import gameService from '@/services/game';
 
 @Component({
   components: {
-    GameroomBackground, PlayerChip, ActionHeader, PlayerHand, Players,
+    GameroomBackground,
+    PlayerChip,
+    ActionHeader,
+    PlayerHand,
+    Players,
+    TagOptions,
   },
 })
 export default class GameRoom extends Mixins(
-  UserMixin, GameMixin, PlayerMixin, HandMixin,
+  UserMixin, GameMixin, PlayerMixin, HandMixin, CategoryMixin,
 ) {
   get gameId(): string {
     return this.$route.params.gameId;
   }
 
   get dataLoaded(): boolean {
-    return !!this.game && !!this.players && !!this.players.length;
+    return (
+      !!this.game
+      && !!this.players
+      && !!this.players.length
+      && !!this.allCategories);
   }
 
   get isHost(): boolean {
     return this.game?.hostId === this.user?.uid;
+  }
+
+  get isYourTurn(): boolean {
+    return this.game?.turn === this.user.uid;
+  }
+
+  get isPickingTags(): boolean {
+    if (!this.dataLoaded) return false;
+
+    return !!this.game?.tagOptions && !this.game?.tagSelection;
   }
 
   get showStartButton(): boolean {
@@ -61,10 +83,11 @@ export default class GameRoom extends Mixins(
       && this.players.length > 1);
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
     this.trackGame(this.gameId);
     this.trackPlayers(this.gameId);
     this.trackPlayerHand(this.gameId, this.user.uid);
+    await this.getCategories();
   }
 
   startGame(): void {
@@ -80,13 +103,25 @@ export default class GameRoom extends Mixins(
   }
 
   @Watch('game')
-  gameChanged(newVal: Game, oldVal: Game | null): void {
+  async gameChanged(newVal: Game, oldVal: Game | null): Promise<void> {
     if (!oldVal) return;
 
     const justStarted = newVal.hasStarted && !oldVal.hasStarted;
 
     if (justStarted && this.isHost) {
       this.dealCards();
+    }
+  }
+
+  @Watch('isYourTurn')
+  turnChange(isYourTurn: boolean, wasYourTurn: boolean | null): void {
+    console.log('it just became your turn');
+    if (!this.dataLoaded) return;
+
+    if (isYourTurn && !wasYourTurn) {
+      const tagOptions = this.randomTagOptions();
+
+      gameService.update({ tagOptions }, this.gameId);
     }
   }
 }

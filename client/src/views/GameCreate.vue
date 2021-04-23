@@ -28,6 +28,8 @@ export default class GameCreate extends Mixins(UserMixin) {
       hasStarted: false,
       hostId: this.user.uid,
       hostPhotoURL: this.user.photoURL,
+      tagOptions: [],
+      tagSelection: null,
     };
 
     const gameId = await gameService.create(game);
