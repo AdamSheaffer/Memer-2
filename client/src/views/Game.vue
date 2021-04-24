@@ -17,6 +17,14 @@
             :gif-options="game.gifOptionURLs"
             :is-picking="isYourTurn"
             :turn-username="playerTurn && playerTurn.username"/>
+          <div v-if="isPickingGif && !isYourTurn" class="border-clear-top">
+            <category-preview :turnUsername="playerTurn.username" :category="game.tagSelection"/>
+          </div>
+          <div v-if="isSubmissionRound" class="border-clear-top">
+            <div class="is-flex is-justify-content-center mt-2">
+              <meme-card :imageURL="game.memeTemplate.photoURL" class="mt-3" />
+            </div>
+          </div>
           <div class="hand">
             <player-hand v-show="showHand" :cards="hand" />
           </div>
@@ -34,6 +42,8 @@ import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
 import TemplateBuilder from '@/components/TemplateBuilder.vue';
+import CategoryPreview from '@/components/CategoryPreview.vue';
+import MemeCard from '@/components/Meme.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
@@ -54,6 +64,8 @@ import firebase from '@/firebase';
     PlayerHand,
     Players,
     TemplateBuilder,
+    CategoryPreview,
+    MemeCard,
   },
 })
 export default class GameRoom extends Mixins(
@@ -89,6 +101,22 @@ export default class GameRoom extends Mixins(
     if (!this.dataLoaded) return false;
 
     return !!this.game?.tagSelection && !this.game.memeTemplate;
+  }
+
+  get isSubmissionRound(): boolean {
+    if (!this.dataLoaded) return false;
+
+    return !!this.game?.memeTemplate && !this.everyoneHasSubmitted;
+  }
+
+  get everyoneHasSubmitted(): boolean {
+    if (!this.players) return false;
+
+    return this.players?.every((p) => {
+      const isJudge = p.uid === this.playerTurn?.uid;
+      const hasSubmitted = !!p.memePlayed;
+      return isJudge || hasSubmitted;
+    });
   }
 
   get playerTurn(): Player | undefined {
@@ -200,7 +228,8 @@ export default class GameRoom extends Mixins(
 
 .hand {
   align-self: end;
-  margin: 8% 15%;
+  margin: 0 15% 8%;
+  align-self: center;
 }
 
 .border-clear-top {
