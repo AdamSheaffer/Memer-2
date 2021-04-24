@@ -8,13 +8,15 @@
       <div class="game">
         <div class="game-container">
           <b-button v-if="showStartButton" @click="startGame">START</b-button>
-          <category-select
+          <template-builder
             class="border-clear-top pt-5"
-            v-if="isPickingTags"
-            @select="categorySelect"
-            :options="game.tagOptions"
-            :isPicking="isYourTurn"
-            :turnUsername="playerTurn && playerTurn.username"/>
+            v-if="isPickingCategory || (isPickingGif && isYourTurn)"
+            @category-select="categorySelect"
+            @gif-select="gifSelect"
+            :category-options="game.tagOptions"
+            :gif-options="game.gifOptionURLs"
+            :is-picking="isYourTurn"
+            :turn-username="playerTurn && playerTurn.username"/>
           <div class="hand">
             <player-hand v-show="showHand" :cards="hand" />
           </div>
@@ -31,7 +33,7 @@ import PlayerChip from '@/components/PlayerChip.vue';
 import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
-import CategorySelect from '@/components/CategorySelect.vue';
+import TemplateBuilder from '@/components/TemplateBuilder.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
@@ -39,7 +41,10 @@ import HandMixin from '@/mixins/HandMixin';
 import CategoryMixin from '@/mixins/CategoryMixin';
 import { Game } from '@/types/Game';
 import { Player } from '@/types/Player';
+import { Meme } from '@/types/Meme';
 import gameService from '@/services/game';
+import gifService from '@/services/gif';
+import firebase from '@/firebase';
 
 @Component({
   components: {
@@ -48,7 +53,7 @@ import gameService from '@/services/game';
     ActionHeader,
     PlayerHand,
     Players,
-    CategorySelect,
+    TemplateBuilder,
   },
 })
 export default class GameRoom extends Mixins(
@@ -74,7 +79,7 @@ export default class GameRoom extends Mixins(
     return this.game?.turn === this.user.uid;
   }
 
-  get isPickingTags(): boolean {
+  get isPickingCategory(): boolean {
     if (!this.dataLoaded) return false;
 
     return !!this.game?.tagOptions?.length && !this.game?.tagSelection;
@@ -91,7 +96,7 @@ export default class GameRoom extends Mixins(
   }
 
   get showHand(): boolean {
-    if (this.isPickingTags) return false;
+    if (this.isPickingCategory) return false;
     if (this.isPickingGif && this.isHost) return false;
 
     return true;
@@ -125,8 +130,25 @@ export default class GameRoom extends Mixins(
     gameService.dealToAllPlayers(this.gameId, playerIds);
   }
 
-  categorySelect(category: string): void {
-    gameService.update({ tagSelection: category }, this.gameId);
+  async categorySelect(category: string): Promise<void> {
+    await gameService.update({ tagSelection: category }, this.gameId);
+
+    if (this.isYourTurn) {
+      const urls = await gifService.getRandomImages(category);
+      await gameService.update({ gifOptionURLs: urls }, this.gameId);
+    }
+  }
+
+  async gifSelect(url: string): Promise<void> {
+    const memeTemplate: Meme = {
+      photoURL: url,
+      top: null,
+      bottom: null,
+    };
+    await gameService.update({
+      memeTemplate,
+      memeTemplateTimestamp: firebase.firestore.Timestamp.now(),
+    }, this.gameId);
   }
 
   @Watch('game')
@@ -142,7 +164,6 @@ export default class GameRoom extends Mixins(
 
   @Watch('isYourTurn')
   turnChange(isYourTurn: boolean, wasYourTurn: boolean | null): void {
-    console.log('it just became your turn');
     if (!this.dataLoaded) return;
 
     if (isYourTurn && !wasYourTurn) {
