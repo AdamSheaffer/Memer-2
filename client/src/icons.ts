@@ -5,6 +5,8 @@ import {
   faCocktail,
   faDizzy,
   faTimes,
+  faArrowCircleLeft,
+  faArrowCircleRight,
 } from '@fortawesome/free-solid-svg-icons';
 
 export default [
@@ -14,4 +16,6 @@ export default [
   faCocktail,
   faDizzy,
   faTimes,
+  faArrowCircleLeft,
+  faArrowCircleRight,
 ];
