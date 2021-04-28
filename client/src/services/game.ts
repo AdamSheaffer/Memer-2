@@ -5,6 +5,7 @@ import { Game } from '@/types/Game';
 import { User } from '@/types/User';
 import { Card } from '@/types/Card';
 import { Category } from '@/types/Category';
+import { PlayerChanges } from '@/types/Player';
 
 const gameRef = (gameId: string) => db.doc(`games/${gameId}`);
 const playersRef = (gameId: string) => gameRef(gameId).collection('players');
@@ -72,6 +73,11 @@ const pickRandomTagOptions = (categories: Category[], num: number): string[] => 
   .map((c) => c.description)
   .slice(0, num);
 
+const updatePlayer = (gameId: string, playerId: string, changes: PlayerChanges): Promise<void> => {
+  const ref = playerRef(gameId, playerId);
+  return ref.update(changes);
+};
+
 export default {
   create,
   update,
@@ -79,4 +85,5 @@ export default {
   startGame,
   dealToAllPlayers,
   pickRandomTagOptions,
+  updatePlayer,
 };

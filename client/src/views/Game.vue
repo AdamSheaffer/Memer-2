@@ -26,7 +26,14 @@
             </div>
           </div>
           <div class="hand">
-            <player-hand v-show="showHand" :cards="hand" />
+            <h2 class="is-size-4 mb-2 has-text-success has-text-centered">
+              {{ actionHeader }}
+            </h2>
+            <player-hand
+              v-show="showHand"
+              @select="playCaption"
+              :cards="hand"
+              :clickable="!playerHasSubmitted && !isYourTurn" />
           </div>
         </div>
       </div>
@@ -38,7 +45,6 @@
 import { Mixins, Component, Watch } from 'vue-property-decorator';
 import GameroomBackground from '@/components/GameroomBackground.vue';
 import PlayerChip from '@/components/PlayerChip.vue';
-import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
 import TemplateBuilder from '@/components/TemplateBuilder.vue';
@@ -52,6 +58,7 @@ import CategoryMixin from '@/mixins/CategoryMixin';
 import { Game } from '@/types/Game';
 import { Player } from '@/types/Player';
 import { Meme } from '@/types/Meme';
+import { Card } from '@/types/Card';
 import gameService from '@/services/game';
 import gifService from '@/services/gif';
 import firebase from '@/firebase';
@@ -60,7 +67,6 @@ import firebase from '@/firebase';
   components: {
     GameroomBackground,
     PlayerChip,
-    ActionHeader,
     PlayerHand,
     Players,
     TemplateBuilder,
@@ -123,6 +129,10 @@ export default class GameRoom extends Mixins(
     return this.players?.find((p) => p.uid === this.game?.turn);
   }
 
+  get playerHasSubmitted(): boolean {
+    return this.isSubmissionRound && !!this.player.memePlayed;
+  }
+
   get showHand(): boolean {
     if (this.isPickingCategory) return false;
     if (this.isPickingGif && this.isHost) return false;
@@ -137,6 +147,31 @@ export default class GameRoom extends Mixins(
       && !this.game.hasStarted
       && !!this.players
       && this.players.length > 1);
+  }
+
+  get player(): Player {
+    const player = this.players?.find((p) => p.uid === this.user.uid);
+    if (!player) throw Error('Current user not found in players list');
+
+    return player;
+  }
+
+  get actionHeader(): string | null {
+    const { isSubmissionRound, isYourTurn } = this;
+
+    if (isSubmissionRound && isYourTurn) {
+      return 'PLAYERS ARE SUBMITTING';
+    }
+
+    if (isSubmissionRound && !isYourTurn) {
+      if (this.player.memePlayed) {
+        return 'WAITING ON OTHER PLAYERS';
+      }
+
+      return 'PICK A CAPTION';
+    }
+
+    return null;
   }
 
   async mounted(): Promise<void> {
@@ -177,6 +212,16 @@ export default class GameRoom extends Mixins(
       memeTemplate,
       memeTemplateTimestamp: firebase.firestore.Timestamp.now(),
     }, this.gameId);
+  }
+
+  playCaption(card: Card): Promise<void> {
+    const memePlayed: Meme = {
+      ...this.game?.memeTemplate,
+      top: card.top,
+      bottom: card.bottom,
+    };
+
+    return gameService.updatePlayer(this.gameId, this.user.uid, { memePlayed });
   }
 
   @Watch('game')
