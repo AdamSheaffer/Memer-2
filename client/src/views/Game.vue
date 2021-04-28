@@ -214,14 +214,17 @@ export default class GameRoom extends Mixins(
     }, this.gameId);
   }
 
-  playCaption(card: Card): Promise<void> {
+  async playCaption(card: Card): Promise<void> {
+    if (!card.id) throw Error('Attempted to play a card with no ID');
+
     const memePlayed: Meme = {
       ...this.game?.memeTemplate,
       top: card.top,
       bottom: card.bottom,
     };
 
-    return gameService.updatePlayer(this.gameId, this.user.uid, { memePlayed });
+    await gameService.updatePlayer(this.gameId, this.user.uid, { memePlayed });
+    return gameService.removeCard(this.gameId, this.user.uid, card.id);
   }
 
   @Watch('game')

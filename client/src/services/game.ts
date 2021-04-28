@@ -78,6 +78,11 @@ const updatePlayer = (gameId: string, playerId: string, changes: PlayerChanges):
   return ref.update(changes);
 };
 
+const removeCard = (gameId: string, playerId: string, cardId: string): Promise<void> => {
+  const cardRef = playerRef(gameId, playerId).collection('cards').doc(cardId);
+  return cardRef.delete();
+};
+
 export default {
   create,
   update,
@@ -86,4 +91,5 @@ export default {
   dealToAllPlayers,
   pickRandomTagOptions,
   updatePlayer,
+  removeCard,
 };

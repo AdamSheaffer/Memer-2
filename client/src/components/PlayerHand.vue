@@ -21,7 +21,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Card } from '@/types/Card';
 
 @Component
-export default class PlayerChip extends Vue {
+export default class PlayerHand extends Vue {
   @Prop({ required: true }) cards!: Card[]
 
   @Prop({ required: true }) clickable!: boolean
