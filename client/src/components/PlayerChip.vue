@@ -1,5 +1,5 @@
 <template>
-  <div class="pill" :class="{ active }">
+  <div class="pill" :class="{ active, large, mirrored }">
     <b-image
       :src="player.photoURL || require('../assets/this_is_fine.jpeg')"
       :src-fallback="require('../assets/this_is_fine.jpeg')"
@@ -15,14 +15,21 @@
     <div class="pill-content mt-2 ml-2">
       <p class="is-size-6">{{ player.username }}</p>
       <p class="is-size-7">{{ player.score || 0 }}/{{ pointsToWin }}</p>
-      <b-icon
-        v-for="i in pointsToWin"
-        :key="i"
-        :type="i <= player.score ? 'is-danger' : 'is-white'"
-        icon="heart"
-        size="is-small" />
+      <div :class="{'hearts-wrapper' : mirrored}">
+        <b-icon
+          v-for="i in pointsToWin"
+          :key="i"
+          :type="i <= player.score ? 'is-danger' : 'is-white'"
+          icon="heart"
+          size="is-small" />
+      </div>
     </div>
+    <div class="badge" :class="{ ready }">
+      <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check-circle" class="svg-inline--fa fa-check-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path></svg>
+    </div>
+
   </div>
+  
 </template>
 
 <script lang="ts">
@@ -36,6 +43,12 @@ export default class PlayerChip extends Vue {
   @Prop({ required: true }) pointsToWin!: number
 
   @Prop({ default: false, required: false }) active!: boolean
+
+  @Prop({ default: false, required: false }) large!: boolean
+
+  @Prop({ default: false, required: false }) ready!: boolean
+
+  @Prop({ default: false, required: false }) mirrored!: boolean
 }
 </script>
 
@@ -46,7 +59,7 @@ $pill-radius: 5rem;
 $transition: border .15s ease-out;
 
 .pill {
-  width: 100%;
+  width: 110%;
   max-width: 15rem;
   background: $primary;
   display: grid;
@@ -55,7 +68,61 @@ $transition: border .15s ease-out;
   transition: $transition;
   display: grid;
   grid-template-columns: $pill-radius 1fr;
+  position:relative
 }
+
+.large {
+  transform: scale(1.2);
+}
+
+.mirrored {
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  -ms-filter: fliph; /*IE*/
+  filter: fliph; /*IE*/
+    .badge {
+      -moz-transform: scaleX(-1) scale(1.5);
+      -webkit-transform: scaleX(-1) scale(1.5);
+      -o-transform: scaleX(-1) scale(1.5);
+      transform: scaleX(-1) scale(1.5);
+      -ms-filter: fliph; /*IE*/
+      filter: fliph; /*IE*/
+    }
+
+    .pill-content {
+      -moz-transform: scaleX(-1);
+      -webkit-transform: scaleX(-1);
+      -o-transform: scaleX(-1);
+      transform: scaleX(-1);
+      -ms-filter: fliph; /*IE*/
+      filter: fliph; /*IE*/
+
+      p  {
+        text-align: end;
+      }
+
+      .hearts-wrapper {
+        float: right;
+      }
+    }
+}
+
+.badge {
+  
+  right: 7px;
+  top: 6px;
+  transform: scale(1.5);
+  color: #39FF14;
+  display: none;
+  &.ready {
+    display: block;
+    position: absolute;
+  }
+}
+
+
 
 .avatar {
   width: $pill-radius;

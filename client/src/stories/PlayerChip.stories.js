@@ -24,6 +24,18 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
+    large: {
+      control: { type: 'boolean'},
+      defaultValue: false
+    },
+    ready: {
+      control: { type: 'boolean'},
+      defaultValue: false
+    },
+    mirrored: {
+      control: { type: 'boolean'},
+      defaultValue: false
+    }
   },
 };
 
@@ -38,5 +50,5 @@ export const Inactive = Template.bind({});
 export const Active = Template.bind({});
 Active.args = {
   ...Inactive.args,
-  active: true,
+  active: true
 };
