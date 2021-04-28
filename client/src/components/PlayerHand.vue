@@ -1,11 +1,16 @@
 <template>
   <div class="player-hand">
-    <div v-for="card in cards" :key="card.id" class="player-card">
+    <div
+      v-for="card in cards"
+      :key="card.id"
+      @click="select(card)"
+      class="player-card"
+      :class="{ clickable: clickable }">
       <section class="text top">
-        <p>{{ card.top }}</p>
+        <p>{{ card.top && card.top.toUpperCase() }}</p>
       </section>
       <section class="text bottom">
-        <p>{{ card.bottom }}</p>
+        <p>{{ card.bottom && card.bottom.toUpperCase() }}</p>
       </section>
     </div>
   </div>
@@ -18,11 +23,20 @@ import { Card } from '@/types/Card';
 @Component
 export default class PlayerChip extends Vue {
   @Prop({ required: true }) cards!: Card[]
+
+  @Prop({ required: true }) clickable!: boolean
+
+  select(card: Card): void {
+    if (this.clickable) {
+      this.$emit('select', card);
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../styles/_variables';
+
 .player-hand {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -36,10 +50,17 @@ export default class PlayerChip extends Vue {
   font-size: .8rem;
   display: grid;
   align-content: space-between;
-  height: 200px;
+  height: 175px;
 }
 .text {
   text-align: center;
   padding: 1rem;
+}
+
+.clickable {
+  cursor: pointer;
+  &:hover {
+    border-color: $success;
+  }
 }
 </style>

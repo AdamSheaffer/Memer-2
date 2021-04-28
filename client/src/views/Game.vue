@@ -17,8 +17,23 @@
             :gif-options="game.gifOptionURLs"
             :is-picking="isYourTurn"
             :turn-username="playerTurn && playerTurn.username"/>
+          <div v-if="isPickingGif && !isYourTurn" class="border-clear-top">
+            <category-preview :turnUsername="playerTurn.username" :category="game.tagSelection"/>
+          </div>
+          <div v-if="isSubmissionRound" class="border-clear-top">
+            <div class="is-flex is-justify-content-center mt-2">
+              <meme-card :imageURL="game.memeTemplate.photoURL" class="mt-3" />
+            </div>
+          </div>
           <div class="hand">
-            <player-hand v-show="showHand" :cards="hand" />
+            <h2 class="is-size-4 mb-2 has-text-success has-text-centered">
+              {{ actionHeader }}
+            </h2>
+            <player-hand
+              v-show="showHand"
+              @select="playCaption"
+              :cards="hand"
+              :clickable="!playerHasSubmitted && !isYourTurn" />
           </div>
         </div>
       </div>
@@ -30,10 +45,11 @@
 import { Mixins, Component, Watch } from 'vue-property-decorator';
 import GameroomBackground from '@/components/GameroomBackground.vue';
 import PlayerChip from '@/components/PlayerChip.vue';
-import ActionHeader from '@/components/ActionHeader.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
 import TemplateBuilder from '@/components/TemplateBuilder.vue';
+import CategoryPreview from '@/components/CategoryPreview.vue';
+import MemeCard from '@/components/Meme.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
@@ -42,6 +58,7 @@ import CategoryMixin from '@/mixins/CategoryMixin';
 import { Game } from '@/types/Game';
 import { Player } from '@/types/Player';
 import { Meme } from '@/types/Meme';
+import { Card } from '@/types/Card';
 import gameService from '@/services/game';
 import gifService from '@/services/gif';
 import firebase from '@/firebase';
@@ -50,10 +67,11 @@ import firebase from '@/firebase';
   components: {
     GameroomBackground,
     PlayerChip,
-    ActionHeader,
     PlayerHand,
     Players,
     TemplateBuilder,
+    CategoryPreview,
+    MemeCard,
   },
 })
 export default class GameRoom extends Mixins(
@@ -91,8 +109,28 @@ export default class GameRoom extends Mixins(
     return !!this.game?.tagSelection && !this.game.memeTemplate;
   }
 
+  get isSubmissionRound(): boolean {
+    if (!this.dataLoaded) return false;
+
+    return !!this.game?.memeTemplate && !this.everyoneHasSubmitted;
+  }
+
+  get everyoneHasSubmitted(): boolean {
+    if (!this.players) return false;
+
+    return this.players?.every((p) => {
+      const isJudge = p.uid === this.playerTurn?.uid;
+      const hasSubmitted = !!p.memePlayed;
+      return isJudge || hasSubmitted;
+    });
+  }
+
   get playerTurn(): Player | undefined {
     return this.players?.find((p) => p.uid === this.game?.turn);
+  }
+
+  get playerHasSubmitted(): boolean {
+    return this.isSubmissionRound && !!this.player.memePlayed;
   }
 
   get showHand(): boolean {
@@ -109,6 +147,31 @@ export default class GameRoom extends Mixins(
       && !this.game.hasStarted
       && !!this.players
       && this.players.length > 1);
+  }
+
+  get player(): Player {
+    const player = this.players?.find((p) => p.uid === this.user.uid);
+    if (!player) throw Error('Current user not found in players list');
+
+    return player;
+  }
+
+  get actionHeader(): string | null {
+    const { isSubmissionRound, isYourTurn } = this;
+
+    if (isSubmissionRound && isYourTurn) {
+      return 'PLAYERS ARE SUBMITTING';
+    }
+
+    if (isSubmissionRound && !isYourTurn) {
+      if (this.player.memePlayed) {
+        return 'WAITING ON OTHER PLAYERS';
+      }
+
+      return 'PICK A CAPTION';
+    }
+
+    return null;
   }
 
   async mounted(): Promise<void> {
@@ -149,6 +212,16 @@ export default class GameRoom extends Mixins(
       memeTemplate,
       memeTemplateTimestamp: firebase.firestore.Timestamp.now(),
     }, this.gameId);
+  }
+
+  playCaption(card: Card): Promise<void> {
+    const memePlayed: Meme = {
+      ...this.game?.memeTemplate,
+      top: card.top,
+      bottom: card.bottom,
+    };
+
+    return gameService.updatePlayer(this.gameId, this.user.uid, { memePlayed });
   }
 
   @Watch('game')
@@ -200,7 +273,8 @@ export default class GameRoom extends Mixins(
 
 .hand {
   align-self: end;
-  margin: 8% 15%;
+  margin: 0 15% 8%;
+  align-self: center;
 }
 
 .border-clear-top {
