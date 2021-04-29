@@ -8,7 +8,7 @@ export interface Player {
   photoURL: string
   isActive: boolean
   score: number
-  memePlayed?: Meme
+  memePlayed?: Meme | null
   imageUrlPlayed?: string
   roles: Roles
   removed?: boolean
@@ -17,6 +17,6 @@ export interface Player {
 export interface PlayerChanges {
   isActive?: boolean
   score?: number
-  memePlayed?: Meme
+  memePlayed?: Meme | null
   removed?: boolean
 }

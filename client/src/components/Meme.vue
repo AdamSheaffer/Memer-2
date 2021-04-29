@@ -1,8 +1,12 @@
 <template>
   <div class="meme">
-    <h1 class="text">{{ top }}</h1>
+    <div class="text">
+      <span class="is-size-5">{{ top }}</span>
+    </div>
     <img :src="imageURL" class="image meme-image" />
-    <h1 class="text">{{ bottom }}</h1>
+    <div class="text">
+      <span class="is-size-5">{{ bottom }}</span>
+    </div>
   </div>
 </template>
 
@@ -33,12 +37,19 @@ export default class Meme extends Vue {
 }
 
 .meme-image {
-  padding: 1rem;
+  padding: 0 1rem;
   height: 200px;
 }
 
 .text {
-  text-align: center;
   height: 3rem;
+  text-align: center;
+  line-height: 3rem;
+  span {
+    display: inline-block;
+    text-align: center;
+    line-height: normal;
+  }
 }
+
 </style>

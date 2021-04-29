@@ -1,43 +1,68 @@
 <template>
   <div id="game-root">
-    <gameroom-background />
-    <div v-if="dataLoaded">
-      <players :game="game" :players="players" :current-player-id="user.uid" />
-    </div>
-    <div v-if="dataLoaded" class="game-table">
-      <div class="game">
-        <div class="game-container">
-          <b-button v-if="showStartButton" @click="startGame">START</b-button>
-          <template-builder
-            class="border-clear-top pt-5"
-            v-if="isPickingCategory || (isPickingGif && isYourTurn)"
-            @category-select="categorySelect"
-            @gif-select="gifSelect"
-            :category-options="game.tagOptions"
-            :gif-options="game.gifOptionURLs"
-            :is-picking="isYourTurn"
-            :turn-username="playerTurn && playerTurn.username"/>
-          <div v-if="isPickingGif && !isYourTurn" class="border-clear-top">
-            <category-preview :turnUsername="playerTurn.username" :category="game.tagSelection"/>
-          </div>
-          <div v-if="isSubmissionRound" class="border-clear-top">
-            <div class="is-flex is-justify-content-center mt-2">
-              <meme-card :imageURL="game.memeTemplate.photoURL" class="mt-3" />
+    <gameroom-background>
+      <b-button v-if="showStartButton" @click="startGame">START</b-button>
+      <div v-if="dataLoaded">
+        <players :game="game" :players="players" :current-player-id="user.uid" />
+      </div>
+      <div v-if="dataLoaded" class="game-table">
+        <div class="game">
+          <div class="game-container">
+            <template-builder
+              class="border-clear-top pt-5"
+              v-if="isPickingCategory || (isPickingGif && isYourTurn)"
+              @category-select="categorySelect"
+              @gif-select="gifSelect"
+              :category-options="game.tagOptions"
+              :gif-options="game.gifOptionURLs"
+              :is-picking="isYourTurn"
+              :turn-username="playerTurn && playerTurn.username"/>
+            <div v-if="isPickingGif && !isYourTurn" class="border-clear-top">
+              <category-preview :turnUsername="playerTurn.username" :category="game.tagSelection"/>
             </div>
-          </div>
-          <div class="hand">
-            <h2 class="is-size-4 mb-2 has-text-success has-text-centered">
-              {{ actionHeader }}
-            </h2>
-            <player-hand
-              v-show="showHand"
-              @select="playCaption"
-              :cards="hand"
-              :clickable="!playerHasSubmitted && !isYourTurn" />
+            <div v-if="isSubmissionRound" class="border-clear-top">
+              <div class="is-flex is-justify-content-center mt-2">
+                <meme-card :imageURL="game.memeTemplate.photoURL" class="mt-3" />
+              </div>
+            </div>
+            <div v-if="isPickingWinner" class="border-clear-top pt-3 mb-5">
+              <voting-round
+                :isJudge="isYourTurn"
+                :submissions="playerSubmissions"
+                :photoURL="game.memeTemplate.photoURL"
+                @select="pickWinner" />
+            </div>
+            <div class="hand">
+              <h2 class="is-size-4 mb-2 has-text-success has-text-centered">
+                {{ actionHeader }}
+              </h2>
+              <player-hand
+                v-show="showHand"
+                @select="playCaption"
+                :cards="hand"
+                :clickable="!playerHasSubmitted && !isYourTurn" />
+            </div>
+            <submission-slideshow
+              v-if="showingSlideshow"
+              :submissions="playerSubmissions"
+              @finished="showingSlideshow = false"/>
+            <div v-if="showingWinningMeme">
+              <modal :dark="true">
+                <h1 class="is-size-3 has-text-white has-text-centered">
+                  <span class="has-text-warning">{{ roundWinner.username.toUpperCase() }}</span>
+                  WINS THE ROUND
+                </h1>
+                <meme-card
+                  :top="game.winningMeme.top && game.winningMeme.top.toUpperCase()"
+                  :bottom="game.winningMeme.bottom && game.winningMeme.bottom.toUpperCase()"
+                  :imageURL="game.winningMeme.photoURL"
+                />
+              </modal>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </gameroom-background>
   </div>
 </template>
 
@@ -50,6 +75,9 @@ import Players from '@/components/Players.vue';
 import TemplateBuilder from '@/components/TemplateBuilder.vue';
 import CategoryPreview from '@/components/CategoryPreview.vue';
 import MemeCard from '@/components/Meme.vue';
+import SubmissionSlideshow from '@/components/SubmissionSlideshow.vue';
+import VotingRound from '@/components/VotingRound.vue';
+import Modal from '@/components/Modal.vue';
 import UserMixin from '@/mixins/UserMixin';
 import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
@@ -72,6 +100,9 @@ import firebase from '@/firebase';
     TemplateBuilder,
     CategoryPreview,
     MemeCard,
+    SubmissionSlideshow,
+    VotingRound,
+    Modal,
   },
 })
 export default class GameRoom extends Mixins(
@@ -125,17 +156,57 @@ export default class GameRoom extends Mixins(
     });
   }
 
+  get playerSubmissions(): Meme[] {
+    if (!this.dataLoaded) return [];
+
+    const judgeId = this.game?.turn;
+    const subs = this.players?.filter((player) => player.uid !== judgeId)
+      .map((player) => {
+        if (!player.memePlayed) throw Error(`Attempted to get submission for player ${player.uid} but none was given`);
+        return {
+          top: player.memePlayed.top || '',
+          bottom: player.memePlayed.bottom || '',
+          photoURL: player.memePlayed.photoURL,
+        };
+      })
+      .sort((a, b) => (a.bottom < b.bottom ? -1 : 1));
+
+    return subs || [];
+  }
+
   get playerTurn(): Player | undefined {
     return this.players?.find((p) => p.uid === this.game?.turn);
+  }
+
+  get nextPlayerTurn(): Player | null {
+    if (!this.players) return null;
+
+    const playerIndex = this.players.findIndex((p) => p.uid === this.game?.turn);
+    const nextIndex = playerIndex === this.players.length - 1 ? 0 : playerIndex + 1;
+    return this.players[nextIndex];
   }
 
   get playerHasSubmitted(): boolean {
     return this.isSubmissionRound && !!this.player.memePlayed;
   }
 
+  get isPickingWinner(): boolean {
+    return this.everyoneHasSubmitted && !this.showingSlideshow && !this.game?.winningMeme;
+  }
+
+  get roundWinner(): Player | null {
+    if (!this.game || !this.game.roundWinner) {
+      return null;
+    }
+    const winner = this.players?.find((p) => p.uid === this.game?.roundWinner);
+
+    return winner || null;
+  }
+
   get showHand(): boolean {
     if (this.isPickingCategory) return false;
     if (this.isPickingGif && this.isHost) return false;
+    if (this.everyoneHasSubmitted) return false;
 
     return true;
   }
@@ -171,8 +242,19 @@ export default class GameRoom extends Mixins(
       return 'PICK A CAPTION';
     }
 
+    if (this.isPickingWinner && this.playerTurn) {
+      if (this.isYourTurn) {
+        return 'CREATE YOUR FAVORITE MEME';
+      }
+      return `${this.playerTurn.username.toUpperCase()} IS PICKING A MEME`;
+    }
+
     return null;
   }
+
+  showingSlideshow = false;
+
+  showingWinningMeme = false;
 
   async mounted(): Promise<void> {
     this.trackGame(this.gameId);
@@ -227,6 +309,55 @@ export default class GameRoom extends Mixins(
     return gameService.removeCard(this.gameId, this.user.uid, card.id);
   }
 
+  async pickWinner(card: Card): Promise<void> {
+    const roundWinner = this.players?.find((p) => {
+      const submittedTop = p.memePlayed?.top?.toUpperCase() || '';
+      const submittedBottom = p.memePlayed?.bottom?.toUpperCase() || '';
+
+      return (
+        submittedTop === card.top.toUpperCase()
+        && submittedBottom === card.bottom.toUpperCase());
+    });
+
+    const winningMeme: Meme = {
+      top: card.top || null,
+      bottom: card.bottom || null,
+      photoURL: this.game?.memeTemplate?.photoURL,
+    };
+
+    if (!roundWinner) throw Error('Could not find winning player');
+
+    await gameService.update({
+      winningMeme,
+      roundWinner: roundWinner.uid,
+    }, this.gameId);
+
+    await gameService.updatePlayer(this.gameId, roundWinner.uid, {
+      score: (roundWinner.score || 0) + 1,
+    });
+  }
+
+  resetRound(): Promise<void[]> {
+    const nextTurn = this.nextPlayerTurn?.uid;
+    const changes: Game = {
+      turn: nextTurn,
+      roundWinner: null,
+      winningMeme: null,
+      tagOptions: [],
+      tagSelection: null,
+      gifOptionURLs: [],
+      memeTemplate: null,
+      memeTemplateTimestamp: null,
+    };
+    const gameRequest = gameService.update(changes, this.gameId);
+
+    const playerRequests = this.players?.map((p) => gameService.updatePlayer(this.gameId, p.uid, {
+      memePlayed: null,
+    })) || [];
+
+    return Promise.all([gameRequest, ...playerRequests]);
+  }
+
   @Watch('game')
   async gameChanged(newVal: Game, oldVal: Game | null): Promise<void> {
     if (!oldVal) return;
@@ -235,6 +366,16 @@ export default class GameRoom extends Mixins(
 
     if (justStarted && this.isHost) {
       this.dealCards();
+    }
+
+    const hasRoundWinner = newVal.roundWinner && !oldVal.roundWinner;
+
+    if (hasRoundWinner) {
+      this.showingWinningMeme = true;
+      setTimeout(() => {
+        this.showingWinningMeme = false;
+        this.resetRound();
+      }, 7000);
     }
   }
 
@@ -246,6 +387,13 @@ export default class GameRoom extends Mixins(
       const tagOptions = this.randomTagOptions();
 
       gameService.update({ tagOptions }, this.gameId);
+    }
+  }
+
+  @Watch('everyoneHasSubmitted')
+  showSlideshow(newVal: boolean, oldVal: boolean): void {
+    if (newVal === true && !oldVal) {
+      this.showingSlideshow = true;
     }
   }
 }
@@ -281,6 +429,6 @@ export default class GameRoom extends Mixins(
 }
 
 .border-clear-top {
-  margin-top: 5%;
+  margin-top: 7.5%;
 }
 </style>
