@@ -148,7 +148,7 @@ $transition: border .15s ease-out;
   right: 2px;
   top: 0px;
   transform: scale(1.5);
-  color: #39FF14;
+  color: #1dbb9c;
   display: none;
   
   &.ready {
