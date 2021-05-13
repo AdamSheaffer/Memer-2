@@ -46,17 +46,23 @@
               v-if="showingSlideshow"
               :submissions="playerSubmissions"
               @finished="showingSlideshow = false"/>
-            <div v-if="showingWinningMeme">
+            <div v-if="game.winningMeme">
               <modal :dark="true">
-                <h1 class="is-size-3 has-text-white has-text-centered">
-                  <span class="has-text-warning">{{ roundWinner.username.toUpperCase() }}</span>
-                  WINS THE ROUND
-                </h1>
-                <meme-card
-                  :top="game.winningMeme.top && game.winningMeme.top.toUpperCase()"
-                  :bottom="game.winningMeme.bottom && game.winningMeme.bottom.toUpperCase()"
-                  :imageURL="game.winningMeme.photoURL"
-                />
+                <div>
+                  <h2 class="has-text-white has-text-centered is-size-3">
+                    {{ game.winningMeme.top && game.winningMeme.top.toUpperCase() }}
+                  </h2>
+                  <b-image :src="game.winningMeme.photoURL"/>
+                  <h2 class="has-text-white has-text-centered is-size-3">
+                    {{ game.winningMeme.bottom && game.winningMeme.bottom.toUpperCase() }}
+                  </h2>
+                  <h5 class="is-size-6 has-text-success has-text-centered mt-1">
+                    <span class="has-text-warning">
+                      {{ roundWinner && roundWinner.username.toUpperCase() }}
+                    </span>
+                    WINS THE ROUND
+                  </h5>
+                </div>
               </modal>
             </div>
           </div>
@@ -157,7 +163,7 @@ export default class GameRoom extends Mixins(
   }
 
   get playerSubmissions(): Meme[] {
-    if (!this.dataLoaded) return [];
+    if (!this.dataLoaded || !this.everyoneHasSubmitted) return [];
 
     const judgeId = this.game?.turn;
     const subs = this.players?.filter((player) => player.uid !== judgeId)
@@ -205,7 +211,7 @@ export default class GameRoom extends Mixins(
 
   get showHand(): boolean {
     if (this.isPickingCategory) return false;
-    if (this.isPickingGif && this.isHost) return false;
+    if (this.isPickingGif && this.isYourTurn) return false;
     if (this.everyoneHasSubmitted) return false;
 
     return true;
@@ -264,7 +270,12 @@ export default class GameRoom extends Mixins(
   }
 
   startGame(): void {
-    gameService.startGame(this.gameId, this.user.uid);
+    const tagOptions = this.randomTagOptions();
+    gameService.update({
+      tagOptions,
+      turn: this.user.uid,
+      hasStarted: true,
+    }, this.gameId);
   }
 
   dealCards(): void {
@@ -337,25 +348,14 @@ export default class GameRoom extends Mixins(
     });
   }
 
-  resetRound(): Promise<void[]> {
-    const nextTurn = this.nextPlayerTurn?.uid;
-    const changes: Game = {
-      turn: nextTurn,
-      roundWinner: null,
-      winningMeme: null,
-      tagOptions: [],
-      tagSelection: null,
-      gifOptionURLs: [],
-      memeTemplate: null,
-      memeTemplateTimestamp: null,
-    };
-    const gameRequest = gameService.update(changes, this.gameId);
-
-    const playerRequests = this.players?.map((p) => gameService.updatePlayer(this.gameId, p.uid, {
-      memePlayed: null,
-    })) || [];
-
-    return Promise.all([gameRequest, ...playerRequests]);
+  async resetRound(): Promise<void> {
+    if (!this.nextPlayerTurn) {
+      throw Error('Cannot determine next player');
+    }
+    const nextTurn = this.nextPlayerTurn.uid;
+    const tagOptions = this.randomTagOptions();
+    const players = this.players || [];
+    gameService.resetRound(this.gameId, nextTurn, tagOptions, players);
   }
 
   @Watch('game')
@@ -370,23 +370,10 @@ export default class GameRoom extends Mixins(
 
     const hasRoundWinner = newVal.roundWinner && !oldVal.roundWinner;
 
-    if (hasRoundWinner) {
-      this.showingWinningMeme = true;
+    if (hasRoundWinner && this.nextPlayerTurn === this.player) {
       setTimeout(() => {
-        this.showingWinningMeme = false;
         this.resetRound();
       }, 7000);
-    }
-  }
-
-  @Watch('isYourTurn')
-  turnChange(isYourTurn: boolean, wasYourTurn: boolean | null): void {
-    if (!this.dataLoaded) return;
-
-    if (isYourTurn && !wasYourTurn) {
-      const tagOptions = this.randomTagOptions();
-
-      gameService.update({ tagOptions }, this.gameId);
     }
   }
 

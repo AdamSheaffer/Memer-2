@@ -5,7 +5,7 @@ import { Game } from '@/types/Game';
 import { User } from '@/types/User';
 import { Card } from '@/types/Card';
 import { Category } from '@/types/Category';
-import { PlayerChanges } from '@/types/Player';
+import { Player, PlayerChanges } from '@/types/Player';
 
 const gameRef = (gameId: string) => db.doc(`games/${gameId}`);
 const playersRef = (gameId: string) => gameRef(gameId).collection('players');
@@ -83,6 +83,35 @@ const removeCard = (gameId: string, playerId: string, cardId: string): Promise<v
   return cardRef.delete();
 };
 
+const resetRound = (
+  gameId: string,
+  nextTurn: string,
+  tagOptions: string[],
+  players: Player[],
+): Promise<void> => {
+  const batch = db.batch();
+  players.forEach((player) => {
+    const ref = playerRef(gameId, player.uid);
+    const changes: PlayerChanges = { memePlayed: null };
+    batch.update(ref, changes);
+  });
+
+  const gameChanges: Game = {
+    tagOptions,
+    turn: nextTurn,
+    roundWinner: null,
+    winningMeme: null,
+    tagSelection: null,
+    gifOptionURLs: [],
+    memeTemplate: null,
+    memeTemplateTimestamp: null,
+  };
+
+  batch.update(gameRef(gameId), gameChanges);
+
+  return batch.commit();
+};
+
 export default {
   create,
   update,
@@ -92,4 +121,5 @@ export default {
   pickRandomTagOptions,
   updatePlayer,
   removeCard,
+  resetRound,
 };
