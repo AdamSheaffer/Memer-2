@@ -31,7 +31,6 @@
       <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" class="svg-inline--fa fa-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>
     </div>
   </div>
-  
 </template>
 
 <script lang="ts">
@@ -83,8 +82,7 @@ $transition: border .15s ease-out;
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
   -ms-filter: fliph; /*IE*/
-  filter: fliph; /*IE*/
-    
+  filter: fliph; /*IE*/  
     .badge {
       right: auto;
       left: 2px;
@@ -114,7 +112,6 @@ $transition: border .15s ease-out;
       transform: scaleX(-1);
       -ms-filter: fliph; /*IE*/
       filter: fliph; /*IE*/
-
       p  {
         text-align: end;
       }
@@ -146,7 +143,6 @@ $transition: border .15s ease-out;
   transform: scale(1.5);
   color: #1dbb9c;
   display: none;
-  
   &.ready {
     display: block;
     position: absolute;
@@ -158,7 +154,6 @@ $transition: border .15s ease-out;
   height: $pill-radius;
   border-radius: $pill-radius;
   transition: $transition;
-  
   &.active {
     border-left: 0;
   }
