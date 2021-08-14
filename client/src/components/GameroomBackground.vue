@@ -13,8 +13,8 @@
 @import '../styles/_variables';
 
 .container {
-  min-height: 100%;
-  height: auto;
+  min-height: 100vh;
+  height: 100%;
   min-width: 100vw;
   width: 100%;
   position: fixed;

@@ -279,12 +279,12 @@ export default class GameRoom extends Mixins(
     }, this.gameId);
   }
 
-  dealCards(): void {
+  dealCards(): Promise<void> {
     if (!this.players) {
       throw Error('No players in game to deal to');
     }
     const playerIds = this.players.map((p) => p.uid);
-    gameService.dealToAllPlayers(this.gameId, playerIds);
+    return gameService.dealToAllPlayers(this.gameId, playerIds);
   }
 
   async categorySelect(category: string): Promise<void> {
@@ -366,14 +366,19 @@ export default class GameRoom extends Mixins(
     const justStarted = newVal.hasStarted && !oldVal.hasStarted;
 
     if (justStarted && this.isHost) {
-      this.dealCards();
+      const tagOptions = this.randomTagOptions();
+
+      await Promise.all([
+        gameService.update({ tagOptions }, this.gameId),
+        this.dealCards(),
+      ]);
+      return;
     }
 
     const hasRoundWinner = newVal.roundWinner && !oldVal.roundWinner;
 
     if (hasRoundWinner && this.nextPlayerTurn === this.player) {
       setTimeout(() => {
-        console.log(`${this.player.username} is resetting the round`);
         this.resetRound();
       }, 7000);
     }
