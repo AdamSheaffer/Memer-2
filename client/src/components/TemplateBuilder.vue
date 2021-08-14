@@ -71,7 +71,7 @@ enum ModalStep {
 export default class TemplateBuilder extends Vue {
   @Prop({ required: true }) categoryOptions!: string[]
 
-  @Prop({ required: false, default: [] }) gifOptions!: string[]
+  @Prop({ required: false, default: () => [] }) gifOptions!: string[]
 
   @Prop({ required: true }) isPicking!: boolean
 

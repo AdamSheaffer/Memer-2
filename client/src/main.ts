@@ -33,8 +33,6 @@ Vue.config.productionTip = false;
 
 let userLoaded = false;
 
-console.log(process.env.VUE_APP_GIPHY_KEY);
-
 auth.onAuthStateChanged(async (user) => {
   if (!userLoaded) {
     if (user) {

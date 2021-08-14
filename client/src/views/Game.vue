@@ -187,9 +187,10 @@ export default class GameRoom extends Mixins(
   get nextPlayerTurn(): Player | null {
     if (!this.players) return null;
 
-    const playerIndex = this.players.findIndex((p) => p.uid === this.game?.turn);
+    const sortedPlayers = this.players.sort((a, b) => a.turnIndex - b.turnIndex);
+    const playerIndex = sortedPlayers.findIndex((p) => p.uid === this.game?.turn);
     const nextIndex = playerIndex === this.players.length - 1 ? 0 : playerIndex + 1;
-    return this.players[nextIndex];
+    return sortedPlayers[nextIndex];
   }
 
   get playerHasSubmitted(): boolean {
@@ -372,6 +373,7 @@ export default class GameRoom extends Mixins(
 
     if (hasRoundWinner && this.nextPlayerTurn === this.player) {
       setTimeout(() => {
+        console.log(`${this.player.username} is resetting the round`);
         this.resetRound();
       }, 7000);
     }
