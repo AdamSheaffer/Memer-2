@@ -38,7 +38,7 @@ const update = (game: Game, gameId: string): Promise<void> => {
 
 const joinGame = (gameId: string, user: User): Promise<void> => db
   .doc(`games/${gameId}/players/${user.uid}`)
-  .set(user);
+  .set({ ...user, isActive: true });
 
 const startGame = (gameId: string, playerId: string): Promise<void> => update({
   hasStarted: true,

@@ -45,7 +45,7 @@
             <submission-slideshow
               v-if="showingSlideshow"
               :submissions="playerSubmissions"
-              @finished="showingSlideshow = false"/>
+              @finished="setShowingSlideshow(false)"/>
             <div v-if="game.winningMeme">
               <modal :dark="true">
                 <div>
@@ -96,6 +96,9 @@ import { Card } from '@/types/Card';
 import gameService from '@/services/game';
 import gifService from '@/services/gif';
 import firebase from '@/firebase';
+import { namespace } from 'vuex-class';
+
+const gameStore = namespace('game');
 
 @Component({
   components: {
@@ -114,100 +117,56 @@ import firebase from '@/firebase';
 export default class GameRoom extends Mixins(
   UserMixin, GameMixin, PlayerMixin, HandMixin, CategoryMixin,
 ) {
+  @gameStore.Getter
+  public readonly player!: Player;
+
+  @gameStore.Getter
+  public readonly isHost!: boolean;
+
+  @gameStore.Getter
+  public readonly isYourTurn!: boolean;
+
+  @gameStore.Getter
+  public readonly dataLoaded!: boolean
+
+  @gameStore.Getter
+  public readonly playerTurn: Player | undefined;
+
+  @gameStore.Getter
+  public readonly isPickingCategory!: boolean;
+
+  @gameStore.Getter
+  public readonly isPickingGif!: boolean
+
+  @gameStore.Getter
+  public readonly isSubmissionRound!: boolean;
+
+  @gameStore.Getter
+  public readonly playerHasSubmitted!: boolean;
+
+  @gameStore.Getter
+  public readonly everyoneHasSubmitted!: boolean;
+
+  @gameStore.Getter
+  public readonly playerSubmissions!: Meme[];
+
+  @gameStore.Getter
+  nextPlayerTurn!: Player | null;
+
+  @gameStore.Getter
+  public readonly isPickingWinner!: boolean
+
+  @gameStore.Getter
+  public readonly roundWinner!: Player | null
+
+  @gameStore.State
+  public readonly showingSlideshow!: boolean;
+
+  @gameStore.Mutation
+  public setShowingSlideshow!: (show: boolean) => void
+
   get gameId(): string {
     return this.$route.params.gameId;
-  }
-
-  get dataLoaded(): boolean {
-    return (
-      !!this.game
-      && !!this.players
-      && !!this.players.length
-      && !!this.allCategories);
-  }
-
-  get isHost(): boolean {
-    return this.game?.hostId === this.user?.uid;
-  }
-
-  get isYourTurn(): boolean {
-    return this.game?.turn === this.user.uid;
-  }
-
-  get isPickingCategory(): boolean {
-    if (!this.dataLoaded) return false;
-
-    return !!this.game?.tagOptions?.length && !this.game?.tagSelection;
-  }
-
-  get isPickingGif(): boolean {
-    if (!this.dataLoaded) return false;
-
-    return !!this.game?.tagSelection && !this.game.memeTemplate;
-  }
-
-  get isSubmissionRound(): boolean {
-    if (!this.dataLoaded) return false;
-
-    return !!this.game?.memeTemplate && !this.everyoneHasSubmitted;
-  }
-
-  get everyoneHasSubmitted(): boolean {
-    if (!this.players) return false;
-
-    return this.players?.every((p) => {
-      const isJudge = p.uid === this.playerTurn?.uid;
-      const hasSubmitted = !!p.memePlayed;
-      return isJudge || hasSubmitted;
-    });
-  }
-
-  get playerSubmissions(): Meme[] {
-    if (!this.dataLoaded || !this.everyoneHasSubmitted) return [];
-
-    const judgeId = this.game?.turn;
-    const subs = this.players?.filter((player) => player.uid !== judgeId)
-      .map((player) => {
-        if (!player.memePlayed) throw Error(`Attempted to get submission for player ${player.uid} but none was given`);
-        return {
-          top: player.memePlayed.top || '',
-          bottom: player.memePlayed.bottom || '',
-          photoURL: player.memePlayed.photoURL,
-        };
-      })
-      .sort((a, b) => (a.bottom < b.bottom ? -1 : 1));
-
-    return subs || [];
-  }
-
-  get playerTurn(): Player | undefined {
-    return this.players?.find((p) => p.uid === this.game?.turn);
-  }
-
-  get nextPlayerTurn(): Player | null {
-    if (!this.players) return null;
-
-    const sortedPlayers = this.players.sort((a, b) => a.turnIndex - b.turnIndex);
-    const playerIndex = sortedPlayers.findIndex((p) => p.uid === this.game?.turn);
-    const nextIndex = playerIndex === this.players.length - 1 ? 0 : playerIndex + 1;
-    return sortedPlayers[nextIndex];
-  }
-
-  get playerHasSubmitted(): boolean {
-    return this.isSubmissionRound && !!this.player.memePlayed;
-  }
-
-  get isPickingWinner(): boolean {
-    return this.everyoneHasSubmitted && !this.showingSlideshow && !this.game?.winningMeme;
-  }
-
-  get roundWinner(): Player | null {
-    if (!this.game || !this.game.roundWinner) {
-      return null;
-    }
-    const winner = this.players?.find((p) => p.uid === this.game?.roundWinner);
-
-    return winner || null;
   }
 
   get showHand(): boolean {
@@ -225,13 +184,6 @@ export default class GameRoom extends Mixins(
       && !this.game.hasStarted
       && !!this.players
       && this.players.length > 1);
-  }
-
-  get player(): Player {
-    const player = this.players?.find((p) => p.uid === this.user.uid);
-    if (!player) throw Error('Current user not found in players list');
-
-    return player;
   }
 
   get actionHeader(): string | null {
@@ -258,10 +210,6 @@ export default class GameRoom extends Mixins(
 
     return null;
   }
-
-  showingSlideshow = false;
-
-  showingWinningMeme = false;
 
   async mounted(): Promise<void> {
     this.trackGame(this.gameId);
@@ -387,7 +335,7 @@ export default class GameRoom extends Mixins(
   @Watch('everyoneHasSubmitted')
   showSlideshow(newVal: boolean, oldVal: boolean): void {
     if (newVal === true && !oldVal) {
-      this.showingSlideshow = true;
+      this.setShowingSlideshow(true);
     }
   }
 }

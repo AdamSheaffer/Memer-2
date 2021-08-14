@@ -78,7 +78,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { State } from 'vuex-class';
+import { State, namespace } from 'vuex-class';
 import { googleSignIn, signOut, db } from '@/firebase';
 import UserMixin from '@/mixins/UserMixin';
 import { Game } from '@/types/Game';
@@ -87,6 +87,8 @@ import GameroomBackground from '@/components/GameroomBackground.vue';
 import Divider from '@/components/Divider.vue';
 import Avatar from '@/components/Avatar.vue';
 import gameService from '@/services/game';
+
+const gameStore = namespace('game');
 
 @Component({
   components: {
@@ -115,10 +117,16 @@ export default class Home extends Mixins(UserMixin) {
     if (this.openGameUnsubscribe) this.openGameUnsubscribe();
   }
 
+  @gameStore.Mutation
+  clearGameData!: () => void;
+
   async join(gameId: string): Promise<void> {
     if (!this.user) {
       throw Error('Cannot join game while unauthenticated');
     }
+
+    this.clearGameData();
+
     await gameService.joinGame(gameId, this.user);
     this.$router.push(`game/${gameId}`);
   }

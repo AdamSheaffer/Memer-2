@@ -6,6 +6,11 @@ import { MutationTree } from 'vuex';
 import { ModuleState } from './types';
 
 const mutations: MutationTree<ModuleState> = {
+  clearGameData(state) {
+    state.game = null;
+    state.players = [];
+    state.hand = [];
+  },
   setGame(state, payload: Game) {
     state.game = payload;
   },
@@ -22,6 +27,12 @@ const mutations: MutationTree<ModuleState> = {
     if (state.game) {
       state.game.tagOptions = payload;
     }
+  },
+  setShowingSlideshow(state, payload: boolean) {
+    state.showingSlideshow = payload;
+  },
+  setShowingWinningMeme(state, payload: boolean) {
+    state.showingWinningMeme = payload;
   },
 };
 
