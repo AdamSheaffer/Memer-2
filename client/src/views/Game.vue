@@ -33,9 +33,7 @@
                 @select="pickWinner" />
             </div>
             <div class="hand">
-              <h2 class="is-size-4 mb-2 has-text-success has-text-centered">
-                {{ actionHeader }}
-              </h2>
+              <action-header />
               <player-hand
                 v-show="showHand"
                 @select="playCaption"
@@ -78,6 +76,7 @@ import GameroomBackground from '@/components/GameroomBackground.vue';
 import PlayerChip from '@/components/PlayerChip.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
+import ActionHeader from '@/components/ActionHeader.vue';
 import TemplateBuilder from '@/components/TemplateBuilder.vue';
 import CategoryPreview from '@/components/CategoryPreview.vue';
 import MemeCard from '@/components/Meme.vue';
@@ -102,6 +101,7 @@ const gameStore = namespace('game');
 
 @Component({
   components: {
+    ActionHeader,
     GameroomBackground,
     PlayerChip,
     PlayerHand,
@@ -184,31 +184,6 @@ export default class GameRoom extends Mixins(
       && !this.game.hasStarted
       && !!this.players
       && this.players.length > 1);
-  }
-
-  get actionHeader(): string | null {
-    const { isSubmissionRound, isYourTurn } = this;
-
-    if (isSubmissionRound && isYourTurn) {
-      return 'PLAYERS ARE SUBMITTING';
-    }
-
-    if (isSubmissionRound && !isYourTurn) {
-      if (this.player.memePlayed) {
-        return 'WAITING ON OTHER PLAYERS';
-      }
-
-      return 'PICK A CAPTION';
-    }
-
-    if (this.isPickingWinner && this.playerTurn) {
-      if (this.isYourTurn) {
-        return 'CREATE YOUR FAVORITE MEME';
-      }
-      return `${this.playerTurn.username.toUpperCase()} IS PICKING A MEME`;
-    }
-
-    return null;
   }
 
   async mounted(): Promise<void> {
