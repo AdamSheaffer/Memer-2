@@ -7,7 +7,7 @@
       </div>
       <div v-if="dataLoaded" class="game-table">
         <div class="game">
-          <div class="game-container">
+          <div class="play-area">
             <template-builder
               class="border-clear-top pt-5"
               v-if="isPickingCategory || (isPickingGif && isYourTurn)"
@@ -343,20 +343,21 @@ export default class GameRoom extends Mixins(
 
 <style lang="scss" scoped>
 
-#game-root, .game-container, .game-table {
+#game-root, .play-area, .game-table {
   width: 100%;
   height: 100%;
 }
 
 .game-table {
+  display: grid;
   grid-template-columns: 1fr 80% 1fr;
   grid-template-rows: 1fr 80% 1fr;
-  display: grid;
 
 }
 
-.game-container {
+.play-area {
   display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .game {
@@ -367,7 +368,7 @@ export default class GameRoom extends Mixins(
 .hand {
   align-self: end;
   margin: 0 15% 8%;
-  align-self: center;
+  justify-self: center;
 }
 
 .border-clear-top {

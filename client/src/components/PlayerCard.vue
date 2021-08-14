@@ -47,6 +47,7 @@ export default class PlayerHand extends Vue {
   display: grid;
   align-content: space-between;
   height: 175px;
+  width: 150px;
 }
 .text {
   text-align: center;

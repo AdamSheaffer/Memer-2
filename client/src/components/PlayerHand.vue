@@ -40,7 +40,7 @@ export default class PlayerHand extends Vue {
 .player-hand {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-gap: .5rem;
+  grid-gap: .3rem;
 }
 .player-card {
   @include impact-text;
@@ -51,6 +51,7 @@ export default class PlayerHand extends Vue {
   display: grid;
   align-content: space-between;
   height: 175px;
+  min-width: 130px;
 }
 .text {
   text-align: center;
