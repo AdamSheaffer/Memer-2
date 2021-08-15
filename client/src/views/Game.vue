@@ -45,23 +45,7 @@
               :submissions="playerSubmissions"
               @finished="setShowingSlideshow(false)"/>
             <div v-if="game.winningMeme">
-              <modal :dark="true">
-                <div>
-                  <h2 class="has-text-white has-text-centered is-size-3">
-                    {{ game.winningMeme.top && game.winningMeme.top.toUpperCase() }}
-                  </h2>
-                  <b-image :src="game.winningMeme.photoURL"/>
-                  <h2 class="has-text-white has-text-centered is-size-3">
-                    {{ game.winningMeme.bottom && game.winningMeme.bottom.toUpperCase() }}
-                  </h2>
-                  <h5 class="is-size-6 has-text-success has-text-centered mt-1">
-                    <span class="has-text-warning">
-                      {{ roundWinner && roundWinner.username.toUpperCase() }}
-                    </span>
-                    WINS THE ROUND
-                  </h5>
-                </div>
-              </modal>
+              <winning-modal />
             </div>
           </div>
         </div>
@@ -83,8 +67,8 @@ import MemeCard from '@/components/Meme.vue';
 import SubmissionSlideshow from '@/components/SubmissionSlideshow.vue';
 import VotingRound from '@/components/VotingRound.vue';
 import Modal from '@/components/Modal.vue';
+import WinningModal from '@/components/WinningModal.vue';
 import UserMixin from '@/mixins/UserMixin';
-import GameMixin from '@/mixins/GameMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
 import HandMixin from '@/mixins/HandMixin';
 import CategoryMixin from '@/mixins/CategoryMixin';
@@ -94,7 +78,7 @@ import { Meme } from '@/types/Meme';
 import { Card } from '@/types/Card';
 import gameService from '@/services/game';
 import gifService from '@/services/gif';
-import firebase from '@/firebase';
+import firebase, { db } from '@/firebase';
 import { namespace } from 'vuex-class';
 
 const gameStore = namespace('game');
@@ -112,11 +96,18 @@ const gameStore = namespace('game');
     SubmissionSlideshow,
     VotingRound,
     Modal,
+    WinningModal,
   },
 })
 export default class GameRoom extends Mixins(
-  UserMixin, GameMixin, PlayerMixin, HandMixin, CategoryMixin,
+  UserMixin, PlayerMixin, HandMixin, CategoryMixin,
 ) {
+  @gameStore.State((state) => state.game)
+  public game!: Game | null
+
+  @gameStore.State
+  public readonly showingSlideshow!: boolean;
+
   @gameStore.Getter
   public readonly player!: Player;
 
@@ -159,8 +150,8 @@ export default class GameRoom extends Mixins(
   @gameStore.Getter
   public readonly roundWinner!: Player | null
 
-  @gameStore.State
-  public readonly showingSlideshow!: boolean;
+  @gameStore.Mutation
+  setGame!: (game: Game) => void
 
   @gameStore.Mutation
   public setShowingSlideshow!: (show: boolean) => void
@@ -191,6 +182,13 @@ export default class GameRoom extends Mixins(
     this.trackPlayers(this.gameId);
     this.trackPlayerHand(this.gameId, this.user.uid);
     await this.getCategories();
+  }
+
+  trackGame(gameId: string): void {
+    db.collection('games').doc(gameId).onSnapshot((snapshot) => {
+      const data = snapshot.data() as Game;
+      this.setGame(data);
+    });
   }
 
   startGame(): void {
@@ -262,9 +260,17 @@ export default class GameRoom extends Mixins(
 
     if (!roundWinner) throw Error('Could not find winning player');
 
+    const newScore = (roundWinner.score || 0) + 1;
+    const isGameWinner = newScore >= (this.game?.pointsToWin || Number.MAX_VALUE);
+
+    const pointUpdate: Game = isGameWinner
+      ? { winner: roundWinner.uid }
+      : { roundWinner: roundWinner.uid };
+
     await gameService.update({
+      ...pointUpdate,
       winningMeme,
-      roundWinner: roundWinner.uid,
+      winner: isGameWinner ? roundWinner.uid : null,
     }, this.gameId);
 
     await gameService.updatePlayer(this.gameId, roundWinner.uid, {
@@ -283,7 +289,7 @@ export default class GameRoom extends Mixins(
   }
 
   @Watch('game')
-  async gameChanged(newVal: Game, oldVal: Game | null): Promise<void> {
+  async checkForNewlyStartedGame(newVal: Game, oldVal: Game | null): Promise<void> {
     if (!oldVal) return;
 
     const justStarted = newVal.hasStarted && !oldVal.hasStarted;
@@ -295,8 +301,12 @@ export default class GameRoom extends Mixins(
         gameService.update({ tagOptions }, this.gameId),
         this.dealCards(),
       ]);
-      return;
     }
+  }
+
+  @Watch('game')
+  checkForRoundWinner(newVal: Game, oldVal: Game | null): void {
+    if (!oldVal) return;
 
     const hasRoundWinner = newVal.roundWinner && !oldVal.roundWinner;
 
@@ -304,6 +314,13 @@ export default class GameRoom extends Mixins(
       setTimeout(() => {
         this.resetRound();
       }, 7000);
+    }
+  }
+
+  @Watch('game.winner')
+  onGameWinnerChange(newVal: string | null, oldVal: string | null): void {
+    if (newVal && !oldVal) {
+      window.alert('Someone won');
     }
   }
 

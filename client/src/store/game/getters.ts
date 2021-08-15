@@ -21,7 +21,8 @@ type Getters = {
   playerSubmissions: Meme[]
   nextPlayerTurn: Player | null
   isPickingWinner: boolean,
-  roundWinner: Player | null
+  roundWinner: Player | null,
+  gameWinner: Player | null,
 }
 
 type ModuleGetters = {
@@ -135,6 +136,15 @@ const getters: GetterTree<ModuleState, RootState> & ModuleGetters = {
       return null;
     }
     const winner = state.players?.find((p) => p.uid === state.game?.roundWinner);
+
+    return winner || null;
+  },
+
+  gameWinner(state): Player | null {
+    if (!state.game || !state.game.winner) {
+      return null;
+    }
+    const winner = state.players?.find((p) => p.uid === state.game?.winner);
 
     return winner || null;
   },
