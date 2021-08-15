@@ -8,6 +8,7 @@ import { ModuleState } from './types';
 type Getters = {
   dataLoaded: boolean
   isHost: boolean
+  host: Player | null;
   isYourTurn: boolean
   player: Player
   activePlayers: Player[]
@@ -50,6 +51,10 @@ const getters: GetterTree<ModuleState, RootState> & ModuleGetters = {
 
   isHost(state): boolean {
     return state.game?.hostId === userState.user?.uid;
+  },
+
+  host(state): Player | null {
+    return state.players.find((p) => p.uid === state.game?.hostId) ?? null;
   },
 
   isYourTurn(state): boolean {

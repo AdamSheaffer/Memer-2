@@ -38,6 +38,7 @@ export default class Loader extends Vue {
 .dot {
   background: $primary !important;
   animation-duration: 1.2s;
+  animation-name: dot;
 }
 
 .lds-grid {

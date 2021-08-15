@@ -1,7 +1,7 @@
 <template>
   <div id="game-root">
     <gameroom-background>
-      <b-button v-if="showStartButton" @click="startGame">START</b-button>
+      <waiting-to-start v-if="game && !game.hasStarted" @start="startGame" />
       <div v-if="dataLoaded">
         <players :game="game" :players="players" :current-player-id="user.uid" />
       </div>
@@ -57,6 +57,7 @@
 <script lang="ts">
 import { Mixins, Component, Watch } from 'vue-property-decorator';
 import GameroomBackground from '@/components/GameroomBackground.vue';
+import WaitingToStart from '@/components/WaitingToStart.vue';
 import PlayerChip from '@/components/PlayerChip.vue';
 import PlayerHand from '@/components/PlayerHand.vue';
 import Players from '@/components/Players.vue';
@@ -87,6 +88,7 @@ const gameStore = namespace('game');
   components: {
     ActionHeader,
     GameroomBackground,
+    WaitingToStart,
     PlayerChip,
     PlayerHand,
     Players,
@@ -314,13 +316,6 @@ export default class GameRoom extends Mixins(
       setTimeout(() => {
         this.resetRound();
       }, 7000);
-    }
-  }
-
-  @Watch('game.winner')
-  onGameWinnerChange(newVal: string | null, oldVal: string | null): void {
-    if (newVal && !oldVal) {
-      window.alert('Someone won');
     }
   }
 

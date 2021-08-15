@@ -8,11 +8,11 @@
         :indicator="false">
         <b-carousel-item v-for="(submission, i) in submissions" :key="i">
           <div>
-            <h2 class="has-text-white has-text-centered is-size-3">
+            <h2 class="has-text-white has-text-centered" :class="headerClass">
               {{submission.top && submission.top.toUpperCase()}}
             </h2>
             <b-image :src="submission.photoURL"/>
-            <h2 class="has-text-white has-text-centered is-size-3">
+            <h2 class="has-text-white has-text-centered" :class="headerClass">
               {{submission.bottom && submission.bottom.toUpperCase()}}
             </h2>
           </div>
@@ -23,14 +23,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import {
+  Component, Prop, Mixins, Watch,
+} from 'vue-property-decorator';
+import MemeTextMixin from '@/mixins/MemeTextMixin';
 import Modal from '@/components/Modal.vue';
 import { Meme } from '@/types/Meme';
 
 @Component({
   components: { Modal },
 })
-export default class SubmissionSlideshow extends Vue {
+export default class SubmissionSlideshow extends Mixins(MemeTextMixin) {
   @Prop({ required: true }) submissions!: Meme[]
 
   timer = 7000; // how long to display each submission
@@ -56,6 +59,12 @@ export default class SubmissionSlideshow extends Vue {
 
   get isShowingLastSubmission(): boolean {
     return this.submissions.length === this.activeIndex + 1;
+  }
+
+  @Watch('activeIndex', { immediate: true })
+  onActiveIndexChange(): void {
+    const meme = this.submissions[this.activeIndex];
+    this.setHeaderSize(meme);
   }
 }
 </script>

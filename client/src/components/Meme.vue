@@ -1,25 +1,37 @@
 <template>
   <div class="meme">
     <div class="text">
-      <span class="is-size-5">{{ top }}</span>
+      <span :class="headerClass" ref="topText">{{ top }}</span>
     </div>
-    <img :src="imageURL" class="image meme-image" />
+    <img ref="image" :src="imageURL" class="image meme-image" />
     <div class="text">
-      <span class="is-size-5">{{ bottom }}</span>
+      <span :class="headerClass" ref="bottomText">{{ bottom }}</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {
+  Component, Mixins, Prop, Watch,
+} from 'vue-property-decorator';
+import MemeTextMixin from '@/mixins/MemeTextMixin';
 
 @Component
-export default class Meme extends Vue {
-  @Prop() private imageURL!: string
+export default class Meme extends Mixins(MemeTextMixin) {
+  @Prop() private imageURL!: string;
 
-  @Prop() private top!: string
+  @Prop() private top!: string;
 
-  @Prop() private bottom!: string
+  @Prop() private bottom!: string;
+
+  get headerClass(): string {
+    return `is-size-${this.headerSize}`;
+  }
+
+  @Watch('bottom')
+  async onTextChange(): Promise<void> {
+    return this.setHeaderSize({ top: this.top, bottom: this.bottom });
+  }
 }
 </script>
 
@@ -42,9 +54,9 @@ export default class Meme extends Vue {
 }
 
 .text {
-  height: 3rem;
+  height: 50px;
   text-align: center;
-  line-height: 3rem;
+  line-height: 50px;
   span {
     display: inline-block;
     text-align: center;

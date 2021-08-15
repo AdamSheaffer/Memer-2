@@ -2,14 +2,14 @@
   <div>
     <modal :dark="true">
       <div>
-        <h2 class="has-text-white has-text-centered is-size-3">
+        <h2 class="has-text-white has-text-centered" :class="headerClass">
           {{ game.winningMeme.top && game.winningMeme.top.toUpperCase() }}
         </h2>
         <b-image :src="game.winningMeme.photoURL"/>
-        <h2 class="has-text-white has-text-centered is-size-3">
+        <h2 class="has-text-white has-text-centered" :class="headerClass">
           {{ game.winningMeme.bottom && game.winningMeme.bottom.toUpperCase() }}
         </h2>
-        <h5 class="is-size-6 has-text-success has-text-centered mt-1">
+        <h5 class="is-size-6 has-text-success has-text-centered mt-4">
           <span class="has-text-warning">
             {{ winnerName }}
           </span>
@@ -23,8 +23,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+import MemeTextMixin from '@/mixins/MemeTextMixin';
 import { Game } from '@/types/Game';
 import { Player } from '@/types/Player';
 import Modal from '@/components/Modal.vue';
@@ -35,7 +36,7 @@ const gameStore = namespace('game');
 @Component({
   components: { Modal, Confetti },
 })
-export default class WinningModal extends Vue {
+export default class WinningModal extends Mixins(MemeTextMixin) {
   @gameStore.State
   public readonly game!: Game;
 
@@ -65,6 +66,12 @@ export default class WinningModal extends Vue {
     }
 
     return null;
+  }
+
+  mounted(): void {
+    if (!this.game.winningMeme) return;
+
+    this.setHeaderSize(this.game.winningMeme);
   }
 }
 </script>
