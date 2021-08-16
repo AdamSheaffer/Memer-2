@@ -8,7 +8,7 @@
         <player-chip
           class="chip"
           :player="player"
-          :active="player.uid === currentPlayerId"
+          :active="player.uid === game.turn"
           :pointsToWin="game.pointsToWin"/>
       </div>
     </div>

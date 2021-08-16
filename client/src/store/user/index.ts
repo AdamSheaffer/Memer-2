@@ -4,7 +4,7 @@ import { ModuleState } from './types';
 import getters from './getters';
 import mutations from './mutations';
 
-const state: ModuleState = {
+export const state: ModuleState = {
   user: null,
 };
 

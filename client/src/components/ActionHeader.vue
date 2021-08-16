@@ -1,36 +1,56 @@
 <template>
-  <div class="mt-3">
-    <div v-if="isCurrentPlayersTurn">
-      <h1 class="has-text-centered has-text-success">
-        IT'S YOUR TURN!
-      </h1>
-    </div>
-  </div>
+  <h2 class="is-size-4 mb-2 has-text-success has-text-centered">
+    {{ actionHeader }}
+  </h2>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Game } from '@/types/Game';
 import { Player } from '@/types/Player';
+import { Vue, Component } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
+
+const gameStore = namespace('game');
 
 @Component
 export default class ActionHeader extends Vue {
-  @Prop({ required: true }) game!: Game
+  @gameStore.Getter
+  public readonly isSubmissionRound!: boolean;
 
-  @Prop({ required: true }) players!: Player[]
+  @gameStore.Getter
+  public readonly isYourTurn!: boolean;
 
-  @Prop({ required: true }) userId!: string;
+  @gameStore.Getter
+  public readonly isPickingWinner!: boolean;
 
-  get isCurrentPlayersTurn(): boolean {
-    return this.game.turn === this.userId;
-  }
+  @gameStore.Getter
+  public readonly playerTurn!: Player;
 
-  get currentPlayer(): Player {
-    const player = this.players.find((p) => p.uid === this.userId);
+  @gameStore.Getter
+  public readonly player!: Player;
 
-    if (!player) throw Error('Can\'t find current player in game');
+  get actionHeader(): string | null {
+    const { isSubmissionRound, isYourTurn } = this;
 
-    return player;
+    if (isSubmissionRound && isYourTurn) {
+      return 'PLAYERS ARE SUBMITTING';
+    }
+
+    if (isSubmissionRound && !isYourTurn) {
+      if (this.player.memePlayed) {
+        return 'WAITING ON OTHER PLAYERS';
+      }
+
+      return 'PICK A CAPTION';
+    }
+
+    if (this.isPickingWinner && this.playerTurn) {
+      if (this.isYourTurn) {
+        return 'CREATE YOUR FAVORITE MEME';
+      }
+      return `${this.playerTurn.username.toUpperCase()} IS PICKING A MEME`;
+    }
+
+    return null;
   }
 }
 </script>

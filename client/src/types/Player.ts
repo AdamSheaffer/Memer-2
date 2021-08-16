@@ -6,17 +6,13 @@ export interface Player {
   fullName: string
   username: string
   photoURL: string
-  isActive: boolean
   score: number
-  memePlayed?: Meme
+  isActive: boolean
+  memePlayed?: Meme | null
   imageUrlPlayed?: string
   roles: Roles
   removed?: boolean
+  turnIndex: number
 }
 
-export interface PlayerChanges {
-  isActive?: boolean
-  score?: number
-  memePlayed?: Meme
-  removed?: boolean
-}
+export type PlayerChanges = Partial<Player>

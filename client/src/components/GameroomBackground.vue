@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container">
+  <div class="gameroom-background-root">
+    <div class="gameroom-background">
       <div class="table">
         <div class="mat"></div>
       </div>
@@ -12,12 +12,18 @@
 <style lang="scss" scoped>
 @import '../styles/_variables';
 
-.container {
-  min-height: 100%;
-  height: auto;
+.gameroom-background-root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.gameroom-background {
+  min-height: 100vh;
+  height: 100%;
   min-width: 100vw;
   width: 100%;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   background: $purple-1;

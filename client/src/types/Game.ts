@@ -1,7 +1,5 @@
 import firebase from 'firebase/app';
-import { Card } from './Card';
 import { Meme } from './Meme';
-import { Player } from './Player';
 import { RoundType } from './RoundType';
 
 export interface Game {
@@ -16,9 +14,9 @@ export interface Game {
   gifOptionURLs?: string[] | null
   memeTemplate?: Meme | null
   memeTemplateTimestamp?: firebase.firestore.Timestamp | null
-  roundWinnder?: Player | null
-  captionDeck?: Card[]
-  winner?: Player | null
+  roundWinner?: string | null
+  winner?: string | null
+  winningMeme?: Meme | null
   roundType?: RoundType | null
   maxPlayers?: number
   pointsToWin?: number,

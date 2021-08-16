@@ -9,9 +9,9 @@
             <li
               v-for="option in categoryOptions"
               :key="option"
-              @click="selectedCategpry = option"
+              @click="selectedCategory = option"
               class="option"
-              :class="{ active: selectedCategpry === option }">
+              :class="{ active: selectedCategory === option }">
               {{ option.toUpperCase() }}
             </li>
           </ul>
@@ -71,7 +71,7 @@ enum ModalStep {
 export default class TemplateBuilder extends Vue {
   @Prop({ required: true }) categoryOptions!: string[]
 
-  @Prop({ required: false, default: [] }) gifOptions!: string[]
+  @Prop({ required: false, default: () => [] }) gifOptions!: string[]
 
   @Prop({ required: true }) isPicking!: boolean
 
@@ -79,7 +79,7 @@ export default class TemplateBuilder extends Vue {
 
   step: ModalStep = ModalStep.Category
 
-  selectedCategpry = this.categoryOptions[0]
+  selectedCategory: string | null = null
 
   selectedGif: string | null = null
 
@@ -89,6 +89,11 @@ export default class TemplateBuilder extends Vue {
     return this.turnUsername.toUpperCase().endsWith('S')
       ? `${this.turnUsername.toUpperCase()}'`
       : `${this.turnUsername.toUpperCase()}'S`;
+  }
+
+  mounted(): void {
+    const [defaultOption] = this.categoryOptions;
+    this.selectedCategory = defaultOption;
   }
 
   nextGif(): void {
@@ -107,10 +112,11 @@ export default class TemplateBuilder extends Vue {
     }
   }
 
-  @Emit()
-  categorySelect(): string {
+  categorySelect(): void {
+    if (!this.selectedCategory) return;
+
     this.step = ModalStep.Gif;
-    return this.selectedCategpry;
+    this.$emit('category-select', this.selectedCategory);
   }
 
   @Emit()

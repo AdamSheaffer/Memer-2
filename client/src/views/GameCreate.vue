@@ -8,16 +8,22 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 import SetupWizard from '@/components/SetupWizard.vue';
 import GameroomBackground from '@/components/GameroomBackground.vue';
 import { Game } from '@/types/Game';
 import UserMixin from '@/mixins/UserMixin';
 import gameService from '@/services/game';
 
+const gameStore = namespace('game');
+
 @Component({
   components: { SetupWizard, GameroomBackground },
 })
 export default class GameCreate extends Mixins(UserMixin) {
+  @gameStore.Mutation
+  clearGameData!: () => void;
+
   async createGame(gameSettings: Game): Promise<void> {
     if (!this.user) {
       throw Error('Cannot create game without an authenticated user');
@@ -31,6 +37,8 @@ export default class GameCreate extends Mixins(UserMixin) {
       tagOptions: [],
       tagSelection: null,
     };
+
+    this.clearGameData();
 
     const gameId = await gameService.create(game);
     await gameService.joinGame(gameId, this.user);

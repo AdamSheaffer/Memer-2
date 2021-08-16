@@ -1,18 +1,17 @@
 <template>
-  <div class="player-hand">
-    <div
-      v-for="card in cards"
-      :key="card.id"
-      @click="select(card)"
-      class="player-card"
-      :class="{ clickable: clickable }">
-      <section class="text top">
-        <p>{{ card.top && card.top.toUpperCase() }}</p>
-      </section>
-      <section class="text bottom">
-        <p>{{ card.bottom && card.bottom.toUpperCase() }}</p>
-      </section>
+  <div
+    @click="select(card)"
+    class="player-card"
+    :class="{ clickable: clickable, active: active }">
+    <section class="text top">
+      <p>{{ card.top && card.top.toUpperCase() }}</p>
+    </section>
+    <div class="has-text-centered">
+      <slot></slot>
     </div>
+    <section class="text bottom">
+      <p>{{ card.bottom && card.bottom.toUpperCase() }}</p>
+    </section>
   </div>
 </template>
 
@@ -22,9 +21,11 @@ import { Card } from '@/types/Card';
 
 @Component
 export default class PlayerHand extends Vue {
-  @Prop({ required: true }) cards!: Card[]
+  @Prop({ required: true }) card!: Card
 
-  @Prop({ required: true }) clickable!: boolean
+  @Prop({ required: false, default: false }) clickable!: boolean
+
+  @Prop({ required: false, default: false }) active!: boolean
 
   select(card: Card): void {
     if (this.clickable) {
@@ -37,11 +38,6 @@ export default class PlayerHand extends Vue {
 <style lang="scss" scoped>
 @import '../styles/_variables';
 
-.player-hand {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-gap: .3rem;
-}
 .player-card {
   @include impact-text;
   text-shadow: none;
@@ -51,7 +47,7 @@ export default class PlayerHand extends Vue {
   display: grid;
   align-content: space-between;
   height: 175px;
-  min-width: 130px;
+  width: 150px;
 }
 .text {
   text-align: center;
@@ -63,5 +59,13 @@ export default class PlayerHand extends Vue {
   &:hover {
     border-color: $success;
   }
+}
+
+.active {
+  border-color: $success;
+}
+
+.slot {
+  margin-left: 50px;
 }
 </style>

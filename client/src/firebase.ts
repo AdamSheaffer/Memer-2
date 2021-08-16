@@ -28,9 +28,9 @@ if (process.env.NODE_ENV === 'development') {
 
 export const signOut = (): Promise<void> => auth.signOut();
 
-export const googleSignIn = (): Promise<void> => {
+export const googleSignIn = (): Promise<firebase.auth.UserCredential> => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  return auth.signInWithRedirect(provider);
+  return auth.signInWithPopup(provider);
 };
 
 export default firebase;

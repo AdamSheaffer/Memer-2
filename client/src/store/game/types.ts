@@ -8,4 +8,6 @@ export interface ModuleState {
   players: Player[]
   hand: Card[]
   categories: Category[]
+  showingSlideshow: boolean
+  showingWinningMeme: boolean
 }
