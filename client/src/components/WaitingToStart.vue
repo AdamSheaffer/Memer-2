@@ -14,7 +14,12 @@
     </div>
     <div v-else>
       <div class="button-wrapper">
-        <b-button size="is-large" rounded type="is-success" @click="startGame">
+        <b-button
+          size="is-large"
+          rounded
+          type="is-success"
+          :disabled="disableStartButton"
+          @click="startGame">
           START
         </b-button>
       </div>
@@ -44,6 +49,13 @@ export default class WaitingToStart extends Vue {
 
   @gameStore.Getter
   public readonly host!: Player | null;
+
+  @gameStore.Getter
+  public readonly playerCount!: number
+
+  get disableStartButton(): boolean {
+    return this.playerCount < 2;
+  }
 
   startGame(): void {
     if (this.isHost) {

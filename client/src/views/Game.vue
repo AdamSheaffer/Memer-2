@@ -170,15 +170,6 @@ export default class GameRoom extends Mixins(
     return true;
   }
 
-  get showStartButton(): boolean {
-    return (
-      this.isHost
-      && !!this.game
-      && !this.game.hasStarted
-      && !!this.players
-      && this.players.length > 1);
-  }
-
   async mounted(): Promise<void> {
     this.trackGame(this.gameId);
     this.trackPlayers(this.gameId);

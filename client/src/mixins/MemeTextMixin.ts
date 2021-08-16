@@ -1,6 +1,16 @@
 import { Meme } from '@/types/Meme';
 import { Component, Vue } from 'vue-property-decorator';
 
+export enum TextScaling {
+  Small, Medium, Large
+}
+
+const scaleOffset = new Map<TextScaling, number>([
+  [TextScaling.Small, 5],
+  [TextScaling.Medium, 0],
+  [TextScaling.Large, -5],
+]);
+
 @Component
 class MemeTextMixin extends Vue {
   public headerSize = 1;
@@ -11,27 +21,25 @@ class MemeTextMixin extends Vue {
     return `is-size-${this.headerSize}`;
   }
 
-  setHeaderSize({ bottom, top }: Meme, divisor = 0.6): void {
+  setHeaderSize({ bottom, top }: Meme, scale: TextScaling = TextScaling.Medium): void {
     const longestText = (bottom?.length ?? 0) > (top?.length ?? 0) ? bottom : top;
     const characters = longestText?.length ?? 0;
 
-    // if (!characters) return;
+    const offset = scaleOffset.get(scale) ?? 0;
 
-    if (characters < 10) {
+    if (characters < (10 - offset)) {
       this.headerSize = 1;
-    } else if (characters < 15) {
+    } else if (characters < (15 - offset)) {
       this.headerSize = 2;
-    } else if (characters < 20) {
+    } else if (characters < (20 - offset)) {
       this.headerSize = 3;
-    } else if (characters < 30) {
+    } else if (characters < (25 - offset)) {
       this.headerSize = 4;
-    } else if (characters < 40) {
+    } else if (characters < (40 - offset)) {
       this.headerSize = 5;
     } else {
       this.headerSize = 6;
     }
-
-    // this.headerSize = headerSize > this.maxHeaderSize ? this.maxHeaderSize : headerSize;
   }
 }
 export default MemeTextMixin;

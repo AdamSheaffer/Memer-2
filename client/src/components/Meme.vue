@@ -1,11 +1,11 @@
 <template>
   <div class="meme">
     <div class="text">
-      <span :class="headerClass" ref="topText">{{ top }}</span>
+      <span :class="headerClass">{{ top }}</span>
     </div>
-    <img ref="image" :src="imageURL" class="image meme-image" />
+    <img :src="imageURL" class="image meme-image" />
     <div class="text">
-      <span :class="headerClass" ref="bottomText">{{ bottom }}</span>
+      <span :class="headerClass">{{ bottom }}</span>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 import {
   Component, Mixins, Prop, Watch,
 } from 'vue-property-decorator';
-import MemeTextMixin from '@/mixins/MemeTextMixin';
+import MemeTextMixin, { TextScaling } from '@/mixins/MemeTextMixin';
 
 @Component
 export default class Meme extends Mixins(MemeTextMixin) {
@@ -30,7 +30,7 @@ export default class Meme extends Mixins(MemeTextMixin) {
 
   @Watch('bottom')
   async onTextChange(): Promise<void> {
-    return this.setHeaderSize({ top: this.top, bottom: this.bottom });
+    return this.setHeaderSize({ top: this.top, bottom: this.bottom }, TextScaling.Small);
   }
 }
 </script>
