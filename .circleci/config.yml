@@ -53,7 +53,7 @@ jobs:
 
   deploy-job:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:14.17.4
     working_directory: ~/repo
     steps:
       - restore_cache:
