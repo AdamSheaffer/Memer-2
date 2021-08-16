@@ -82,7 +82,7 @@ $transition: border .15s ease-out;
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
   -ms-filter: fliph; /*IE*/
-  filter: fliph; /*IE*/  
+  filter: fliph; /*IE*/
     .badge {
       right: auto;
       left: 2px;
@@ -129,7 +129,7 @@ $transition: border .15s ease-out;
   transform: scale(.9);
   color: white;
   display: none;
-  
+
   &.ready {
     display: block;
     position: absolute;
@@ -141,7 +141,7 @@ $transition: border .15s ease-out;
   right: 2px;
   top: 0px;
   transform: scale(1.5);
-  color: #1dbb9c;
+  color: $success;
   display: none;
   &.ready {
     display: block;
