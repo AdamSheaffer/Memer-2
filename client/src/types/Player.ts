@@ -9,7 +9,7 @@ export interface Player {
   score: number
   isActive: boolean
   memePlayed?: Meme | null
-  imageUrlPlayed?: string
+  imageUrlPlayed?: string | null
   roles: Roles
   removed?: boolean
   turnIndex: number

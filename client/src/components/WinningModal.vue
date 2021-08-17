@@ -9,14 +9,18 @@
         <h2 class="has-text-white has-text-centered" :class="headerClass">
           {{ game.winningMeme.bottom && game.winningMeme.bottom.toUpperCase() }}
         </h2>
-        <h5 class="is-size-6 has-text-success has-text-centered mt-4">
+
+        <div class="is-size-6 has-text-success has-text-centered">
           <span class="has-text-warning">
             {{ winnerName }}
           </span>
           {{ winningMessage }}
-        </h5>
+        </div>
       </div>
 
+      <div class="mt-6 mb-3 is-flex is-justify-content-center" v-if="isHost && hasGameWinner">
+        <b-button type="is-primary" size="is-small" @click="startNewGame">START NEW GAME</b-button>
+      </div>
     </modal>
     <confetti v-if="gameWinner" />
   </div>
@@ -49,6 +53,9 @@ export default class WinningModal extends Mixins(MemeTextMixin) {
   @gameStore.Getter
   public readonly gameWinner!: Player | null
 
+  @gameStore.Getter
+  public readonly isHost!: boolean;
+
   get winnerName(): string | null {
     return (
       this.gameWinner?.username.toUpperCase()
@@ -68,10 +75,20 @@ export default class WinningModal extends Mixins(MemeTextMixin) {
     return null;
   }
 
+  get hasGameWinner(): boolean {
+    return !!this.gameWinner;
+  }
+
   mounted(): void {
     if (!this.game.winningMeme) return;
 
     this.setHeaderSize(this.game.winningMeme);
+  }
+
+  startNewGame(): void {
+    if (this.isHost && this.gameWinner) {
+      this.$emit('start-new-game');
+    }
   }
 }
 </script>

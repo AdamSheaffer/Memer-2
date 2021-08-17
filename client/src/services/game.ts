@@ -112,6 +112,41 @@ const resetRound = (
   return batch.commit();
 };
 
+const resetGame = async (
+  gameId: string,
+  players: Player[],
+  startingTurn: string,
+  tagOptions: string [],
+): Promise<void> => {
+  const batch = db.batch();
+  players.forEach((player) => {
+    const changes: PlayerChanges = {
+      score: 0,
+      memePlayed: null,
+      imageUrlPlayed: null,
+    };
+    const ref = playerRef(gameId, player.uid);
+    batch.update(ref, changes);
+  });
+
+  const gameChanges: Game = {
+    tagOptions,
+    turn: startingTurn,
+    tagSelection: null,
+    winner: null,
+    roundWinner: null,
+    gifOptionURLs: null,
+    memeTemplate: null,
+    memeTemplateTimestamp: null,
+    winningMeme: null,
+    lastUpdated: firebase.firestore.Timestamp.now(),
+  };
+
+  batch.update(gameRef(gameId), gameChanges);
+
+  return batch.commit();
+};
+
 export default {
   create,
   update,
@@ -122,4 +157,5 @@ export default {
   updatePlayer,
   removeCard,
   resetRound,
+  resetGame,
 };

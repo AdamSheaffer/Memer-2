@@ -9,6 +9,7 @@ const getRandomImages = async (category: string): Promise<string[]> => {
       api_key: API_KEY,
       q: category,
       limit: 5,
+      offset: Math.floor(Math.random() * 50),
     },
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

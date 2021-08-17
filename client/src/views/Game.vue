@@ -45,7 +45,7 @@
               :submissions="playerSubmissions"
               @finished="setShowingSlideshow(false)"/>
             <div v-if="game.winningMeme">
-              <winning-modal />
+              <winning-modal @start-new-game="resetGame"/>
             </div>
           </div>
         </div>
@@ -279,6 +279,15 @@ export default class GameRoom extends Mixins(
     const tagOptions = this.randomTagOptions();
     const players = this.players || [];
     gameService.resetRound(this.gameId, nextTurn, tagOptions, players);
+  }
+
+  async resetGame(): Promise<void> {
+    if (!this.isHost) return;
+
+    const startingTurn = this.nextPlayerTurn?.uid ?? this.player.uid;
+    const tagOptions = this.randomTagOptions();
+
+    await gameService.resetGame(this.gameId, this.players ?? [], startingTurn, tagOptions);
   }
 
   @Watch('game')
