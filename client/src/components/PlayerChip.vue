@@ -60,7 +60,7 @@ $pill-radius: 5rem;
 $transition: border .15s ease-out;
 
 .pill {
-  width: 110%;
+  width: 100%;
   max-width: 15rem;
   background: $primary;
   display: grid;
