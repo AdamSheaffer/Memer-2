@@ -24,6 +24,18 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
+    large: {
+      control: { type: 'boolean' },
+      defaultValue: false,
+    },
+    ready: {
+      control: { type: 'boolean' },
+      defaultValue: false,
+    },
+    mirrored: {
+      control: { type: 'boolean' },
+      defaultValue: false,
+    },
   },
 };
 

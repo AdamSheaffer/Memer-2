@@ -7,6 +7,7 @@
         :class="`player--${index}`">
         <player-chip
           class="chip"
+          :ready="player.memePlayed"
           :player="player"
           :active="player.uid === game.turn"
           :pointsToWin="game.pointsToWin"/>
