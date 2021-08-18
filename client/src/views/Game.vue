@@ -51,6 +51,7 @@
         </div>
       </div>
     </gameroom-background>
+    <chat :game-id="gameId" :players="players" />
   </div>
 </template>
 
@@ -69,6 +70,7 @@ import SubmissionSlideshow from '@/components/SubmissionSlideshow.vue';
 import VotingRound from '@/components/VotingRound.vue';
 import Modal from '@/components/Modal.vue';
 import WinningModal from '@/components/WinningModal.vue';
+import Chat from '@/components/Chat.vue';
 import UserMixin from '@/mixins/UserMixin';
 import PlayerMixin from '@/mixins/PlayerMixin';
 import HandMixin from '@/mixins/HandMixin';
@@ -99,6 +101,7 @@ const gameStore = namespace('game');
     VotingRound,
     Modal,
     WinningModal,
+    Chat,
   },
 })
 export default class GameRoom extends Mixins(

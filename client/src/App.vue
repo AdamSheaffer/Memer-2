@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
+    <!-- <chat /> -->
   </div>
 </template>
 
@@ -12,9 +13,13 @@ import { User } from '@/types/User';
 import handleSignIn from '@/services/auth';
 import { detectOnlinePresence } from '@/services/onlineDetection';
 
+import Chat from '@/components/Chat.vue';
+
 const userStore = namespace('user');
 
-@Component
+@Component({
+  components: { Chat },
+})
 export default class App extends Vue {
   @userStore.Mutation
   public setUser!: (u: User | null) => void
