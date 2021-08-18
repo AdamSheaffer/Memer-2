@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Buefy from 'buefy';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Chat from 'vue-beautiful-chat';
 import icons from './icons';
 import App from './App.vue';
 import router from './router';
@@ -28,6 +29,8 @@ Vue.use(Buefy, {
     },
   },
 });
+
+Vue.use(Chat);
 
 Vue.config.productionTip = false;
 

@@ -7,9 +7,13 @@ import { Card } from '@/types/Card';
 import { Category } from '@/types/Category';
 import { Player, PlayerChanges } from '@/types/Player';
 
-const gameRef = (gameId: string) => db.doc(`games/${gameId}`);
-const playersRef = (gameId: string) => gameRef(gameId).collection('players');
-const playerRef = (gameId: string, playerId: string) => playersRef(gameId).doc(playerId);
+type DocRef = firebase.firestore.DocumentReference;
+type CollectionRef = firebase.firestore.CollectionReference;
+
+export const gameRef = (gameId: string): DocRef => db.doc(`games/${gameId}`);
+export const playersRef = (gameId: string): CollectionRef => gameRef(gameId).collection('players');
+export const playerRef = (gameId: string, pId: string): DocRef => playersRef(gameId).doc(pId);
+
 const captionsRef = db.collection('captions');
 
 const create = async (game: Game): Promise<string> => {

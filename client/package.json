@@ -23,6 +23,7 @@
     "lodash.chunk": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
     "vue": "^2.6.11",
+    "vue-beautiful-chat": "^2.5.0",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
