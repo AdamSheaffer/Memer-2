@@ -152,6 +152,7 @@ export default class Chat extends Mixins(UserMixin) {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/_variables';
 
 ::v-deep .sc-launcher {
   z-index: 1000;
@@ -161,4 +162,8 @@ export default class Chat extends Mixins(UserMixin) {
   z-index: 1000;
 }
 
+::v-deep .sent a {
+  color: $white;
+  text-decoration: underline;
+}
 </style>
