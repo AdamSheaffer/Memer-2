@@ -1,0 +1,30 @@
+{
+  "search.exclude": {
+    "**/node_modules": true
+  },
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "emmet.includeLanguages": {
+    "vue": "html"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontLigatures": true,
+  "editor.renderWhitespace": "selection",
+  "editor.snippetSuggestions": "inline",
+  "editor.tabSize": 2,
+  "emmet.showSuggestionsAsSnippets": true,
+  "gitlens.hovers.currentLine.over": "line",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnPaste": true
+}
