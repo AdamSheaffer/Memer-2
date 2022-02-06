@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function getRole(role) {
+    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles[role] == true;
+    }
+
+    match /captions/{caption} {
+    	allow read;
+      allow write: if getRole('editor') == true;
+    }
+
+  	match /games/{document=**} {
+    	allow read;
+    	allow write: if getRole('player') == true;
+    }
+
+    match /users/{document} {
+      allow read;
+      allow create: if request.resource.data.roles.keys().hasAny(['admin', 'editor']) == false
+      allow write: if (request.resource.data.roles.keys().hasAny(['admin', 'editor']) == false
+      								&& resource.data.uid == request.auth.uid) || getRole('admin') == true;
+    }
+
+    match /categories/{category} {
+      allow read;
+      allow write: if getRole('admin') == true;
+    }
+  }
+}
