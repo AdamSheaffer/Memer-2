@@ -16,6 +16,14 @@ firebase-debug.*.log*
 # Firebase cache
 .firebase/
 
+# Firebase Emulators
+ui-debug.log
+database-debug.log
+firestore-debug.log
+firebase-debug.log
+hosting.*.cache
+emulator_data
+
 # Firebase config
 
 # Uncomment this if you'd like others to create their own Firebase project.
