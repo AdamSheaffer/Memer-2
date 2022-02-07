@@ -1,12 +1,17 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import HelloWorld from "./components/HelloWorld.vue";
+import { googleLogin } from "./services/user";
+
+const signIn = async () => {
+  const creds = await googleLogin();
+  console.log(creds);
+};
 </script>
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <button @click="signIn">Sign In</button>
 </template>
 
 <style>

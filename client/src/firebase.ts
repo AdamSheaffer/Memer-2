@@ -1,5 +1,5 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
-import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
@@ -24,15 +24,8 @@ export const functions = getFunctions(app);
 if (import.meta.env.MODE === "development") {
   console.info("development: MEMER is using Firebase Emulators...");
 
-  connectFirestoreEmulator(db, "localhost", 8000);
+  connectFirestoreEmulator(db, "localhost", 8080);
   connectDatabaseEmulator(realtimeDb, "localhost", 9000);
   connectFunctionsEmulator(functions, "localhost", 5001);
   connectAuthEmulator(auth, "http://localhost:9099");
 }
-
-// export const gamesCollection = collection(db, "games");
-// export const gameDoc = (gameId: string) => doc(gamesCollection, gameId);
-// export const playersCollection = (gameId: string) => collection(gameDoc(gameId), "players");
-
-export const googleSignIn = () => signInWithPopup(auth, new GoogleAuthProvider());
-export const signOut = () => auth.signOut();
