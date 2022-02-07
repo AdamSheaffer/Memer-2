@@ -1,5 +1,6 @@
 export * from "./Card";
 export * from "./Category";
+export * from "./Game";
 export * from "./helpers";
 export * from "./Meme";
 export * from "./OnlineStatus";

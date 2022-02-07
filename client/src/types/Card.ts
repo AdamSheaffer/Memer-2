@@ -1,7 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 
 export interface Card {
-  id?: string;
+  uid?: string;
   top: string;
   bottom: string;
   createdBy?: string;
@@ -10,4 +10,4 @@ export interface Card {
   normalized?: string;
 }
 
-export type CaptionForm = Pick<Card, "top" | "bottom" | "safeForWork" | "id">;
+export type CaptionForm = Pick<Card, "top" | "bottom" | "safeForWork" | "uid">;

@@ -6,3 +6,4 @@ export const gameDoc = (gameId: string) => doc(gamesCollection, gameId);
 export const playersCollection = (gameId: string) => collection(gameDoc(gameId), "players");
 export const usersCollection = collection(db, "users");
 export const userDoc = (userId: string) => doc(usersCollection, userId);
+export const categoriesCollection = collection(db, "categories");
