@@ -12,7 +12,7 @@ export const createGame = async (gameSettings: Game) => {
   return id;
 };
 
-export const updateGame = (game: Partial<Game>, gameId: string): Promise<void> => {
+export const updateGame = (game: Partial<Game>, gameId: string) => {
   if (!gameId && !game.uid) {
     throw Error("Must supply a game ID to update");
   }
@@ -29,14 +29,15 @@ export const joinGame = (gameId: string, user: User) => {
   return setDoc(playerDoc, { ...user, isActive: true });
 };
 
-export const startGame = (gameId: string, playerId: string): Promise<void> =>
-  updateGame(
+export const startGame = (gameId: string, playerId: string) => {
+  return updateGame(
     {
       hasStarted: true,
       turn: playerId,
     },
     gameId
   );
+};
 
 // const createHands = async (handsNeeded: number): Promise<Card[][]> => {
 //   const snapshot = await captionsRef.get();

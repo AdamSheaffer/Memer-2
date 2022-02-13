@@ -1,8 +1,8 @@
-import { getDocs } from "firebase/firestore";
+import { getDocs, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { defineStore } from "pinia";
 import { Card, Category, Game, Maybe, Meme, Player } from "../../../types";
-import { categoriesCollectionRef } from "../firebase";
-import { mapCollection } from "../utils/mapCollectionDocs";
+import { categoriesCollectionRef, gameRef, playersCollectionRef } from "../firebase";
+import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
 import { useUserStore } from "./user";
 
 export const useGameStore = defineStore("game", {
@@ -11,11 +11,30 @@ export const useGameStore = defineStore("game", {
     players: [] as Player[],
     hand: [] as Card[],
     categories: [] as Category[],
+    unsubscribes: [] as Unsubscribe[],
   }),
   actions: {
     async getCategories() {
       const snapshot = await getDocs(categoriesCollectionRef);
       this.categories = mapCollection<Category>(snapshot);
+    },
+
+    trackGame(gameId: string) {
+      this.resetSubscriptions();
+
+      const unsubscribeGame = onSnapshot(gameRef(gameId), (snapshot) => {
+        this.game = mapDoc<Game>(snapshot);
+      });
+      const unsubscribePlayers = onSnapshot(playersCollectionRef(gameId), (snapshot) => {
+        this.players = mapCollection<Player>(snapshot);
+      });
+
+      this.unsubscribes = [unsubscribeGame, unsubscribePlayers];
+    },
+
+    resetSubscriptions() {
+      this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+      this.unsubscribes = [];
     },
   },
   getters: {

@@ -6,4 +6,5 @@ export * from "./Meme";
 export * from "./OnlineStatus";
 export * from "./Player";
 export * from "./RoundType";
+export * from "./SetupOptions";
 export * from "./User";

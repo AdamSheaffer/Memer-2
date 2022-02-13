@@ -1,4 +1,5 @@
-import { Timestamp } from "firebase/firestore";
+// import { Timestamp } from "firebase/firestore";
+import { Timestamp } from "./Firebase";
 import { Maybe } from "./helpers";
 import { Meme } from "./Meme";
 import { RoundType } from "./RoundType";

@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+import { Game } from "../../../types";
 
 export const playerOnCreateCheckFullGame = functions.firestore
   .document("games/{gameId}/players/{playerId}")
@@ -7,7 +8,7 @@ export const playerOnCreateCheckFullGame = functions.firestore
     const gameId = context.params.gameId;
     const gameRef = admin.firestore().doc(`games/${gameId}`);
     const gameSnapshot = await gameRef.get();
-    const game = gameSnapshot.data();
+    const game = gameSnapshot.data() as Game;
 
     if (!game || game.hasStarted) return;
 
@@ -15,7 +16,7 @@ export const playerOnCreateCheckFullGame = functions.firestore
 
     const playerCount = playersSnapshot.size;
 
-    if (game.maxPlayers > playerCount) return;
+    if (game.maxPlayers! > playerCount) return;
 
     gameRef.update({
       hasStarted: true,

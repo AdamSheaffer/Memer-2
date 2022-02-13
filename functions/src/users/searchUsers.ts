@@ -1,13 +1,12 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+import { User } from "../../../types";
 
 interface UserSearch {
   email: string;
 }
 
 export const searchUsers = functions.https.onCall(async (data: UserSearch, context) => {
-  console.log("SEARCHING USER. REQUESTING USER:", context.auth?.uid, context.auth?.token);
-
   // Confirm user making request has admin role
   const requestUserId = context.auth?.uid;
 
@@ -15,7 +14,7 @@ export const searchUsers = functions.https.onCall(async (data: UserSearch, conte
     throw new functions.https.HttpsError("unauthenticated", "Unauthenticated");
   }
 
-  let requestUser;
+  let requestUser: User;
 
   try {
     const requestUserSnap = await admin.firestore().doc(`users/${requestUserId}`).get();

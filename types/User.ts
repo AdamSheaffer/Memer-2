@@ -1,3 +1,5 @@
+import { Maybe } from "./helpers";
+
 export interface Presence {
   game?: string;
   lastChanged: Date;
@@ -15,12 +17,13 @@ export type Roles = { [k in Role]?: boolean };
 
 export interface User {
   uid: string;
-  fullName?: string | null;
-  gamesPlayed?: number | null;
-  lastChanged?: Date | null;
-  photoURL?: string | null;
-  presence?: Presence | null;
-  roles?: Roles | null;
-  totalPoints?: number | null;
-  username?: string | null;
+  fullName: Maybe<string>;
+  gamesPlayed: Maybe<number>;
+  gamesWon: Maybe<number>;
+  lastChanged: Maybe<Date>;
+  photoURL: Maybe<string>;
+  presence: Maybe<Presence>;
+  roles: Maybe<Roles>;
+  totalPoints: Maybe<number>;
+  username: Maybe<string>;
 }

@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
+import { Game, User } from "../../../types";
 
 export const gameOnUpdateAddPlayerPoints = functions.firestore
   .document("games/{gameId}")
@@ -9,8 +10,8 @@ export const gameOnUpdateAddPlayerPoints = functions.firestore
       return null;
     }
 
-    const lastGame = change.before.data();
-    const game = change.after.data();
+    const lastGame = change.before.data() as Game;
+    const game = change.after.data() as Game;
 
     if (!game) {
       console.log("No game found");
@@ -25,17 +26,17 @@ export const gameOnUpdateAddPlayerPoints = functions.firestore
       return null;
     }
 
-    const userId = game.roundWinner.uid;
+    const userId = game.roundWinner;
     const userRef = admin.firestore().doc(`users/${userId}`);
     const userSnaphot = await userRef.get();
-    const user = userSnaphot.data();
+    const user = userSnaphot.data() as User;
 
     if (!user) {
       console.log("No user found. Cannot update points");
       return null;
     }
 
-    const updates: any = {
+    const updates: Partial<User> = {
       totalPoints: (user.totalPoints || 0) + 1,
     };
 
