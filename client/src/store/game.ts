@@ -1,11 +1,9 @@
-import { getDoc, getDocs } from "firebase/firestore";
+import { getDocs } from "firebase/firestore";
 import { defineStore } from "pinia";
-import { categoriesCollection, gameDoc } from "../services/db";
-import { Card, Category, Game, Maybe, Meme, Player } from "../types";
-import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
+import { Card, Category, Game, Maybe, Meme, Player } from "../../../types";
+import { categoriesCollectionRef } from "../firebase";
+import { mapCollection } from "../utils/mapCollectionDocs";
 import { useUserStore } from "./user";
-
-const userStore = useUserStore();
 
 export const useGameStore = defineStore("game", {
   state: () => ({
@@ -15,13 +13,8 @@ export const useGameStore = defineStore("game", {
     categories: [] as Category[],
   }),
   actions: {
-    async getGame(gameId: string) {
-      const snapshot = await getDoc(gameDoc(gameId));
-      this.game = mapDoc<Game>(snapshot);
-    },
-
     async getCategories() {
-      const snapshot = await getDocs(categoriesCollection);
+      const snapshot = await getDocs(categoriesCollectionRef);
       this.categories = mapCollection<Category>(snapshot);
     },
   },
@@ -31,6 +24,7 @@ export const useGameStore = defineStore("game", {
     },
 
     currentPlayer(): Player {
+      const userStore = useUserStore();
       const player = this.players.find((p) => p.uid === userStore.user?.uid);
       if (!player) throw Error("Current user not found in players list");
 
@@ -45,10 +39,12 @@ export const useGameStore = defineStore("game", {
     },
 
     isHost(): boolean {
+      const userStore = useUserStore();
       return this.game?.hostId === userStore.user?.uid;
     },
 
     currentUserIsJudge(): boolean {
+      const userStore = useUserStore();
       return this.game?.turn === userStore.user?.uid;
     },
 

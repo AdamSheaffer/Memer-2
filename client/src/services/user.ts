@@ -1,14 +1,13 @@
 import { GoogleAuthProvider, signInWithPopup, signOut, User as FirebaseUser } from "firebase/auth";
 import { getDoc, setDoc } from "firebase/firestore";
-import { auth } from "../firebase";
-import { Roles, User as MemerUser } from "../types";
-import { userDoc } from "./db";
+import { Roles, User as MemerUser } from "../../../types";
+import { auth, userRef } from "../firebase";
 
 export const googleLogin = () => signInWithPopup(auth, new GoogleAuthProvider());
 export const logout = () => signOut(auth);
 
 const getUser = async (uid: string) => {
-  const userSnapshot = await getDoc(userDoc(uid));
+  const userSnapshot = await getDoc(userRef(uid));
 
   if (!userSnapshot.exists) return null;
   return userSnapshot.data() as FirebaseUser;
@@ -24,7 +23,7 @@ const createUserProfile = async (user: FirebaseUser) => {
     roles: { player: true },
     totalPoints: 0,
   };
-  await setDoc(userDoc(user.uid), profile);
+  await setDoc(userRef(user.uid), profile);
   return profile;
 };
 
@@ -37,5 +36,5 @@ export const handleSignIn = async (user: FirebaseUser) => {
 };
 
 export const updateUserRoles = (userId: string, roles: Roles) => {
-  return setDoc(userDoc(userId), { roles }, { merge: true });
+  return setDoc(userRef(userId), { roles }, { merge: true });
 };

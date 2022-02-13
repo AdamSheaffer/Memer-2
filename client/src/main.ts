@@ -3,10 +3,12 @@ import { createPinia } from "pinia";
 import { createApp } from "vue";
 import App from "./App.vue";
 import { auth } from "./firebase";
+import { router } from "./router";
 import { handleSignIn } from "./services/user";
 import { useUserStore } from "./store/user";
 
-const app = createApp(App).use(createPinia());
+const app = createApp(App).use(createPinia()).use(router);
+
 const userStore = useUserStore();
 
 onAuthStateChanged(auth, (firebaseUser: User | null) => {

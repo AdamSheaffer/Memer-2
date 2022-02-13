@@ -6,6 +6,8 @@ interface UserSearch {
 }
 
 export const searchUsers = functions.https.onCall(async (data: UserSearch, context) => {
+  console.log("SEARCHING USER. REQUESTING USER:", context.auth?.uid, context.auth?.token);
+
   // Confirm user making request has admin role
   const requestUserId = context.auth?.uid;
 

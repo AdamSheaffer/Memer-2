@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Maybe, User } from "../types";
+import { Maybe, User } from "../../../types";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
