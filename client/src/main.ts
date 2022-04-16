@@ -4,7 +4,6 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { auth } from "./firebase";
 import { router } from "./router";
-import { handleSignIn } from "./services/user";
 import { useUserStore } from "./store/user";
 
 const app = createApp(App).use(createPinia()).use(router);
@@ -19,7 +18,7 @@ onAuthStateChanged(auth, (firebaseUser: User | null) => {
   if (!firebaseUser) {
     userStore.user = null;
   } else {
-    handleSignIn(firebaseUser).then((memerUser) => {
+    userStore.handleSignIn(firebaseUser).then((memerUser) => {
       userStore.user = memerUser;
     });
   }

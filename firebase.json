@@ -24,20 +24,24 @@
   },
   "emulators": {
     "auth": {
+      "host": "0.0.0.0",
       "port": 9099
     },
     "functions": {
+      "host": "0.0.0.0",
       "port": 5001
     },
     "firestore": {
-      "port": 8080
+      "host": "0.0.0.0",
+      "port": 8000
     },
     "database": {
+      "host": "0.0.0.0",
       "port": 9000
     },
     "ui": {
-      "enabled": true,
-      "port": 3001
+      "host": "0.0.0.0",
+      "enabled": true
     }
   }
 }

@@ -19,7 +19,7 @@ export const searchUsers = functions.https.onCall(async (data: UserSearch, conte
   try {
     const requestUserSnap = await admin.firestore().doc(`users/${requestUserId}`).get();
 
-    requestUser = requestUserSnap.data();
+    requestUser = requestUserSnap.data() as User;
   } catch (error) {
     throw Error("Error while fetching profile of request user");
   }

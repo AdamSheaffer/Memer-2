@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { googleLogin, logout } from "../services/user";
 import { useUserStore } from "../store/user";
 
-const { user } = storeToRefs(useUserStore());
+const userStore = useUserStore();
+const { logout, googleLogin } = userStore;
+const { user } = storeToRefs(userStore);
 </script>
 
 <template>

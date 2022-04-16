@@ -1,7 +1,20 @@
-import { getDocs, onSnapshot, Unsubscribe } from "firebase/firestore";
+import {
+  addDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  setDoc,
+  Timestamp,
+  Unsubscribe,
+} from "firebase/firestore";
 import { defineStore } from "pinia";
-import { Card, Category, Game, Maybe, Meme, Player } from "../../../types";
-import { categoriesCollectionRef, gameRef, playersCollectionRef } from "../firebase";
+import { Card, Category, Game, GameSettings, Maybe, Meme, Player, User } from "../../../types";
+import {
+  categoriesCollectionRef,
+  gameRef,
+  gamesCollectionRef,
+  playersCollectionRef,
+} from "../firebase";
 import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
 import { useUserStore } from "./user";
 
@@ -17,6 +30,40 @@ export const useGameStore = defineStore("game", {
     async getCategories() {
       const snapshot = await getDocs(categoriesCollectionRef);
       this.categories = mapCollection<Category>(snapshot);
+    },
+
+    async createGame(gameSettings: GameSettings) {
+      const payload: Partial<Game> = {
+        beginDate: Timestamp.now(),
+        lastUpdated: Timestamp.now(),
+        ...gameSettings,
+      };
+      const { id } = await addDoc(gamesCollectionRef, payload);
+      return id;
+    },
+
+    updateGame(updates: Partial<Game>) {
+      if (!this.game?.uid) {
+        throw Error("There is no game in the store to update");
+      }
+
+      const payload: Partial<Game> = {
+        lastUpdated: Timestamp.now(),
+        ...updates,
+      };
+      return setDoc(gameRef(this.game.uid), payload, { merge: true });
+    },
+
+    joinGame(gameId: string, user: User) {
+      const playerDoc = doc(playersCollectionRef(gameId), user.uid);
+      return setDoc(playerDoc, { ...user, isActive: true });
+    },
+
+    startGame(playerId: string) {
+      return this.updateGame({
+        hasStarted: true,
+        turn: playerId,
+      });
     },
 
     trackGame(gameId: string) {

@@ -27,3 +27,8 @@ export interface Game {
   timeLimit?: number;
   lastUpdated?: Timestamp;
 }
+
+export type GameSettings = Pick<
+  Game,
+  "maxPlayers" | "pointsToWin" | "safeForWork" | "reverseRoundFrequency" | "timeLimit"
+>;

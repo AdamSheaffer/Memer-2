@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import { Maybe, SetupOption } from "../../../../types";
 
-const props = defineProps<{
-  modelValue: SetupOption<any>["value"];
-  options: SetupOption<any>[];
-  header: string;
-  subheader: Maybe<string>;
-}>();
+const props = withDefaults(
+  defineProps<{
+    modelValue: SetupOption<any>["value"];
+    options: SetupOption<any>[];
+    header: string;
+    subheader: Maybe<string>;
+    firstStep?: boolean;
+    lastStep?: boolean;
+  }>(),
+  {
+    firstStep: false,
+    lastStep: false,
+  }
+);
 
-const emit = defineEmits<(event: "update:modelValue", value: SetupOption<any>["value"]) => void>();
+const emit = defineEmits<{
+  (event: "update:modelValue", value: SetupOption<any>["value"]): void;
+  (event: "next"): void;
+  (event: "back"): void;
+}>();
 
 const onSelectChange = (event: Event) => {
   const el = event.target as HTMLSelectElement;
@@ -25,6 +37,9 @@ const onSelectChange = (event: Event) => {
         {{ option.text }}
       </option>
     </select>
+    <button v-if="!props.firstStep" @click="emit('back')">BACK</button>
+    <button v-if="!props.lastStep" @click="emit('next')">NEXT</button>
+    <button v-if="props.lastStep" @click="emit('next')">START</button>
   </div>
 </template>
 

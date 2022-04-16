@@ -34,7 +34,7 @@ export const captionsCollectionRef = collection(db, "captions");
 // emulators
 if (import.meta.env.MODE === "development") {
   console.info("development: MEMER is using Firebase Emulators...");
-  connectFirestoreEmulator(db, "localhost", 8080);
+  connectFirestoreEmulator(db, "localhost", 8000);
   connectDatabaseEmulator(realtimeDb, "localhost", 9000);
   connectFunctionsEmulator(functions, "localhost", 5001);
   connectAuthEmulator(auth, "http://localhost:9099");
