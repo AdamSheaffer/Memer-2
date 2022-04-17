@@ -1,4 +1,5 @@
-import { Maybe } from "./helpers";
+import { Timestamp } from "./Firebase";
+import { Maybe, PartialMaybe } from "./helpers";
 
 export interface Presence {
   game?: string;
@@ -17,13 +18,15 @@ export type Roles = { [k in Role]?: boolean };
 
 export interface User {
   uid: string;
-  fullName?: Maybe<string>;
-  gamesPlayed?: Maybe<number>;
-  gamesWon?: Maybe<number>;
-  lastChanged?: Maybe<Date>;
-  photoURL?: Maybe<string>;
-  presence?: Maybe<Presence>;
-  roles?: Maybe<Roles>;
-  totalPoints?: Maybe<number>;
-  username?: Maybe<string>;
+  fullName: Maybe<string>;
+  gamesPlayed: number;
+  gamesWon: number;
+  lastChanged: Timestamp;
+  photoURL: Maybe<string>;
+  presence: Maybe<Presence>;
+  roles: Roles;
+  totalPoints: number;
+  username: string;
 }
+
+export type UserChanges = PartialMaybe<User>;

@@ -1,3 +1,64 @@
+import { addDoc, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { Game, GameSettings, PlayerChanges, User as MemerUser } from "../../../types";
+import { gameRef, gamesCollectionRef, playersCollectionRef } from "../firebase";
+
+export const createGame = async (gameSettings: GameSettings, hostId: string) => {
+  const payload: Partial<Game> = {
+    hostId,
+    beginDate: Timestamp.now(),
+    lastUpdated: Timestamp.now(),
+    hasStarted: false,
+    ...gameSettings,
+  };
+  const { id } = await addDoc(gamesCollectionRef, payload);
+  return id;
+};
+
+export const updateGame = (game: Partial<Game>, gameId: string) => {
+  if (!gameId && !game.uid) {
+    throw Error("Must supply a game ID to update");
+  }
+
+  const payload: Partial<Game> = {
+    lastUpdated: Timestamp.now(),
+    ...game,
+  };
+  return setDoc(gameRef(gameId), payload, { merge: true });
+};
+
+export const joinGame = async (gameId: string, user: MemerUser) => {
+  const payload: PlayerChanges = {
+    ...mapUserToPlayer(user),
+    isActive: true,
+  };
+
+  const playerDoc = doc(playersCollectionRef(gameId), user.uid);
+  const playerSnapshot = await getDoc(playerDoc);
+
+  if (!playerSnapshot.exists()) {
+    payload.score = 0;
+  }
+
+  return setDoc(playerDoc, payload, { merge: true });
+};
+
+export const startGame = (gameId: string, playerId: string) => {
+  return updateGame(
+    {
+      hasStarted: true,
+      turn: playerId,
+    },
+    gameId
+  );
+};
+
+export const mapUserToPlayer = (user: MemerUser): PlayerChanges => ({
+  uid: user.uid,
+  fullName: user.fullName,
+  username: user.username,
+  photoURL: user.photoURL,
+  roles: user.roles,
+});
 // const createHands = async (handsNeeded: number): Promise<Card[][]> => {
 //   const snapshot = await captionsRef.get();
 //   const deck = snapshot.docs.map((doc) => doc.data() as Card);

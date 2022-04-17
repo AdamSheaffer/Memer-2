@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../store/user";
+import { logout, googleLogin } from "../services/userService";
 
 const userStore = useUserStore();
-const { logout, googleLogin } = userStore;
 const { user } = storeToRefs(userStore);
 </script>
 

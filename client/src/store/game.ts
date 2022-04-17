@@ -1,20 +1,8 @@
-import {
-  addDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  setDoc,
-  Timestamp,
-  Unsubscribe,
-} from "firebase/firestore";
+import { getDocs, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { defineStore } from "pinia";
-import { Card, Category, Game, GameSettings, Maybe, Meme, Player, User } from "../../../types";
-import {
-  categoriesCollectionRef,
-  gameRef,
-  gamesCollectionRef,
-  playersCollectionRef,
-} from "../firebase";
+import { Card, Category, Game, Maybe, Meme, Player, User } from "../../../types";
+import { categoriesCollectionRef, gameRef, playersCollectionRef } from "../firebase";
+import { joinGame } from "../services/gameService";
 import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
 import { useUserStore } from "./user";
 
@@ -32,42 +20,10 @@ export const useGameStore = defineStore("game", {
       this.categories = mapCollection<Category>(snapshot);
     },
 
-    async createGame(gameSettings: GameSettings) {
-      const payload: Partial<Game> = {
-        beginDate: Timestamp.now(),
-        lastUpdated: Timestamp.now(),
-        ...gameSettings,
-      };
-      const { id } = await addDoc(gamesCollectionRef, payload);
-      return id;
-    },
-
-    updateGame(updates: Partial<Game>) {
-      if (!this.game?.uid) {
-        throw Error("There is no game in the store to update");
-      }
-
-      const payload: Partial<Game> = {
-        lastUpdated: Timestamp.now(),
-        ...updates,
-      };
-      return setDoc(gameRef(this.game.uid), payload, { merge: true });
-    },
-
-    joinGame(gameId: string, user: User) {
-      const playerDoc = doc(playersCollectionRef(gameId), user.uid);
-      return setDoc(playerDoc, { ...user, isActive: true });
-    },
-
-    startGame(playerId: string) {
-      return this.updateGame({
-        hasStarted: true,
-        turn: playerId,
-      });
-    },
-
-    trackGame(gameId: string) {
+    async initialize(gameId: string, user: User) {
       this.resetSubscriptions();
+
+      await joinGame(gameId, user);
 
       const unsubscribeGame = onSnapshot(gameRef(gameId), (snapshot) => {
         this.game = mapDoc<Game>(snapshot);
@@ -89,7 +45,11 @@ export const useGameStore = defineStore("game", {
       return Boolean(this.game && this.players.length && this.categories.length);
     },
 
-    currentPlayer(): Player {
+    currentPlayer(): Maybe<Player> {
+      if (!this.dataLoaded) {
+        return null;
+      }
+
       const userStore = useUserStore();
       const player = this.players.find((p) => p.uid === userStore.user?.uid);
       if (!player) throw Error("Current user not found in players list");
@@ -97,7 +57,11 @@ export const useGameStore = defineStore("game", {
       return player;
     },
 
-    host(): Player {
+    host(): Maybe<Player> {
+      if (!this.dataLoaded) {
+        return null;
+      }
+
       const player = this.players.find((p) => p.uid === this.game?.hostId);
       if (!player) throw Error("No player is game host");
 
@@ -122,7 +86,11 @@ export const useGameStore = defineStore("game", {
       return this.activePlayers.length;
     },
 
-    judge(): Player {
+    judge(): Maybe<Player> {
+      if (!this.dataLoaded) {
+        return null;
+      }
+
       const player = this.players.find((p) => p.uid === this.game?.turn);
       if (!player) throw Error("Couldn't find player for current turn");
 

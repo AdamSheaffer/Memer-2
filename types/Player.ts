@@ -1,3 +1,4 @@
+import { PartialMaybe } from "./helpers";
 import { Meme } from "./Meme";
 import { Roles } from "./User";
 
@@ -15,4 +16,4 @@ export interface Player {
   turnIndex: number;
 }
 
-export type PlayerChanges = Partial<Player>;
+export type PlayerChanges = PartialMaybe<Player>;

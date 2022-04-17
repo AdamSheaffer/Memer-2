@@ -4,8 +4,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { Game } from "../../../types";
 import { gamesCollectionRef } from "../firebase";
-import { useGameStore } from "../store/game";
 import { useUserStore } from "../store/user";
+import { joinGame } from "../services/gameService";
 import { mapCollection } from "../utils/mapCollectionDocs";
 import OpenGame from "../components/OpenGame.vue";
 
@@ -17,7 +17,6 @@ onSnapshot(q, (snapshot) => {
 });
 
 const { user } = useUserStore();
-const { joinGame } = useGameStore();
 
 const router = useRouter();
 const join = async (gameId: string) => {
