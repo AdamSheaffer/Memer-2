@@ -3,7 +3,6 @@ import { useRouter } from "vue-router";
 import { GameSettings } from "../../../types";
 import SetupWizard from "../components/GameSetup/SetupWizard.vue";
 import { createGame } from "../services/gameService";
-import { useGameStore } from "../store/game";
 import { useUserStore } from "../store/user";
 
 const { user } = useUserStore();

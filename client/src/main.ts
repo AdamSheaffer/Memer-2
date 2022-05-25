@@ -3,11 +3,14 @@ import { createPinia } from "pinia";
 import { createApp } from "vue";
 import App from "./App.vue";
 import { auth } from "./firebase";
-import { router } from "./router";
+import router from "./router";
 import { handleSignIn } from "./services/userService";
 import { useUserStore } from "./store/user";
+import "./styles/main.css";
 
-const app = createApp(App).use(createPinia()).use(router);
+const app = createApp(App);
+app.use(router);
+app.use(createPinia());
 
 const userStore = useUserStore();
 

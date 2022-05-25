@@ -3,11 +3,11 @@ import { onSnapshot, query, where } from "firebase/firestore";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { Game } from "../../../types";
-import { gamesCollectionRef } from "../firebase";
-import { useUserStore } from "../store/user";
-import { joinGame } from "../services/gameService";
-import { mapCollection } from "../utils/mapCollectionDocs";
 import OpenGame from "../components/OpenGame.vue";
+import { gamesCollectionRef } from "../firebase";
+import { joinGame } from "../services/gameService";
+import { useUserStore } from "../store/user";
+import { mapCollection } from "../utils/mapCollectionDocs";
 
 const openGames = ref<Game[]>([]);
 
