@@ -6,7 +6,7 @@ import { auth } from "./firebase";
 import router from "./router";
 import { handleSignIn } from "./services/userService";
 import { useUserStore } from "./store/user";
-import "./styles/main.css";
+import "./styles/index.css";
 
 const app = createApp(App);
 app.use(router);

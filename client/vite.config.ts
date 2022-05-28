@@ -1,6 +1,7 @@
 import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
 import { defineConfig } from "vite";
-import { VitePlugin } from "vite-esbuild-typescript-checker";
+import checker from "vite-plugin-checker";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,20 +9,11 @@ export default defineConfig({
     vue({
       reactivityTransform: true,
     }),
-    VitePlugin({
-      vite: {
-        overlay: true,
-      },
-      checker: {
-        typescript: {
-          extensions: {
-            vue: {
-              enabled: true,
-              compiler: "@vue/compiler-sfc",
-            },
-          },
-        },
-      },
-    }),
+    checker({ vueTsc: true }),
   ],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
+  },
 });
