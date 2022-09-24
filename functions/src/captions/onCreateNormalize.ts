@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { Card } from "../../../types";
 
-export const captionOnCreateNormalize = functions.firestore
+export const onCreateNormalize = functions.firestore
   .document("captions/{captionId}")
   .onCreate(async (captionSnapshot) => {
     const caption = captionSnapshot.data() as Card;

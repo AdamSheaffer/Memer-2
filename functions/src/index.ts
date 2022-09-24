@@ -3,17 +3,11 @@ import * as admin from "firebase-admin";
 admin.initializeApp();
 
 // captions
-export * from "./captions/captionOnCreateNormalize";
+export * from "./captions/onCreateNormalize";
 // categories
-export * from "./categories/categoryOnCreateTimestamp";
-// game
-export * from "./game/gameOnUpdateAddPlayerPoints";
+export * from "./categories/onCreateAddTimestamp";
 // online detection
-export * from "./online-detection/onlineStatusOnUpdateChangePlayerStatus";
-export * from "./online-detection/onlineStatusOnUpdateCheckCounter";
+export * from "./online-detection/onUpdateChangePlayerStatus";
 // players
-export * from "./players/playerOnCreateAddGamePlayed";
-export * from "./players/playerOnCreateCheckFullGame";
-export * from "./players/playerOnCreateSetTurnOrder";
-// users
-export * from "./users/searchUsers";
+export * from "./players/onCreateCheckFullGame";
+export * from "./players/onCreateSetTurnOrder";

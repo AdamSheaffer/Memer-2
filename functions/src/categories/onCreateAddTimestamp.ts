@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { Category } from "../../../types";
 
-export const categoryOnCreateTimestamp = functions.firestore
+export const onCreateAddTimestamp = functions.firestore
   .document("categories/{categoryId}")
   .onCreate(async (categorySnapshot) => {
     const category = categorySnapshot.data() as Category;

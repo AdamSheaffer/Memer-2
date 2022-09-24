@@ -2,14 +2,14 @@
 import { useRouter } from "vue-router";
 import { GameSettings } from "../../../types";
 import SetupWizard from "../components/GameSetup/SetupWizard.vue";
+import { useUser } from "../composeables/useUser";
 import { createGame } from "../services/gameService";
-import { useUserStore } from "../store/user";
 
-const { user } = useUserStore();
 const router = useRouter();
+const { user } = useUser();
 
 const onSetupCompletion = async (gameSettings: GameSettings) => {
-  const gameId = await createGame(gameSettings, user!.uid);
+  const gameId = await createGame(gameSettings, user.value!.uid);
   router.push(`/game/${gameId}`);
 };
 </script>

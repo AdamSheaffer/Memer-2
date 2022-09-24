@@ -1,6 +1,6 @@
-import { addDoc, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { Game, GameSettings, PlayerChanges, User as MemerUser } from "../../../types";
-import { gameRef, gamesCollectionRef, playersCollectionRef } from "../firebase";
+import { gamesCollectionRef } from "../firebase";
 
 export const createGame = async (gameSettings: GameSettings, hostId: string) => {
   const payload: Partial<Game> = {
@@ -14,25 +14,15 @@ export const createGame = async (gameSettings: GameSettings, hostId: string) => 
   return id;
 };
 
-export const updateGame = (game: Partial<Game>, gameId: string) => {
-  if (!gameId && !game.uid) {
-    throw Error("Must supply a game ID to update");
-  }
-
-  const payload: Partial<Game> = {
-    lastUpdated: Timestamp.now(),
-    ...game,
-  };
-  return setDoc(gameRef(gameId), payload, { merge: true });
-};
-
 export const joinGame = async (gameId: string, user: MemerUser) => {
   const payload: PlayerChanges = {
     ...mapUserToPlayer(user),
     isActive: true,
   };
 
-  const playerDoc = doc(playersCollectionRef(gameId), user.uid);
+  const gameRef = doc(gamesCollectionRef, gameId);
+  const playersCollectionRef = collection(gameRef, "players");
+  const playerDoc = doc(playersCollectionRef, user.uid);
   const playerSnapshot = await getDoc(playerDoc);
 
   if (!playerSnapshot.exists()) {
@@ -42,22 +32,10 @@ export const joinGame = async (gameId: string, user: MemerUser) => {
   return setDoc(playerDoc, payload, { merge: true });
 };
 
-export const startGame = (gameId: string, playerId: string) => {
-  return updateGame(
-    {
-      hasStarted: true,
-      turn: playerId,
-    },
-    gameId
-  );
-};
-
-export const mapUserToPlayer = (user: MemerUser): PlayerChanges => ({
+const mapUserToPlayer = (user: MemerUser): PlayerChanges => ({
   uid: user.uid,
-  fullName: user.fullName,
   username: user.username,
   photoURL: user.photoURL,
-  roles: user.roles,
 });
 // const createHands = async (handsNeeded: number): Promise<Card[][]> => {
 //   const snapshot = await captionsRef.get();

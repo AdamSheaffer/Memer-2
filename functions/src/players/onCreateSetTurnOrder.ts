@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { Player } from "../../../types";
 
-export const playerOnCreateSetTurnOrder = functions.firestore
+export const onCreateSetTurnOrder = functions.firestore
   .document("games/{gameId}/players/{playerId}")
   .onCreate(async (playerSnapshot, context) => {
     const player = playerSnapshot.data() as Player;

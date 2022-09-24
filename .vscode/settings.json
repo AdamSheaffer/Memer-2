@@ -24,6 +24,10 @@
       "source.fixAll.eslint": true
     }
   },
+  "tailwindCSS.includeLanguages": {
+    "vue": "html",
+    "vue-html": "html"
+  },
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.fontLigatures": true,
@@ -33,5 +37,6 @@
   "emmet.showSuggestionsAsSnippets": true,
   "gitlens.hovers.currentLine.over": "line",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "cSpell.words": ["MEMER"]
 }

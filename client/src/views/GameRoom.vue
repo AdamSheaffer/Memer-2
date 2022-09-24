@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { useGameStore } from "../store/game";
-import { useUserStore } from "../store/user";
+import { useGame } from "../composeables/useGame";
+import { useUser } from "../composeables/useUser";
+import { joinGame } from "../services/gameService";
 
-const { user } = useUserStore();
+const { user } = useUser();
+const { params } = useRoute();
+const { game, trackChanges, players } = useGame(params.id as string);
 
-const route = useRoute();
-const gameId = route.params.id as string;
-
-const gameStore = useGameStore();
-const { game, players, hand } = storeToRefs(gameStore);
-
-onMounted(() => gameStore.initialize(gameId, user!));
+onMounted(() => {
+  joinGame(params.id as string, user.value!);
+  trackChanges();
+});
 </script>
 
 <template>
   <div>
     GAMEROOM
     <p>Started: {{ game?.hasStarted }}</p>
+    <pre>{{ players }}</pre>
   </div>
 </template>
 

@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { Game } from "../../../types";
 
-export const playerOnCreateCheckFullGame = functions.firestore
+export const onCreateCheckFullGame = functions.firestore
   .document("games/{gameId}/players/{playerId}")
   .onCreate(async (change, context) => {
     const gameId = context.params.gameId;

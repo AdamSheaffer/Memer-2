@@ -10,15 +10,16 @@
     "firebase": "^9.6.6",
     "lodash.chunk": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
-    "pinia": "^2.0.11",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.2",
     "@types/lodash.chunk": "^4.2.6",
     "@types/lodash.shuffle": "^4.2.6",
     "@vitejs/plugin-vue": "^2.0.0",
     "autoprefixer": "^10.4.7",
+    "babel-loader": "^8.2.5",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-vue": "^8.3.0",
@@ -28,6 +29,8 @@
     "typescript": "^4.4.4",
     "vite": "^2.7.2",
     "vite-plugin-checker": "^0.4.6",
+    "vite-svg-loader": "^3.6.0",
+    "vue-loader": "^16.8.3",
     "vue-tsc": "^0.34.16"
   }
 }

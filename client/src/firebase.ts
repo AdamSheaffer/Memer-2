@@ -1,7 +1,7 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectDatabaseEmulator, getDatabase } from "firebase/database";
-import { collection, connectFirestoreEmulator, doc, getFirestore } from "firebase/firestore";
+import { collection, connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
 const firebaseConfig: FirebaseOptions = {
@@ -14,9 +14,7 @@ const firebaseConfig: FirebaseOptions = {
   appId: import.meta.env.VITE_APP_ID as string,
 };
 
-const app = initializeApp(firebaseConfig);
-
-// firebase modules
+export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const realtimeDb = getDatabase(app);
@@ -24,10 +22,6 @@ export const functions = getFunctions(app);
 
 // firestore refs
 export const gamesCollectionRef = collection(db, "games");
-export const gameRef = (gameId: string) => doc(gamesCollectionRef, gameId);
-export const playersCollectionRef = (gameId: string) => collection(gameRef(gameId), "players");
-export const usersCollectionRef = collection(db, "users");
-export const userRef = (userId: string) => doc(usersCollectionRef, userId);
 export const categoriesCollectionRef = collection(db, "categories");
 export const captionsCollectionRef = collection(db, "captions");
 
