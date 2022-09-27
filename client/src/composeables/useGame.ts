@@ -1,3 +1,4 @@
+import { Unsubscribe } from "@firebase/util";
 import { computed } from "@vue/reactivity";
 import {
   collection,
@@ -5,11 +6,12 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
-  setDoc,
   Timestamp,
+  updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { onUnmounted, ref } from "vue";
-import { Game, Maybe, Meme, Player } from "../../../types";
+import { Game, Maybe, Meme, Player, PlayerChanges } from "../../../types";
 import { db } from "../firebase";
 import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
 import { useUser } from "./useUser";
@@ -17,13 +19,14 @@ import { useUser } from "./useUser";
 const gamesCollectionRef = collection(db, "games");
 const { user } = useUser();
 
+const game = ref<Maybe<Game>>(null);
+const players = ref<Player[]>([]);
+
 export const useGame = (gameId: string) => {
   const firestoreGameRef = doc(gamesCollectionRef, gameId);
   const firestorePlayersCollectionRef = collection(firestoreGameRef, "players");
 
-  const game = ref<Maybe<Game>>(null);
-  const players = ref<Player[]>([]);
-  const unsubscribes: Array<() => void> = [];
+  const unsubscribes: Unsubscribe[] = [];
 
   const trackGame = async () => {
     const docRef = doc(gamesCollectionRef, gameId);
@@ -44,7 +47,7 @@ export const useGame = (gameId: string) => {
     });
   };
 
-  const trackChanges = async () => {
+  const initialize = async () => {
     const callbacks = await Promise.all([trackGame(), trackPlayers()]);
     unsubscribes.push(...callbacks);
   };
@@ -54,7 +57,7 @@ export const useGame = (gameId: string) => {
       lastUpdated: Timestamp.now(),
       ...updates,
     };
-    return setDoc(firestoreGameRef, payload, { merge: true });
+    return updateDoc(firestoreGameRef, payload);
   };
 
   const startGame = (playerId: string) => {
@@ -160,6 +163,67 @@ export const useGame = (gameId: string) => {
     return sortedPlayers[nextIndex];
   });
 
+  const updatePlayer = (playerId: string, changes: PlayerChanges) => {
+    if (!userIsHost) return; // Only host will be in charge of updating players
+
+    const playerRef = doc(firestorePlayersCollectionRef, playerId);
+    return updateDoc(playerRef, changes);
+  };
+
+  const resetRound = (nextTagOptions: string[]) => {
+    const batch = writeBatch(db);
+    players.value.forEach((player) => {
+      const playerRef = doc(firestorePlayersCollectionRef, player.uid);
+      const updates: PlayerChanges = { memePlayed: null };
+      batch.update(playerRef, updates);
+    });
+
+    const gameChanges: Partial<Game> = {
+      tagOptions: nextTagOptions,
+      turn: nextPlayerTurn.value?.uid,
+      roundWinner: null,
+      winningMeme: null,
+      tagSelection: null,
+      gifOptionURLs: [],
+      memeTemplate: null,
+      memeTemplateTimestamp: null,
+    };
+
+    batch.update(firestoreGameRef, gameChanges);
+
+    return batch.commit();
+  };
+
+  const resetGame = async (nextTagOptions: string[]) => {
+    const batch = writeBatch(db);
+    players.value.forEach((player) => {
+      const changes: PlayerChanges = {
+        score: 0,
+        memePlayed: null,
+        imageUrlPlayed: null,
+      };
+      const playerRef = doc(firestorePlayersCollectionRef, player.uid);
+      batch.update(playerRef, changes);
+    });
+
+    const gameChanges: Partial<Game> = {
+      tagOptions: nextTagOptions,
+      turn: nextPlayerTurn.value?.uid,
+      tagSelection: null,
+      winner: null,
+      roundWinner: null,
+      gifOptionURLs: null,
+      memeTemplate: null,
+      memeTemplateTimestamp: null,
+      winningMeme: null,
+      lastUpdated: Timestamp.now(),
+    };
+
+    batch.update(firestoreGameRef, gameChanges);
+
+    return batch.commit();
+  };
+
   onUnmounted(() => {
     unsubscribes.forEach((fn) => fn());
   });
@@ -182,10 +246,13 @@ export const useGame = (gameId: string) => {
     playerCount,
     players,
     playerSubmissions,
+    resetGame,
+    resetRound,
     roundWinner,
     startGame,
-    trackChanges,
+    initialize,
     updateGame,
+    updatePlayer,
     userIsHost,
   };
 };

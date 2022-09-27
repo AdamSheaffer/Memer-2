@@ -1,4 +1,4 @@
-FROM node:14.5
+FROM node:14.20.0
 
 ADD . /src
 WORKDIR /src

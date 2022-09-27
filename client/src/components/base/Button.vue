@@ -29,14 +29,7 @@ const colorClasses = computed(() => {
 
 <template>
   <button
-    :class="[...colorClasses]"
-    class="mx-5 my-2 transition duration-150 ease-in-out rounded border px-8 py-3"
-  >
-    <slot />
-  </button>
-
-  <button
-    class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-8 py-3 text-sm"
+    class="mx-2 my-2 bg-purple-400 transition duration-150 ease-in-out rounded text-white px-8 py-3 text-sm"
   >
     <slot />
   </button>

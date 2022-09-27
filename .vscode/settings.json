@@ -38,5 +38,5 @@
   "gitlens.hovers.currentLine.over": "line",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.formatOnPaste": true,
-  "cSpell.words": ["MEMER"]
+  "cSpell.words": ["Gameroom", "MEMER"]
 }
