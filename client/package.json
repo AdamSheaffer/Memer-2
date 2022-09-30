@@ -4,6 +4,7 @@
   "scripts": {
     "serve": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "test": "vitest --environment happy-dom",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,11 +19,13 @@
     "@types/lodash.chunk": "^4.2.6",
     "@types/lodash.shuffle": "^4.2.6",
     "@vitejs/plugin-vue": "^2.0.0",
+    "@vue/test-utils": "^2.0.2",
     "autoprefixer": "^10.4.7",
     "babel-loader": "^8.2.5",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-vue": "^8.3.0",
+    "happy-dom": "^6.0.4",
     "postcss": "^8.4.14",
     "prettier": "^2.5.1",
     "tailwindcss": "^3.0.24",
@@ -30,6 +33,7 @@
     "vite": "^2.7.2",
     "vite-plugin-checker": "^0.4.6",
     "vite-svg-loader": "^3.6.0",
+    "vitest": "^0.23.4",
     "vue-loader": "^16.8.3",
     "vue-tsc": "^0.34.16"
   }

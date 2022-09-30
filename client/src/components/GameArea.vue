@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useGame } from "../composeables/useGame";
-import Button from "./base/Button.vue";
+import StartButton from "./StartButton.vue";
 
 const props = defineProps<{ gameId: string }>();
 
-const { game } = useGame(props.gameId);
+const { game, userIsHost } = useGame(props.gameId);
 </script>
 
 <template>
   <div>
     GAMEAREA
     <pre>{{ game }}</pre>
-    <Button>Start Game</Button>
+    <StartButton v-if="userIsHost" :game-id="gameId" />
   </div>
 </template>
