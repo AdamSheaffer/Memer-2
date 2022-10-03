@@ -7,11 +7,10 @@ const props = defineProps<{
   outline?: boolean;
   rounded?: boolean;
   size?: "sm" | "md" | "lg";
-  type?: "primary" | "secondary";
 }>();
 
 const colorClasses = computed(() => {
-  const color = props.color || props.type || "primary";
+  const color = props.color || "primary";
   const classes = props.outline
     ? [
         `bg-${color}-100`,

@@ -8,9 +8,10 @@ const { activePlayers } = useGame(props.gameId);
 
 <template>
   <aside>
-    PLAYERS SIDEBAR
     <ul>
-      <li v-for="player in activePlayers" :key="player.uid">{{ player.uid }}</li>
+      <li v-for="player in activePlayers" :key="player.uid">
+        {{ player.username || `Player ${player.turnIndex}` }}
+      </li>
     </ul>
   </aside>
 </template>
