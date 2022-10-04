@@ -84,7 +84,9 @@ export const useGame = (gameId: string) => {
   });
 
   const activePlayers = computed(() => {
-    return players.value.filter((p) => !p.removed && p.isActive);
+    return players.value
+      .filter((p) => !p.removed && p.isActive)
+      .sort((a, b) => a.turnIndex - b.turnIndex);
   });
 
   const playerCount = computed(() => {
@@ -157,7 +159,7 @@ export const useGame = (gameId: string) => {
   const nextPlayerTurn = computed(() => {
     if (!activePlayers.value.length) return null;
 
-    const sortedPlayers = activePlayers.value.sort((a, b) => a.turnIndex - b.turnIndex);
+    const sortedPlayers = [...activePlayers.value].sort((a, b) => a.turnIndex - b.turnIndex);
     const playerIndex = sortedPlayers.findIndex((p) => p.uid === game.value?.turn);
     const nextIndex = playerIndex === players.value.length - 1 ? 0 : playerIndex + 1;
     return sortedPlayers[nextIndex];
