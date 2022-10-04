@@ -4,14 +4,16 @@ import MemerLogo from "@/assets/memer_logo.svg";
 
 <template>
   <div
-    class="h-full w-full relative flex flex-row justify-center items-center px-12 bg-darkblue-300"
+    class="h-full w-full relative flex flex-row justify-center items-center px-12 bg-gradient-to-b from-purple-600 to-darkblue-300"
   >
-    <div class="h-3/4 w-full lg:w-2/3 xl:w-1/2 mx-auto p-6 rounded-3xl bg-darkblue-500">
+    <div
+      class="h-3/4 w-full lg:w-2/3 xl:w-1/2 mx-auto p-6 rounded-3xl shadow-[1rem_2rem_.8rem_.7rem_rgba(0,0,0,0.3)] bg-darkblue-500"
+    >
       <div
         class="h-full rounded-3xl border-4 flex flex-col justify-center border-darkblue-300 bg-darkblue-500"
       >
         <div>
-          <h1 class="text-6xl text-center">
+          <h1 class="text-4xl md:text-6xl text-center">
             <span class="text-white">WELCOME TO </span>
             <span class="text-purple-400">MEMER</span>
           </h1>
