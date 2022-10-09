@@ -8,6 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
+    "@vueuse/core": "^9.3.0",
     "firebase": "^9.6.6",
     "lodash.chunk": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
