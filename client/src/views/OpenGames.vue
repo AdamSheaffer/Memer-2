@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import MemerLogo from "@/assets/memer_logo.svg";
 import { useRouter } from "vue-router";
+import BackgroundBox from "../components/base/BackgroundBox.vue";
 import OpenGamesListItem from "../components/OpenGamesListItem.vue";
 import { useOpenGames } from "../composeables/useOpenGames";
+import { faceDizzy } from "../services/icons";
 
 const { openGames, loading } = useOpenGames();
 const router = useRouter();
@@ -10,28 +13,34 @@ const goToGameRoom = (gameId: string) => router.push(`/game/${gameId}`);
 </script>
 
 <template>
-  <div class="h-full w-full relative flex flex-row justify-center items-center px-12">
-    <div
-      class="h-3/4 w-full lg:w-2/3 xl:w-1/2 mx-auto p-6 rounded-3xl shadow-[1rem_2rem_.8rem_.7rem_rgba(0,0,0,0.3)] bg-darkblue-500"
-    >
-      <div
-        class="h-full rounded-3xl border-4 flex flex-col justify-center border-darkblue-300 bg-darkblue-500"
-      >
-        <div class="mx-auto flex flex-col space-y-4">
-          <OpenGamesListItem
-            v-for="game in openGames"
-            :key="game.uid"
-            :game="game"
-            @join="goToGameRoom"
-          />
-          <div v-if="!loading && !openGames.length">
-            There are currently no open games.
-            <div>
-              <router-link to="/create">Create a new game</router-link>
-            </div>
+  <BackgroundBox>
+    <h2 class="text-center text-gold-500 text-shadow-lg text-5xl mb-3">OPEN GAMES</h2>
+    <div class="mx-auto flex flex-col space-y-4">
+      <OpenGamesListItem
+        v-for="game in openGames"
+        :key="game.uid"
+        :game="game"
+        @join="goToGameRoom"
+      />
+      <div v-if="!loading && !openGames.length">
+        <div
+          class="flex flex-col md:flex-row items-center md:space-x-6 border-2 border-purple-400 py-2 px-4 mt-4 rounded-lg"
+        >
+          <div>
+            <FaIcon class="text-purple-400 text-5xl" :icon="faceDizzy"></FaIcon>
+          </div>
+          <div class="text-center md:text-left mt-2 md:mt-0">
+            <h3 class="text-lg text-white">Welp... There aren't any open games right now</h3>
+            <h3 class="text-lg text-white mt-1">
+              Try hosting a
+              <router-link to="/create" class="text-purple-400 hover:text-purple-300 text-shadow"
+                >NEW GAME</router-link
+              >
+            </h3>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <MemerLogo class="hidden lg:block absolute right-0 bottom-0" />
+  </BackgroundBox>
 </template>

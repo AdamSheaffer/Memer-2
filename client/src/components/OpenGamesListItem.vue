@@ -12,22 +12,36 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
 
 <template>
   <div
-    class="flex flex-col md:flex-row items-end space-x-12 space-y-4 border-2 border-purple-400 py-2 px-4 rounded-lg"
+    class="flex flex-col md:flex-row items-end md:space-x-12 space-y-4 border-2 border-purple-400 py-2 px-4 rounded-lg"
   >
-    <!-- <div class="rounded-full bg-blue-400 w-10 h-10 text-center">A</div> -->
-    <div class="flex-1">
+    <img
+      src="https://thenib.com/wp-content/uploads/2019/08/this-is-not-fine-001-dae9d5-1.png"
+      class="hidden md:block rounded-full w-14 h-14 mx-auto border-2 border-gold-500"
+    />
+    <div class="ml-0">
       <div class="flex flex-col">
         <div class="text-white text-xs md:text-sm tracking-wide mb-2">
           Created {{ timeAgoStarted }}
         </div>
-        <div class="flex flex-wrap justify-start space-x-2 space-y-1">
-          <PillBadge color="purple" :icon="heart" title="Points to Win">
+        <div class="flex flex-wrap justify-start space-x-2">
+          <PillBadge
+            class="mt-1"
+            color="purple"
+            :icon="heart"
+            :title="`${game.pointsToWin} points to win`"
+          >
             {{ game.pointsToWin }}
           </PillBadge>
-          <PillBadge color="purple" :icon="users" title="Max Players">
+          <PillBadge
+            class="mt-1"
+            color="purple"
+            :icon="users"
+            :title="`${game.maxPlayers} max players`"
+          >
             {{ game.maxPlayers }}
           </PillBadge>
           <PillBadge
+            class="mt-1"
             color="red"
             :icon="briefcase"
             :title="`${!game.safeForWork && 'Not '}Safe for Work`"
