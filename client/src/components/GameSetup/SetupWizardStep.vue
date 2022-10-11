@@ -9,10 +9,12 @@ const props = withDefaults(
     subheader: Maybe<string>;
     firstStep?: boolean;
     lastStep?: boolean;
+    smallText?: boolean;
   }>(),
   {
     firstStep: false,
     lastStep: false,
+    smallText: false,
   }
 );
 
@@ -22,24 +24,60 @@ const emit = defineEmits<{
   (event: "back"): void;
 }>();
 
-const onSelectChange = (event: Event) => {
-  const el = event.target as HTMLSelectElement;
-  emit("update:modelValue", el.value);
+const onSelectChange = (val: typeof props.modelValue) => {
+  emit("update:modelValue", val);
 };
 </script>
 
 <template>
-  <div>
-    <h1>{{ props.header }}</h1>
-    <h4>{{ props.subheader }}</h4>
-    <select @change="onSelectChange" :value="modelValue">
-      <option v-for="option in options" :key="option.text" :value="option.value">
+  <div class="p-4 h-full flex flex-col justify-between">
+    <div>
+      <h2 class="text-white text-6xl text-shadow-purple">{{ props.header }}</h2>
+      <h4 class="font-['Antonio'] text-lg text-gold-400 mt-2 tracking-widest">
+        {{ props.subheader }}
+      </h4>
+    </div>
+    <div class="flex justify-around">
+      <h4
+        v-for="option in options"
+        :key="option.value"
+        class="transition-all h-16 cursor-pointer"
+        :class="{
+          'text-gold-400 text-shadow-purple -mt-1': option.value === modelValue,
+          'text-2xl md:text-4xl': option.value === modelValue && smallText,
+          'text-4xl md:text-7xl': option.value === modelValue && !smallText,
+          'text-purple-400 text-shadow': option.value !== modelValue,
+          'text-lg md:text-3xl': option.value !== modelValue && smallText,
+          'text-2xl md:text-5xl': option.value !== modelValue && !smallText,
+        }"
+        @click="onSelectChange(option.value)"
+      >
         {{ option.text }}
-      </option>
-    </select>
-    <button v-if="!props.firstStep" @click="emit('back')">BACK</button>
-    <button v-if="!props.lastStep" @click="emit('next')">NEXT</button>
-    <button v-if="props.lastStep" @click="emit('next')">START</button>
+      </h4>
+    </div>
+    <div class="flex justify-between space-x-4 px-2">
+      <button
+        v-if="!props.firstStep"
+        @click="emit('back')"
+        class="bg-transparent text-teal-500 hover:text-teal-300 w-full md:w-24 border-teal-500 hover:border-teal-300 border-2 px-4 py-2 rounded-md tracking-wider"
+      >
+        BACK
+      </button>
+      <button
+        v-if="!props.lastStep"
+        class="text-white w-full ml-auto md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider"
+        @click="emit('next')"
+      >
+        NEXT
+      </button>
+      <button
+        v-if="props.lastStep"
+        class="text-white w-full ml-auto md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider"
+        @click="emit('next')"
+      >
+        START
+      </button>
+    </div>
   </div>
 </template>
 

@@ -17,5 +17,14 @@
     .text-shadow-none {
       text-shadow: none;
     }
+    .text-shadow-purple {
+      text-shadow: 2px 2px 4px theme("colors.purple.400");
+    }
+    .text-shadow-md-purple {
+      text-shadow: 4px 4px 8px theme("colors.purple.400");
+    }
+    .text-shadow-lg-purple {
+      text-shadow: 15px 15px 30px theme("colors.purple.400");
+    }
   }
 }

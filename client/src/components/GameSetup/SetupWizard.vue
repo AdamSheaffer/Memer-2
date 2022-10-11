@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { GameSettings, SetupOption } from "../../../../types";
+import { xMark } from "../../services/icons";
+import BackgroundBox from "../base/BackgroundBox.vue";
+import ProfileCreate from "../ProfileCreate.vue";
 import SetupWizardStep from "./SetupWizardStep.vue";
 
-const emit = defineEmits<(event: "submit", settings: GameSettings) => void>();
+const emit = defineEmits<{
+  (event: "submit", settings: GameSettings): void;
+  (event: "cancelled"): void;
+}>();
 
 const stepNumber = ref(1);
 
@@ -33,6 +39,10 @@ const timerOptions: SetupOption<number>[] = [
   { text: "30 SEC", value: 30 },
   { text: "60 SEC", value: 60 },
 ];
+const nsfwOptions: SetupOption<boolean>[] = [
+  { text: "YUH BOI NSFW", value: false },
+  { text: "I LIVE WITH MY MOM", value: true },
+];
 
 const gameSettings = reactive<GameSettings>({
   maxPlayers: 5,
@@ -44,18 +54,27 @@ const gameSettings = reactive<GameSettings>({
 </script>
 
 <template>
-  <div>
+  <BackgroundBox class="h-full relative">
+    <div class="relative">
+      <FaIcon
+        :icon="xMark"
+        class="cursor-pointer absolute right-4 top-4 text-slate-300 text-xl"
+        title="CANCEL"
+        @click="emit('cancelled')"
+      ></FaIcon>
+    </div>
+    <ProfileCreate v-if="stepNumber === 1" save-btn-text="NEXT" @submit="() => stepNumber++" />
     <SetupWizardStep
-      v-if="stepNumber === 1"
+      v-if="stepNumber === 2"
       v-model.number="gameSettings.maxPlayers"
       :options="maxPlayersOptions"
-      first-step
       header="PLAYERS"
       subheader="HOW MANY PLAYERS, PLAYER?"
       @next="() => stepNumber++"
+      @back="() => stepNumber--"
     />
     <SetupWizardStep
-      v-if="stepNumber === 2"
+      v-if="stepNumber === 3"
       v-model.number="gameSettings.pointsToWin"
       :options="pointsToWinOptions"
       header="SCORES"
@@ -64,25 +83,37 @@ const gameSettings = reactive<GameSettings>({
       @back="() => stepNumber--"
     />
     <SetupWizardStep
-      v-if="stepNumber === 3"
+      v-if="stepNumber === 4"
       v-model.number="gameSettings.reverseRoundFrequency"
       :options="reverseRoundOptions"
       header="REVERSE ROUNDS"
       subheader="HOW OFTEN DO YOU WANT REVERSE ROUNDS?"
+      small-text
       @next="() => stepNumber++"
       @back="() => stepNumber--"
     />
     <SetupWizardStep
-      v-if="stepNumber === 4"
+      v-if="stepNumber === 5"
       v-model.number="gameSettings.timeLimit"
       :options="timerOptions"
       header="TIMER"
       subheader="HOW LONG SHOULD ONE ROUND LAST?"
+      small-text
+      @next="() => stepNumber++"
+      @back="() => stepNumber--"
+    />
+    <SetupWizardStep
+      v-if="stepNumber === 6"
+      v-model.number="gameSettings.safeForWork"
+      :options="nsfwOptions"
+      header="NSFW?"
+      subheader="YOU DOWN TO PARTY?"
+      small-text
       last-step
       @next="() => emit('submit', gameSettings)"
       @back="() => stepNumber--"
     />
-  </div>
+  </BackgroundBox>
 </template>
 
 <style></style>

@@ -14,8 +14,8 @@ export const useUser = () => {
     const credentials = await signInAnonymously(auth);
     user.value = {
       uid: credentials.user.uid,
-      username: localStorage.getItem("username"),
-      photoURL: null, // Grab from localstorage
+      username: localStorage.getItem("username") ?? "RANDO",
+      photoURL: localStorage.getItem("photoURL"), // Grab from localstorage
     };
   };
 

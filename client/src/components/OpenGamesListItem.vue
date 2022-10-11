@@ -12,11 +12,12 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
 
 <template>
   <div
-    class="flex flex-col md:flex-row items-end md:space-x-12 space-y-4 border-2 border-purple-400 py-2 px-4 rounded-lg"
+    class="flex flex-col md:flex-row items-end md:space-x-12 space-y-4 md:space-y-0 border-2 border-purple-400 py-2 px-4 rounded-lg"
   >
     <img
-      src="https://thenib.com/wp-content/uploads/2019/08/this-is-not-fine-001-dae9d5-1.png"
-      class="hidden md:block rounded-full w-14 h-14 mx-auto border-2 border-gold-500"
+      v-if="game.hostPhotoURL"
+      :src="game.hostPhotoURL"
+      class="hidden md:block rounded-full w-14 h-14 mx-auto border-2 border-gold-500 bg-teal-500"
     />
     <div class="ml-0">
       <div class="flex flex-col">

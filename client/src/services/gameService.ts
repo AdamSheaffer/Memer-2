@@ -2,9 +2,14 @@ import { addDoc, collection, doc, getDoc, setDoc, Timestamp } from "firebase/fir
 import { Game, GameSettings, PlayerChanges, User as MemerUser } from "../../../types";
 import { gamesCollectionRef } from "../firebase";
 
-export const createGame = async (gameSettings: GameSettings, hostId: string) => {
+export const createGame = async (
+  gameSettings: GameSettings,
+  hostId: string,
+  hostPhotoURL: string
+) => {
   const payload: Partial<Game> = {
     hostId,
+    hostPhotoURL,
     beginDate: Timestamp.now(),
     lastUpdated: Timestamp.now(),
     hasStarted: false,

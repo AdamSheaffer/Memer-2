@@ -9,16 +9,15 @@ const router = useRouter();
 const { user } = useUser();
 
 const onSetupCompletion = async (gameSettings: GameSettings) => {
-  const gameId = await createGame(gameSettings, user.value!.uid);
+  const gameId = await createGame(gameSettings, user.value!.uid, user.value!.photoURL!);
   router.push(`/game/${gameId}`);
 };
+
+const onCancel = () => router.push("/");
 </script>
 
 <template>
-  <div>
-    <h1>Create Game</h1>
-    <SetupWizard @submit="onSetupCompletion" />
-  </div>
+  <SetupWizard @submit="onSetupCompletion" @cancelled="onCancel" />
 </template>
 
 <style></style>
