@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { GameSettings, SetupOption } from "../../../../types";
+import { useAvatar } from "../../composeables/useAvatar";
 import { xMark } from "../../services/icons";
 import BackgroundBox from "../base/BackgroundBox.vue";
 import ProfileCreate from "../ProfileCreate.vue";
@@ -51,6 +52,12 @@ const gameSettings = reactive<GameSettings>({
   timeLimit: 0,
   safeForWork: false,
 });
+
+const completeAvatarStep = () => {
+  stepNumber.value++;
+  const { markAvatarAsSet } = useAvatar();
+  markAvatarAsSet();
+};
 </script>
 
 <template>
@@ -63,7 +70,7 @@ const gameSettings = reactive<GameSettings>({
         @click="emit('cancelled')"
       ></FaIcon>
     </div>
-    <ProfileCreate v-if="stepNumber === 1" save-btn-text="NEXT" @submit="() => stepNumber++" />
+    <ProfileCreate v-if="stepNumber === 1" save-btn-text="NEXT" @submit="completeAvatarStep" />
     <SetupWizardStep
       v-if="stepNumber === 2"
       v-model.number="gameSettings.maxPlayers"

@@ -1,5 +1,5 @@
 import { refDebounced } from "@vueuse/core";
-import { computed, reactive, toRef, watchEffect } from "vue";
+import { computed, reactive, ref, toRef, watchEffect } from "vue";
 import { Maybe } from "../../../types";
 import { useUser } from "./useUser";
 
@@ -107,6 +107,7 @@ const avatar = reactive<AvatarAttributes>({
   skinColor: null,
   ...avatarObj,
 });
+const needsAvatarSet = ref(localStorage.getItem("avatarSet") !== "true");
 
 export const useAvatar = () => {
   const usernameRef = toRef(avatar, "name");
@@ -128,8 +129,13 @@ export const useAvatar = () => {
       }`
   );
 
+  const markAvatarAsSet = () => {
+    localStorage.setItem("avatarSet", "true");
+    needsAvatarSet.value = false;
+  };
+
   watchEffect(() => localStorage.setItem("avatar", JSON.stringify(avatar)));
   watchEffect(() => updateUser({ username: usernameRef.value, photoURL: photoURL.value }));
 
-  return { avatar, photoURL };
+  return { avatar, photoURL, needsAvatarSet, markAvatarAsSet };
 };

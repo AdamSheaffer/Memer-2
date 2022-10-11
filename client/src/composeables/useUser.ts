@@ -1,11 +1,11 @@
 import { signInAnonymously } from "@firebase/auth";
 import { doc, updateDoc } from "@firebase/firestore";
-import { computed } from "@vue/reactivity";
 import { ref } from "vue";
 import { Maybe, User } from "../../../types";
 import { auth, db } from "../firebase";
 
 const user = ref<Maybe<User>>(null);
+const defaultPhotoURL = "https://avatars.dicebear.com/api/personas/default.svg";
 
 export type ProfileUpdates = { username: string; photoURL: string };
 
@@ -14,8 +14,8 @@ export const useUser = () => {
     const credentials = await signInAnonymously(auth);
     user.value = {
       uid: credentials.user.uid,
-      username: localStorage.getItem("username") ?? "RANDO",
-      photoURL: localStorage.getItem("photoURL"), // Grab from localstorage
+      username: localStorage.getItem("username") || "RANDO",
+      photoURL: localStorage.getItem("photoURL") || defaultPhotoURL,
     };
   };
 
@@ -39,7 +39,5 @@ export const useUser = () => {
     }
   };
 
-  const userNeedsProfile = computed(() => !user.value?.username); // TODO: check photoURL too
-
-  return { user, anonymouslySignInUser, updateUser, userNeedsProfile };
+  return { user, anonymouslySignInUser, updateUser };
 };
