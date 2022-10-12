@@ -25,14 +25,14 @@ import BackgroundBox from "../components/base/BackgroundBox.vue";
       <div class="flex flex-col mt-12 space-y-4">
         <router-link
           to="/open-games"
-          class="mx-auto bg-darkblue hover:bg-purple-400 hover:text-white hover:border-purple-600 border-2 border-purple-400 py-4 text-center text-2xl rounded-lg text-purple-400 w-96 cursor-pointer"
+          class="mx-auto bg-darkblue hover:bg-purple-400 hover:text-white hover:border-purple-600 border-2 border-purple-400 py-4 text-center text-lg md:text-2xl rounded-lg text-purple-400 w-56 md:w-96 cursor-pointer"
         >
           VIEW OPEN GAMES
         </router-link>
 
         <router-link
           to="/create"
-          class="mx-auto bg-darkblue hover:bg-purple-400 hover:text-white hover:border-purple-600 border-2 border-purple-400 py-4 text-center text-2xl rounded-lg text-purple-400 w-96 cursor-pointer"
+          class="mx-auto bg-darkblue hover:bg-purple-400 hover:text-white hover:border-purple-600 border-2 border-purple-400 py-4 text-center text-lg md:text-2xl rounded-lg text-purple-400 w-56 md:w-96 cursor-pointer"
         >
           CREATE NEW GAME
         </router-link>

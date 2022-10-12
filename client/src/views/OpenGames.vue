@@ -15,7 +15,7 @@ const goToGameRoom = (gameId: string) => router.push(`/game/${gameId}`);
 <template>
   <BackgroundBox>
     <h2 class="text-center text-gold-500 text-shadow text-5xl my-3">OPEN GAMES</h2>
-    <h4 class="text-center text-white text-sm">
+    <h4 v-if="openGames.length" class="text-center text-white text-sm">
       HOST A
       <router-link to="/create" class="text-teal-500 hover:text-teal-200 text-shadow">
         NEW GAME

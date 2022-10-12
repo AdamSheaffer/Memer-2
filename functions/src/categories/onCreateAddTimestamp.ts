@@ -1,17 +1,16 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import { Category } from "../../../types";
 
 export const onCreateAddTimestamp = functions.firestore
   .document("categories/{categoryId}")
   .onCreate(async (categorySnapshot) => {
-    const category = categorySnapshot.data() as Category;
+    const category = categorySnapshot.data();
 
     if (!category) {
       throw Error("Function triggered but no category was added");
     }
 
-    const updates: Partial<Category> = {
+    const updates = {
       createdAt: admin.firestore.Timestamp.now(),
     };
 

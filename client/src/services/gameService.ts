@@ -38,8 +38,3 @@ export const joinGame = async (gameId: string, user: MemerUser) => {
 
   return setDoc(playerDoc, payload, { merge: true });
 };
-
-// const pickRandomTagOptions = (categories: Category[], num: number): string[] =>
-//   shuffle(categories)
-//     .map((c) => c.description)
-//     .slice(0, num);

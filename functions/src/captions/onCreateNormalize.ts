@@ -1,11 +1,10 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import { Card } from "../../../types";
 
 export const onCreateNormalize = functions.firestore
   .document("captions/{captionId}")
   .onCreate(async (captionSnapshot) => {
-    const caption = captionSnapshot.data() as Card;
+    const caption = captionSnapshot.data();
 
     if (!caption) {
       throw Error("Function triggered but no caption was added");
@@ -13,7 +12,7 @@ export const onCreateNormalize = functions.firestore
 
     const normalized = `${caption.top} ${caption.bottom}`;
 
-    const updates: Partial<Card> = {
+    const updates = {
       createdAt: admin.firestore.Timestamp.now(),
       normalized: normalized.toUpperCase().trim(),
     };
