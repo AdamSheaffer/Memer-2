@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
-import { Maybe } from "../../../../types";
 import { useGame } from "../../composables/useGame";
 import BackgroundBox from "../base/BackgroundBox.vue";
 
 const props = defineProps<{ gameId: string }>();
 const { game, updateGame } = useGame(props.gameId);
 
-const selection = ref<Maybe<string>>(null);
 const isSaving = ref(false);
 
-const selectCategory = async () => {
+const selectCategory = async (category: string) => {
   isSaving.value = true;
-  await updateGame({ tagSelection: selection.value });
+  await updateGame({ tagSelection: category });
   isSaving.value = false;
 };
 </script>
@@ -26,25 +24,17 @@ const selectCategory = async () => {
           PICK A CATEGORY FOR YOUR MEME
         </h4>
       </div>
-      <ul class="text-purple-400 flex flex-col space-y-4 text-xl">
-        <li
-          v-for="category in game!.tagOptions"
-          :key="category"
-          class="cursor-pointer transition-all text-shadow"
-          :class="{ 'text-4xl text-gold-400 text-shadow-purple': category === selection }"
-          @click="selection = category"
-        >
-          {{ category }}
-        </li>
-      </ul>
-      <div class="flex px-6 mb-4">
-        <button
-          :disabled="!selection"
-          class="text-white w-full ml-auto md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider disabled:opacity-50 disabled:hover:bg-teal-500 disabled:cursor-not-allowed"
-          @click="selectCategory"
-        >
-          NEXT
-        </button>
+      <div class="flex-1 flex items-center">
+        <div class="text-purple-400 flex flex-col space-y-6 text-2xl">
+          <span
+            v-for="category in game!.tagOptions"
+            :key="category"
+            class="cursor-pointer transition-all text-shadow hover:text-3xl hover:text-gold-400"
+            @click="selectCategory(category)"
+          >
+            {{ category }}
+          </span>
+        </div>
       </div>
     </div>
   </BackgroundBox>
