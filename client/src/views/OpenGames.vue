@@ -3,7 +3,7 @@ import MemerLogo from "@/assets/memer_logo.svg";
 import { useRouter } from "vue-router";
 import BackgroundBox from "../components/base/BackgroundBox.vue";
 import OpenGamesListItem from "../components/OpenGamesListItem.vue";
-import { useOpenGames } from "../composeables/useOpenGames";
+import { useOpenGames } from "../composables/useOpenGames";
 import { faceDizzy } from "../services/icons";
 
 const { openGames, loading } = useOpenGames();

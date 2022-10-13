@@ -2,7 +2,7 @@
 import { useRouter } from "vue-router";
 import { GameSettings } from "../../../types";
 import SetupWizard from "../components/GameSetup/SetupWizard.vue";
-import { useUser } from "../composeables/useUser";
+import { useUser } from "../composables/useUser";
 import { createGame } from "../services/gameService";
 
 const router = useRouter();

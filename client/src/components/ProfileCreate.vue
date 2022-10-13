@@ -10,7 +10,7 @@ import {
   noseOptions,
   skinToneOptions,
   useAvatar,
-} from "../composeables/useAvatar";
+} from "../composables/useAvatar";
 
 defineProps<{ saveBtnText?: string }>();
 const emit = defineEmits<(event: "submit", avatar: AvatarAttributes) => void>();

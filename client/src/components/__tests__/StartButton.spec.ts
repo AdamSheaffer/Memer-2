@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { Player } from "../../../../types";
-import StartButton from "../StartButton.vue";
+import StartButton from "../PreGameDisplay.vue";
 
 const mockStartGameFn = vi.fn();
 const mockActivePlayers = ref<Partial<Player>[]>([]);

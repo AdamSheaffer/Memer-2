@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { createApp } from "vue";
 import App from "./App.vue";
-import { useUser } from "./composeables/useUser";
+import { useUser } from "./composables/useUser";
 import router from "./router";
 import "./styles/index.css";
 

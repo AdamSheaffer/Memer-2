@@ -5,9 +5,9 @@ import Modal from "../components/base/Modal.vue";
 import GameArea from "../components/GameArea.vue";
 import PlayersSidebar from "../components/PlayersSidebar.vue";
 import ProfileCreate from "../components/ProfileCreate.vue";
-import { useAvatar } from "../composeables/useAvatar";
-import { useGame } from "../composeables/useGame";
-import { useUser } from "../composeables/useUser";
+import { useAvatar } from "../composables/useAvatar";
+import { useGame } from "../composables/useGame";
+import { useUser } from "../composables/useUser";
 import { joinGame } from "../services/gameService";
 
 const gameId = useRoute().params.id as string;
@@ -29,14 +29,14 @@ onMounted(() => joinGame(gameId, user.value!).then(initialize));
 </script>
 
 <template>
-  <div>
-    <div v-if="game?.uid">
+  <div class="h-full">
+    <div v-if="game?.uid" class="h-full">
       <Modal v-if="showAvatarCreator">
         <ProfileCreate :game-id="game?.uid" @submit="onAvatarChange" />
       </Modal>
 
-      <div class="flex">
-        <div class="flex-initial w-72">
+      <div class="flex h-full">
+        <div>
           <PlayersSidebar :game-id="game.uid" />
         </div>
         <div class="flex-1">

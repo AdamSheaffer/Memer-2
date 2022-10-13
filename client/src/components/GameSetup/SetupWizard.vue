@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { GameSettings, SetupOption } from "../../../../types";
-import { useAvatar } from "../../composeables/useAvatar";
+import { useAvatar } from "../../composables/useAvatar";
 import { xMark } from "../../services/icons";
 import BackgroundBox from "../base/BackgroundBox.vue";
 import ProfileCreate from "../ProfileCreate.vue";
@@ -42,7 +42,7 @@ const timerOptions: SetupOption<number>[] = [
 ];
 const nsfwOptions: SetupOption<boolean>[] = [
   { text: "YUH BOI NSFW", value: false },
-  { text: "I LIVE WITH MY MOM", value: true },
+  { text: "KEEP IT PG", value: true },
 ];
 
 const gameSettings = reactive<GameSettings>({

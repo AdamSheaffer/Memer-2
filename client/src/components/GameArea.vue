@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { useGame } from "../composeables/useGame";
-import JudgeRound from "./judge/JudgeRound.vue";
-import StartButton from "./StartButton.vue";
+import JudgeRound from "../components/judge/JudgeRound.vue";
+import { useGame } from "../composables/useGame";
+import PreGameDisplay from "./PreGameDisplay.vue";
 
 const props = defineProps<{ gameId: string }>();
-const { game, userIsHost, isYourTurn } = useGame(props.gameId);
+const { game, isYourTurn } = useGame(props.gameId);
 </script>
 
 <template>
-  <div>
-    <pre>{{ game }}</pre>
+  <div class="bg-darkblue-300 h-full relative">
     <JudgeRound v-if="isYourTurn" :game-id="props.gameId" />
 
-    <StartButton v-if="userIsHost && !game?.hasStarted" :game-id="gameId" />
+    <PreGameDisplay v-if="!game?.hasStarted" :game-id="gameId" />
   </div>
 </template>

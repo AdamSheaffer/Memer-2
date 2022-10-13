@@ -97,6 +97,10 @@ export const useGame = (gameId: string) => {
     return players.value.find((p) => p.uid === game.value?.turn);
   });
 
+  const judgeShouldStartTurn = computed(() => {
+    return !game.value?.tagOptions;
+  });
+
   const judgeIsPickingCategory = computed(() => {
     return !!game.value?.tagOptions?.length && !game.value.tagSelection;
   });
@@ -242,6 +246,7 @@ export const useGame = (gameId: string) => {
     isSubmissionRound,
     isYourTurn,
     judge,
+    judgeShouldStartTurn,
     judgeIsPickingCategory,
     judgeIsPickingGif,
     nextPlayerTurn,
