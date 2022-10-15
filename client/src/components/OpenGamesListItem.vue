@@ -2,6 +2,7 @@
 import { useTimeAgo } from "@vueuse/core";
 import { Game } from "../../../types";
 import { briefcase, heart, users } from "../services/icons";
+import MemerButton from "./base/MemerButton.vue";
 import PillBadge from "./base/PillBadge.vue";
 
 const props = defineProps<{ game: Game }>();
@@ -52,12 +53,13 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
         </div>
       </div>
     </div>
-    <button
-      class="text-white w-full md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider"
+    <MemerButton
+      color="teal"
+      class="w-full md:w-24 px-4 py-2 tracking-wider"
       @click="$emit('join', game.uid!)"
     >
       JOIN
-    </button>
+    </MemerButton>
   </div>
 </template>
 

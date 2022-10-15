@@ -3,7 +3,7 @@ import { computed, ref } from "@vue/reactivity";
 import { useDeck } from "../composables/useDeck";
 import { useGame } from "../composables/useGame";
 import { useUser } from "../composables/useUser";
-import Button from "./base/Button.vue";
+import MemerButton from "./base/MemerButton.vue";
 
 const props = defineProps<{ gameId: string }>();
 const { activePlayers, players, startGame, userIsHost, host } = useGame(props.gameId);
@@ -26,18 +26,19 @@ const onStartButtonClick = async () => {
 
 <template>
   <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-    <button
+    <MemerButton
       v-if="userIsHost"
-      class="bg-teal-500 py-6 text-white tracking-widest text-xl w-64 rounded-full shadow-2xl cursor-pointer hover:bg-teal-400 border-2 border-teal-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-500"
+      color="teal"
+      class="py-4 md:py-6 tracking-widest text-xl w-64 rounded-full shadow-2xl"
       data-start-button
       :disabled="!hasMinimumPlayers || loading"
       @click="onStartButtonClick"
     >
       START GAME
-    </button>
+    </MemerButton>
     <div
       v-if="!hasMinimumPlayers"
-      class="text-slate-100 font-['Antonio'] text-4xl mt-4 text-shadow"
+      class="text-slate-100 font-['Antonio'] text-2xl md:text-4xl mt-4 text-shadow"
       data-waiting-on-players
     >
       WAITING ON MORE PLAYERS...
@@ -45,7 +46,7 @@ const onStartButtonClick = async () => {
 
     <div
       v-if="hasMinimumPlayers && !userIsHost"
-      class="text-slate-100 font-['Antonio'] text-4xl mt-4 text-shadow-lg"
+      class="text-slate-100 font-['Antonio'] text-2xl md:text-4xl mt-4 text-shadow-lg"
       data-waiting-on-host
     >
       WAITING ON <span class="text-teal-400">{{ host?.username }}</span> TO START THE GAME...

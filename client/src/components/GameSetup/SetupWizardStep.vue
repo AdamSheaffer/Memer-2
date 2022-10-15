@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Maybe, SetupOption } from "../../../../types";
+import MemerButton from "../base/MemerButton.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -56,27 +57,31 @@ const onSelectChange = (val: typeof props.modelValue) => {
       </h4>
     </div>
     <div class="flex justify-between space-x-4 px-2">
-      <button
+      <MemerButton
         v-if="!props.firstStep"
+        outline
+        color="teal"
+        class="w-full md:w-24 tracking-wider"
         @click="emit('back')"
-        class="bg-transparent text-teal-500 hover:text-teal-300 w-full md:w-24 border-teal-500 hover:border-teal-300 border-2 px-4 py-2 rounded-md tracking-wider"
       >
         BACK
-      </button>
-      <button
+      </MemerButton>
+      <MemerButton
         v-if="!props.lastStep"
-        class="text-white w-full ml-auto md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider"
+        color="teal"
+        class="w-full ml-auto md:w-24 tracking-wider"
         @click="emit('next')"
       >
         NEXT
-      </button>
-      <button
+      </MemerButton>
+      <MemerButton
         v-if="props.lastStep"
-        class="text-white w-full ml-auto md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider"
+        color="teal"
+        class="w-full ml-auto md:w-24 tracking-wider"
         @click="emit('next')"
       >
         START
-      </button>
+      </MemerButton>
     </div>
   </div>
 </template>

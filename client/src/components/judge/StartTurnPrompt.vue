@@ -3,6 +3,7 @@ import { ref } from "@vue/reactivity";
 import { useCategories } from "../../composables/useCategories";
 import { useGame } from "../../composables/useGame";
 import GameBoard from "../base/GameBoard.vue";
+import MemerButton from "../base/MemerButton.vue";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -26,15 +27,14 @@ const startTurn = async () => {
       👋 HEY <span class="text-teal-400">{{ currentPlayer?.username }}</span
       >! IT'S YOUR TURN
     </div>
-    <button
-      class="bg-teal-500 py-2 md:py-4 text-white tracking-widest w-36 md:w-52 rounded-full shadow-2xl cursor-pointer hover:bg-teal-400 border-2 border-teal-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-500"
+    <MemerButton
+      color="teal"
+      class="py-2 md:py-4 tracking-widest w-36 md:w-52 rounded-full shadow-2xl"
       data-start-turn-button
       :disabled="isLoading"
       @click="startTurn"
     >
       START TURN
-    </button>
+    </MemerButton>
   </div>
 </template>
-
-<style scoped></style>

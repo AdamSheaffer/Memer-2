@@ -11,6 +11,7 @@ import {
   skinToneOptions,
   useAvatar,
 } from "../composables/useAvatar";
+import MemerButton from "./base/MemerButton.vue";
 
 defineProps<{ saveBtnText?: string }>();
 const emit = defineEmits<(event: "submit", avatar: AvatarAttributes) => void>();
@@ -196,11 +197,9 @@ const onSave = () => emit("submit", avatar);
       </div>
 
       <div class="flex flex-row px-2">
-        <button
-          class="text-white w-full ml-auto md:w-24 bg-teal-500 hover:bg-teal-400 border-teal-600 border-2 px-4 py-2 rounded-md tracking-wider"
-        >
+        <MemerButton color="teal" class="w-full ml-auto md:w-24 tracking-wider">
           {{ saveBtnText ?? "SAVE" }}
-        </button>
+        </MemerButton>
       </div>
     </form>
   </div>

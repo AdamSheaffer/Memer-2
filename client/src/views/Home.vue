@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MemerLogo from "@/assets/memer_logo.svg";
 import BackgroundBox from "../components/base/BackgroundBox.vue";
+import MemerButton from "../components/base/MemerButton.vue";
 </script>
 
 <template>
@@ -23,19 +24,23 @@ import BackgroundBox from "../components/base/BackgroundBox.vue";
       />
 
       <div class="flex flex-col mt-12 space-y-4">
-        <router-link
+        <MemerButton
           to="/open-games"
-          class="mx-auto bg-darkblue hover:bg-purple-400 hover:text-white hover:border-purple-600 border-2 border-purple-400 py-4 text-center text-lg md:text-2xl rounded-lg text-purple-400 w-56 md:w-96 cursor-pointer"
+          outline
+          color="purple"
+          class="mx-auto hover:bg-purple-400 hover:text-white py-4 text-lg md:text-2xl w-56 md:w-96"
         >
           VIEW OPEN GAMES
-        </router-link>
+        </MemerButton>
 
-        <router-link
+        <MemerButton
           to="/create"
-          class="mx-auto bg-darkblue hover:bg-purple-400 hover:text-white hover:border-purple-600 border-2 border-purple-400 py-4 text-center text-lg md:text-2xl rounded-lg text-purple-400 w-56 md:w-96 cursor-pointer"
+          outline
+          color="purple"
+          class="mx-auto hover:bg-purple-400 hover:text-white border-2 py-4 text-lg md:text-2xl w-56 md:w-96"
         >
           CREATE NEW GAME
-        </router-link>
+        </MemerButton>
       </div>
     </div>
     <MemerLogo class="hidden lg:block absolute right-0 bottom-0" />
