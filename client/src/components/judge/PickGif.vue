@@ -53,14 +53,18 @@ const selectGif = () => {
   <BackgroundBox>
     <div class="h-full flex flex-col justify-between mx-6">
       <div>
-        <h2 class="text-white mt-8 text-shadow-purple text-7xl">CHOOSE GIF</h2>
-        <h4 class="text-lg font-['Antonio'] text-gold-400 tracking-widest text-shadow-sm">
+        <h2 class="text-white mt-8 text-shadow-purple text-3xl lg:text-5xl xl:text-7xl">
+          CHOOSE GIF
+        </h2>
+        <h4
+          class="text-xs lg:text-md xl:text-lg font-['Antonio'] text-gold-400 tracking-widest text-shadow-sm"
+        >
           EVERY MEME'S GOTTA START SOMEWHERE
         </h4>
       </div>
       <div v-if="!isLoading" class="flex-1 flex items-center justify-center">
-        <div class="flex justify-between items-center">
-          <div class="text-center text-gold-400 text-6xl">
+        <div class="flex flex-col xl:flex-row justify-between items-center">
+          <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
             <button
               @click="gifIndex--"
               :disabled="isFirstGif"
@@ -75,14 +79,30 @@ const selectGif = () => {
             :key="gifURL"
             :src="gifURL"
             :alt="`${game!.tagSelection} Option ${gifIndex + 1}`"
-            class="object-cover h-72 w-96 rounded-xl mx-8 border-4 border-gold-400 hover:border-purple-400 cursor-pointer hover:scale-105 transition-all"
+            class="object-cover h-48 w-64 xl:h-52 xl:w-72 2xl:h-72 2xl:w-96 rounded-xl md:mx-4 2xl:mx-8 border-4 border-gold-400 hover:border-purple-400 cursor-pointer hover:scale-105 transition-all"
             @click="selectGif"
           />
-          <div class="text-center text-gold-400 text-6xl">
+          <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
             <button
               @click="gifIndex++"
               :disabled="isLastGif"
               class="disabled:opacity-25 disabled:cursor-not-allowed"
+            >
+              <FaIcon :icon="arrowRight"></FaIcon>
+            </button>
+          </div>
+          <div class="xl:hidden flex justify-around w-full mt-10">
+            <button
+              @click="gifIndex--"
+              :disabled="isFirstGif"
+              class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
+            >
+              <FaIcon :icon="arrowLeft"></FaIcon>
+            </button>
+            <button
+              @click="gifIndex++"
+              :disabled="isLastGif"
+              class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
             >
               <FaIcon :icon="arrowRight"></FaIcon>
             </button>
