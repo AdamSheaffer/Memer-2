@@ -28,7 +28,7 @@ const onStartButtonClick = async () => {
   <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
     <button
       v-if="userIsHost"
-      class="bg-teal-500 py-4 text-white text-shadow w-52 rounded-3xl shadow-2xl cursor-pointer hover:bg-teal-400 border-2 border-teal-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-500"
+      class="bg-teal-500 py-6 text-white tracking-widest text-xl w-64 rounded-full shadow-2xl cursor-pointer hover:bg-teal-400 border-2 border-teal-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-500"
       data-start-button
       :disabled="!hasMinimumPlayers || loading"
       @click="onStartButtonClick"

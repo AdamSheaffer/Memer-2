@@ -1,5 +1,22 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useGame } from "../../composables/useGame";
+import GameBoard from "../base/GameBoard.vue";
+
+const props = defineProps<{ gameId: string }>();
+
+const { game } = useGame(props.gameId);
+</script>
 
 <template>
-  <div>Waiting for submissions</div>
+  <GameBoard />
+  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+    <img
+      :src="game!.memeTemplate!.photoURL!"
+      :alt="`Meme template photo for ${game!.tagSelection}`"
+      class="mx-auto block object-cover h-72 w-96 rounded-xl border-4 border-purple-400 mb-6"
+    />
+    <div class="text-white text-5xl font-['Antonio'] mb-6 text-shadow-lg">
+      ⏰ WAITING FOR <span class="text-teal-400">SUBMISSIONS</span>...
+    </div>
+  </div>
 </template>
