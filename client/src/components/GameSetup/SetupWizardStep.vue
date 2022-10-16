@@ -89,5 +89,3 @@ const onSelectChange = (val: typeof props.modelValue) => {
     </div>
   </div>
 </template>
-
-<style></style>

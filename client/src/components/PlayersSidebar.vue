@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useGame } from "../composables/useGame";
-import { gavel, heart } from "../services/icons";
+import { check, gavel, heart } from "../services/icons";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -19,7 +19,15 @@ const { activePlayers, game } = useGame(props.gameId);
         />
         <div class="flex flex-col">
           <div class="flex">
-            <p class="text-slate-300 font-['Antonio']">{{ player.username }}</p>
+            <p class="text-slate-300 font-['Antonio']">
+              {{ player.username }}
+              <FaIcon
+                v-if="!!player.memePlayed"
+                :icon="check"
+                class="text-teal-400"
+                title="MEME SUBMITTED"
+              ></FaIcon>
+            </p>
             <div v-if="game?.turn === player.uid" class="ml-2" title="ROUND JUDGE">
               <FaIcon :icon="gavel" class="text-gold-400"></FaIcon>
             </div>
@@ -35,10 +43,5 @@ const { activePlayers, game } = useGame(props.gameId);
         </div>
       </div>
     </div>
-    <!-- <ul>
-      <li v-for="player in activePlayers" :key="player.uid">
-        {{ player.username || `Player ${player.turnIndex}` }}
-      </li>
-    </ul> -->
   </aside>
 </template>

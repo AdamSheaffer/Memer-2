@@ -46,5 +46,3 @@ onMounted(() => joinGame(gameId, user.value!).then(initialize));
     </div>
   </div>
 </template>
-
-<style></style>

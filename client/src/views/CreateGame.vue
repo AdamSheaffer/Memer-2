@@ -19,5 +19,3 @@ const onCancel = () => router.push("/");
 <template>
   <SetupWizard @submit="onSetupCompletion" @cancelled="onCancel" />
 </template>
-
-<style></style>

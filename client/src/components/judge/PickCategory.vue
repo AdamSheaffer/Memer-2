@@ -20,7 +20,9 @@ const selectCategory = async (category: string) => {
     <div class="h-full flex flex-col justify-between ml-6">
       <div>
         <h2 class="text-white mt-8 text-shadow-purple text-3xl md:text-7xl">CATEGORY</h2>
-        <h4 class="text-xs font-['Antonio'] text-gold-400 tracking-widest text-shadow-sm">
+        <h4
+          class="text-xs lg:text-md xl:text-lg font-['Antonio'] text-gold-400 tracking-widest text-shadow-sm"
+        >
           PICK A CATEGORY FOR YOUR MEME
         </h4>
       </div>
@@ -39,5 +41,3 @@ const selectCategory = async (category: string) => {
     </div>
   </BackgroundBox>
 </template>
-
-<style scoped></style>

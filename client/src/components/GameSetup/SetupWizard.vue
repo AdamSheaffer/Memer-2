@@ -122,5 +122,3 @@ const completeAvatarStep = () => {
     />
   </BackgroundBox>
 </template>
-
-<style></style>

@@ -62,5 +62,3 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
     </MemerButton>
   </div>
 </template>
-
-<style></style>

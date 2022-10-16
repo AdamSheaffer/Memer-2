@@ -18,13 +18,13 @@ const {
 </script>
 
 <template>
-  <StartTurnPrompt v-if="judgeShouldStartTurn" :game-id="gameId" />
-  <PickCategory v-else-if="judgeIsPickingCategory" :game-id="gameId" />
-  <PickGif v-else-if="judgeIsPickingGif" :game-id="gameId" />
-  <WaitingForSubmissions v-else-if="isSubmissionRound" :game-id="gameId" />
-  <!-- Submission showcase (All players see this) -->
-  <SelectRoundWinner v-if="isPickingWinner" :game-id="gameId" />
-  <!-- Round winner display (All players see this) -->
+  <div class="h-full w-full">
+    <StartTurnPrompt v-if="judgeShouldStartTurn" :game-id="gameId" />
+    <PickCategory v-else-if="judgeIsPickingCategory" :game-id="gameId" />
+    <PickGif v-else-if="judgeIsPickingGif" :game-id="gameId" />
+    <WaitingForSubmissions v-else-if="isSubmissionRound" :game-id="gameId" />
+    <!-- Submission showcase (All players see this) -->
+    <SelectRoundWinner v-if="isPickingWinner" :game-id="gameId" />
+    <!-- Round winner display (All players see this) -->
+  </div>
 </template>
-
-<style scoped></style>
