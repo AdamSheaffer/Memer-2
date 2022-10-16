@@ -197,7 +197,12 @@ const onSave = () => emit("submit", avatar);
       </div>
 
       <div class="flex flex-row px-2">
-        <MemerButton color="teal" class="w-full ml-auto md:w-24 tracking-wider">
+        <MemerButton
+          color="teal"
+          class="w-full ml-auto md:w-24 tracking-wider"
+          data-avatar-save
+          @click="onSave"
+        >
           {{ saveBtnText ?? "SAVE" }}
         </MemerButton>
       </div>

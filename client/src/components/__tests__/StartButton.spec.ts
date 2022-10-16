@@ -90,7 +90,7 @@ describe("PreGameDisplay", () => {
 
     expect(msg.exists()).toBe(true);
     expect(msg.text()).toBe("WAITING ON MORE PLAYERS...");
-    expect(btn.attributes().disabled).toBe("true");
+    expect(btn.attributes().disabled).toBe("");
     expect(mockStartGameFn).not.toHaveBeenCalled();
   });
 
@@ -108,6 +108,8 @@ describe("PreGameDisplay", () => {
     await btn.trigger("click");
 
     expect(msg.exists()).toBe(false);
-    expect(btn.attributes().disabled).toBe("false");
+    expect(btn.attributes().disabled).toBeFalsy();
+    expect(mockStartGameFn).toHaveBeenCalled();
+    expect(mockDealToPlayers).toHaveBeenCalled();
   });
 });

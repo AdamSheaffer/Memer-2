@@ -32,7 +32,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
 
 <template>
   <div class="p-4 h-full flex flex-col justify-between">
-    <div>
+    <div data-setup-step-header>
       <h2 class="text-white text-6xl text-shadow-purple">{{ props.header }}</h2>
       <h4 class="font-['Antonio'] text-lg text-gold-400 mt-2 tracking-widest">
         {{ props.subheader }}
@@ -51,6 +51,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
           'text-lg md:text-3xl': option.value !== modelValue && smallText,
           'text-2xl md:text-5xl': option.value !== modelValue && !smallText,
         }"
+        :data-step-option="option.text"
         @click="onSelectChange(option.value)"
       >
         {{ option.text }}
@@ -62,6 +63,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
         outline
         color="teal"
         class="w-full md:w-24 tracking-wider"
+        data-back
         @click="emit('back')"
       >
         BACK
@@ -70,6 +72,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
         v-if="!props.lastStep"
         color="teal"
         class="w-full ml-auto md:w-24 tracking-wider"
+        data-next
         @click="emit('next')"
       >
         NEXT
@@ -78,6 +81,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
         v-if="props.lastStep"
         color="teal"
         class="w-full ml-auto md:w-24 tracking-wider"
+        data-start
         @click="emit('next')"
       >
         START

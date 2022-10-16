@@ -22,7 +22,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
     />
     <div class="ml-0">
       <div class="flex flex-col">
-        <div class="text-white text-xs md:text-sm tracking-wide mb-2">
+        <div class="text-white text-xs md:text-sm mb-2 font-['Antonio']">
           Created {{ timeAgoStarted }}
         </div>
         <div class="flex flex-wrap justify-start space-x-2">
