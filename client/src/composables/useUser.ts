@@ -1,8 +1,7 @@
 import { signInAnonymously } from "@firebase/auth";
-import { doc, updateDoc } from "@firebase/firestore";
 import { ref } from "vue";
 import { Maybe, User } from "../../../types";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 
 const user = ref<Maybe<User>>(null);
 const defaultPhotoURL = "https://avatars.dicebear.com/api/personas/default.svg";
@@ -32,11 +31,6 @@ export const useUser = () => {
       photoURL,
       uid: user.value.uid,
     };
-
-    if (gameId) {
-      const firestorePlayerRef = doc(db, "games", gameId, "players", user.value.uid);
-      return updateDoc(firestorePlayerRef, { username, photoURL });
-    }
   };
 
   return { user, anonymouslySignInUser, updateUser };

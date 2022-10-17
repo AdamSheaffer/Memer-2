@@ -1,5 +1,5 @@
 import { refDebounced } from "@vueuse/core";
-import { computed, reactive, ref, toRef, watchEffect } from "vue";
+import { computed, reactive, ref, toRef, watch, watchEffect } from "vue";
 import { Maybe } from "../../../types";
 import { useUser } from "./useUser";
 
@@ -108,34 +108,37 @@ const avatar = reactive<AvatarAttributes>({
   ...avatarObj,
 });
 const needsAvatarSet = ref(localStorage.getItem("avatarSet") !== "true");
+const usernameRef = toRef(avatar, "name");
+const debouncedUsername = refDebounced(usernameRef, 1000);
+watchEffect(() => localStorage.setItem("avatar", JSON.stringify(avatar)));
+
+watch(usernameRef, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    updateUser({ username: usernameRef.value, photoURL: photoURL.value });
+  }
+});
+
+const queryString = computed(() => {
+  const params = Object.entries(avatar)
+    .filter(([key, val]) => !!val)
+    .map(([key, val]) => (val === "none" ? `${key}[]` : `${key}=${val}`))
+    .join("&");
+
+  return params ? `?${params}` : "";
+});
+
+const photoURL = computed(
+  () =>
+    `https://avatars.dicebear.com/api/personas/${debouncedUsername.value ?? "default"}.svg${
+      queryString.value
+    }`
+);
+
+const markAvatarAsSet = () => {
+  localStorage.setItem("avatarSet", "true");
+  needsAvatarSet.value = false;
+};
 
 export const useAvatar = () => {
-  const usernameRef = toRef(avatar, "name");
-  const debouncedUsername = refDebounced(usernameRef, 1000);
-
-  const queryString = computed(() => {
-    const params = Object.entries(avatar)
-      .filter(([key, val]) => !!val)
-      .map(([key, val]) => (val === "none" ? `${key}[]` : `${key}=${val}`))
-      .join("&");
-
-    return params ? `?${params}` : "";
-  });
-
-  const photoURL = computed(
-    () =>
-      `https://avatars.dicebear.com/api/personas/${debouncedUsername.value ?? "default"}.svg${
-        queryString.value
-      }`
-  );
-
-  const markAvatarAsSet = () => {
-    localStorage.setItem("avatarSet", "true");
-    needsAvatarSet.value = false;
-  };
-
-  watchEffect(() => localStorage.setItem("avatar", JSON.stringify(avatar)));
-  watchEffect(() => updateUser({ username: usernameRef.value, photoURL: photoURL.value }));
-
   return { avatar, photoURL, needsAvatarSet, markAvatarAsSet };
 };

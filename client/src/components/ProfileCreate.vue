@@ -201,7 +201,7 @@ const onSave = () => emit("submit", avatar);
           color="teal"
           class="w-full ml-auto md:w-24 tracking-wider"
           data-avatar-save
-          @click="onSave"
+          type="submit"
         >
           {{ saveBtnText ?? "SAVE" }}
         </MemerButton>

@@ -23,7 +23,7 @@ const onSelect = async (card: Card) => {
   const memePlayed: Meme = {
     top: card.top,
     bottom: card.bottom,
-    photoURL: game.value!.memeTemplate!.top,
+    photoURL: game.value!.memeTemplate!.photoURL,
   };
   await updatePlayer(user.value!.uid, { memePlayed });
   await removeCard(card.uid!);

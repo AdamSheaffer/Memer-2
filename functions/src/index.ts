@@ -6,6 +6,8 @@ admin.initializeApp();
 export * from "./captions/onCreateNormalize";
 // categories
 export * from "./categories/onCreateAddTimestamp";
+// game
+// export * from "./game/onUpdateAddPoint";
 // online detection
 export * from "./online-detection/onUpdateChangePlayerStatus";
 // players

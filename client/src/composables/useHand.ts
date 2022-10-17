@@ -34,7 +34,11 @@ export const useHand = (gameId: string, playerId: string) => {
     loading.value = false;
   };
 
-  onUnmounted(() => unsubscribe());
+  onUnmounted(() => {
+    if (unsubscribe) {
+      unsubscribe();
+    }
+  });
 
   trackHand();
 
