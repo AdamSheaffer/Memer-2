@@ -5,7 +5,7 @@ import Hand from "../Hand.vue";
 
 const props = defineProps<{ gameId: string }>();
 
-const { host, game } = useGame(props.gameId);
+const { judge, game } = useGame(props.gameId);
 </script>
 
 <template>
@@ -19,7 +19,8 @@ const { host, game } = useGame(props.gameId);
           <h4
             class="text-xs lg:text-md xl:text-lg font-['Antonio'] text-gold-400 tracking-widest text-shadow-sm mb-6"
           >
-            <span class="text-teal-500">{{ host?.username }}</span> IS PICKING FROM THESE CATEGORIES
+            <span class="text-teal-500">{{ judge?.username }}</span> IS PICKING FROM THESE
+            CATEGORIES
           </h4>
           <div class="text-left flex justify-center">
             <ul

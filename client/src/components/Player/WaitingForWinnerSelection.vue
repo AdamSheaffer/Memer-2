@@ -7,25 +7,12 @@ import Meme from "../Meme.vue";
 import SubmissionCarousel from "../SubmissionCarousel.vue";
 
 const props = defineProps<{ gameId: string }>();
-const { playerSubmissions, updateGame, players } = useGame(props.gameId);
+const { playerSubmissions, judge } = useGame(props.gameId);
 
 const showCarousel = ref(true);
 
 const viewingMemeIndex = ref(0);
 const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.value]);
-
-const pickMeme = () => {
-  const winningMeme = viewingMeme.value;
-  const roundWinner = players.value.find(
-    (p) => p.memePlayed?.top === winningMeme.top && p.memePlayed?.bottom === winningMeme.bottom
-  );
-
-  if (!roundWinner) {
-    throw Error("Couldn't find player that submitted winning meme");
-  }
-
-  return updateGame({ winningMeme, roundWinner: roundWinner.uid });
-};
 </script>
 
 <template>
@@ -34,7 +21,7 @@ const pickMeme = () => {
       <div>
         <h2
           v-if="showCarousel"
-          class="text-gold-500 text-shadow-purple text-3xl lg:text-5xl xl:text-7xl mb-6 text-center"
+          class="text-gold-500 text-shadow-purple text-3xl lg:text-5xl xl:text-7xl mb-6"
         >
           SUBMISSIONS
         </h2>
@@ -49,12 +36,12 @@ const pickMeme = () => {
             v-if="!showCarousel"
             class="text-slate-200 text-center text-shadow-purple text-3xl lg:text-5xl xl:text-7xl mb-1"
           >
-            PICK THE WINNER
+            WAITING ON JUDGE
           </h2>
           <h4
             class="text-sm md:text-lg text-center font-['Antonio'] text-gold-400 tracking-widest text-shadow-md mb-6"
           >
-            WHAT'S YOUR FAVORITE?
+            <span class="text-teal-400">{{ judge?.username }}</span> IS PICKING THE WINNER
           </h4>
 
           <!-- SELECTOR -->
@@ -68,11 +55,7 @@ const pickMeme = () => {
                 <FaIcon :icon="arrowLeft"></FaIcon>
               </button>
             </div>
-            <Meme
-              :meme="viewingMeme"
-              class="mx-4 hover:scale-105 transition-all cursor-pointer hover:border-gold-500"
-              @click="pickMeme"
-            />
+            <Meme :meme="viewingMeme" class="mx-4 transition-all cursor-pointer" />
             <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
               <button
                 :disabled="viewingMemeIndex === playerSubmissions.length - 1"

@@ -9,19 +9,19 @@ const emit = defineEmits<(event: "end") => void>();
 
 const activeIndex = ref(0);
 
-const activeMeme = computed(() => props.playerSubmissions[activeIndex.value]);
+const activeMeme = computed(() => props.playerSubmissions?.[activeIndex.value]);
 
 onMounted(() => {
   const intervalId = setInterval(() => {
     if (!props.playerSubmissions.length) {
       return;
     }
+    activeIndex.value++;
     if (activeIndex.value === props.playerSubmissions.length) {
       clearInterval(intervalId);
       emit("end");
       return;
     }
-    activeIndex.value++;
   }, 5000);
 });
 </script>
