@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import { Game } from "../../../../types";
 import { useGame } from "../../composables/useGame";
 import { arrowLeft, arrowRight } from "../../services/icons";
 import GameBoard from "../base/GameBoard.vue";
@@ -7,7 +8,7 @@ import Meme from "../Meme.vue";
 import SubmissionCarousel from "../SubmissionCarousel.vue";
 
 const props = defineProps<{ gameId: string }>();
-const { playerSubmissions, updateGame, players } = useGame(props.gameId);
+const { playerSubmissions, updateGame, players, game } = useGame(props.gameId);
 
 const showCarousel = ref(true);
 
@@ -24,7 +25,15 @@ const pickMeme = () => {
     throw Error("Couldn't find player that submitted winning meme");
   }
 
-  return updateGame({ winningMeme, roundWinner: roundWinner.uid });
+  const updates: Partial<Game> = { winningMeme, roundWinner: roundWinner.uid };
+
+  const hasWonGame = roundWinner.score + 1 === game.value?.pointsToWin;
+
+  if (hasWonGame) {
+    updates.winner = roundWinner.uid;
+  }
+
+  return updateGame(updates);
 };
 </script>
 

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useGame } from "../../composables/useGame";
+import GameWinner from "../GameWinner.vue";
 import RoundWinner from "../RoundWinner.vue";
 import SubmitCaption from "./SubmitCaption.vue";
 import WaitingForCategorySelection from "./WaitingForCategorySelection.vue";
@@ -16,6 +17,7 @@ const {
   isSubmissionRound,
   isPickingWinner,
   roundWinner,
+  gameWinner,
 } = useGame(props.gameId);
 </script>
 
@@ -25,5 +27,6 @@ const {
   <WaitingForGifSelection v-if="judgeIsPickingGif" :game-id="gameId" />
   <SubmitCaption v-if="isSubmissionRound" :game-id="gameId" />
   <WaitingForWinnerSelection v-if="isPickingWinner" :game-id="gameId" />
-  <RoundWinner v-if="roundWinner" :game-id="gameId" />
+  <RoundWinner v-if="roundWinner && !gameWinner" :game-id="gameId" />
+  <GameWinner v-if="gameWinner" :game-id="gameId" />
 </template>
