@@ -7,31 +7,32 @@ const props = withDefaults(
     color?: "purple" | "teal" | "gold" | "darkblue" | "red";
     outline?: boolean;
     to?: RouteLocationRaw;
+    round?: boolean;
   }>(),
   {
     color: "purple",
     outline: false,
+    round: false,
   }
 );
 
-const staticClasses = `text-center border-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out py-2 px-4 rounded-lg`;
+const staticClasses = `text-center border-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out py-2 px-4`;
 const dynamicClasses = computed(() => {
-  return props.outline
+  const roundedClasses = props.round ? "rounded-full" : "rounded-lg";
+  const outlineClasses = props.outline
     ? `bg-transparent text-${props.color}-500 hover:text-${props.color}-400 border-${props.color}-500 hover:border-${props.color}-400 disabled:hover:border-${props.color}-500`
     : `bg-${props.color}-400 hover:bg-${props.color}-300 text-white border-${props.color}-500 disabled:hover:bg-${props.color}-400`;
+
+  return [roundedClasses, outlineClasses];
 });
 </script>
 
 <template>
-  <router-link v-if="to" :to="to" :class="[staticClasses, dynamicClasses]">
+  <router-link v-if="to" :to="to" :class="[staticClasses, ...dynamicClasses]">
     <slot></slot>
   </router-link>
 
-  <button
-    v-else
-    class="border-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out py-2 px-4 rounded-lg"
-    :class="[staticClasses, dynamicClasses]"
-  >
+  <button v-else :class="[staticClasses, ...dynamicClasses]">
     <slot></slot>
   </button>
 </template>

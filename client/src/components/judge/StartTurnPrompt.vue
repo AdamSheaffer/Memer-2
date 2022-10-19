@@ -30,7 +30,8 @@ const startTurn = async () => {
         </div>
         <MemerButton
           color="teal"
-          class="py-2 md:py-4 tracking-widest w-36 md:w-52 rounded-full shadow-2xl"
+          round
+          class="py-2 md:py-4 tracking-widest w-36 md:w-52 shadow-2xl"
           data-start-turn-button
           :disabled="isLoading"
           @click="startTurn"

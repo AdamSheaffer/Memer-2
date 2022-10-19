@@ -35,12 +35,7 @@ const startNextGame = async () => {
         <!-- <Meme :meme="game!.winningMeme!" class="border-0 shadow-none" /> -->
       </div>
 
-      <MemerButton
-        v-if="userIsHost"
-        color="teal"
-        class="rounded-full"
-        outline
-        @click="startNextGame"
+      <MemerButton v-if="userIsHost" color="teal" round outline @click="startNextGame"
         >START NEW GAME</MemerButton
       >
     </div>

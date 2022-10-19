@@ -24,7 +24,7 @@ const fontSizeClass = (text: Maybe<string>) => {
   <div
     class="flex justify-center items-center shadow-sm shadow-slate-500 border-2 border-purple-400 rounded-xl w-72"
   >
-    <div>
+    <div class="w-full">
       <div
         class="flex items-center justify-center rounded-t-xl bg-darkblue-600 text-slate-200 px-2 py-4 min-h-min h-16"
       >

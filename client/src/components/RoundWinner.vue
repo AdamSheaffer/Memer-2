@@ -44,7 +44,7 @@ const startNextTurn = async () => {
           👋 HEY <span class="text-teal-400">{{ user?.username }}</span
           >! IT'S YOUR TURN NEXT
         </h4>
-        <MemerButton class="rounded-full" color="teal" outline @click="startNextTurn">
+        <MemerButton round color="teal" outline @click="startNextTurn" class="mb-4">
           START ROUND
         </MemerButton>
       </div>

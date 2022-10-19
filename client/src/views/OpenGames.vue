@@ -21,13 +21,15 @@ const goToGameRoom = (gameId: string) => router.push(`/game/${gameId}`);
         NEW GAME
       </router-link>
     </h4>
-    <div class="mx-auto my-3 flex flex-col space-y-4 overflow-scroll">
-      <OpenGamesListItem
-        v-for="game in openGames"
-        :key="game.uid"
-        :game="game"
-        @join="goToGameRoom"
-      />
+    <div class="mx-auto my-3 overflow-y-auto px-1 scrollbar">
+      <div v-if="openGames.length" class="flex flex-col space-y-4">
+        <OpenGamesListItem
+          v-for="game in openGames"
+          :key="game.uid"
+          :game="game"
+          @join="goToGameRoom"
+        />
+      </div>
       <div v-if="!loading && !openGames.length">
         <div
           class="flex flex-col md:flex-row items-center md:space-x-6 border-2 border-purple-400 py-2 px-4 mt-4 rounded-lg"

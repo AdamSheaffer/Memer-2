@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const plugin = require("tailwindcss/plugin");
 
 const colors = {
   purple: {
@@ -77,7 +78,27 @@ module.exports = {
       colors,
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addBase, theme }) => {
+      addBase({
+        ".scrollbar": {
+          overflowY: "auto",
+          scrollbarColor: `${theme("colors.blue.600")} ${theme("colors.blue.200")}`,
+          scrollbarWidth: "thin",
+        },
+        ".scrollbar::-webkit-scrollbar": {
+          height: ".4rem",
+          width: ".4rem",
+        },
+        ".scrollbar::-webkit-scrollbar-thumb": {
+          backgroundColor: theme("colors.darkblue.600"),
+        },
+        ".scrollbar::-webkit-scrollbar-track-piece": {
+          backgroundColor: theme("colors.slate.400"),
+        },
+      });
+    }),
+  ],
   safelist: Object.keys(colors).reduce((safelist, color) => {
     return [
       ...safelist,

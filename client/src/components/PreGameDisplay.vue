@@ -29,7 +29,8 @@ const onStartButtonClick = async () => {
     <MemerButton
       v-if="userIsHost"
       color="teal"
-      class="py-4 md:py-6 tracking-widest text-xl w-64 rounded-full shadow-2xl"
+      round
+      class="py-4 md:py-6 tracking-widest text-xl w-64 shadow-2xl"
       data-start-button
       :disabled="!hasMinimumPlayers || loading"
       @click="onStartButtonClick"
