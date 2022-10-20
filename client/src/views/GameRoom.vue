@@ -12,14 +12,14 @@ import { joinGame } from "../services/gameService";
 
 const gameId = useRoute().params.id as string;
 const { user } = useUser();
-const { needsAvatarSet, markAvatarAsSet } = useAvatar();
+const { needsAvatarSet, markAvatarAsSet, avatar, photoURL } = useAvatar();
 const showAvatarCreator = ref(Boolean(needsAvatarSet.value));
 const { game, initialize, updatePlayer } = useGame(gameId);
 
 const onAvatarChange = async () => {
   await updatePlayer(user.value!.uid, {
-    username: user.value!.username,
-    photoURL: user.value!.photoURL,
+    username: avatar.name,
+    photoURL: photoURL.value,
   });
   showAvatarCreator.value = false;
   markAvatarAsSet();
@@ -32,7 +32,7 @@ onMounted(() => joinGame(gameId, user.value!).then(initialize));
   <div class="h-full">
     <div v-if="game?.uid" class="h-full">
       <Modal v-if="showAvatarCreator">
-        <ProfileCreate :game-id="game?.uid" @submit="onAvatarChange" />
+        <ProfileCreate @submit="onAvatarChange" />
       </Modal>
 
       <div class="flex h-full">
