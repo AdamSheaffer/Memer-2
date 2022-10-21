@@ -41,7 +41,7 @@ export const onCreateCheckFullGame = functions.firestore
       const handCollection = doc.ref.collection("cards");
       const hand = hands[index];
       hand.forEach((card) => {
-        const cardRef = handCollection.doc(card.uid!);
+        const cardRef = handCollection.doc();
         batch.create(cardRef, card);
       });
       return batch.commit();

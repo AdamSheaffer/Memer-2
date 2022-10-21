@@ -38,7 +38,7 @@ export const useDeck = () => {
       const handCollection = collection(playerRef, "cards");
       const hand = hands[index];
       hand.forEach((card: Card) => {
-        const ref = doc(handCollection, card.uid);
+        const ref = doc(handCollection);
         batch.set(ref, card);
       });
       return batch.commit();
