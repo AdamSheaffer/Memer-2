@@ -19,6 +19,11 @@ const emit = defineEmits<(event: "submit", avatar: AvatarAttributes) => void>();
 const { avatar, photoURL } = useAvatar();
 const { updateUser } = useUser();
 
+const upperCaseOnUsernameInputChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  avatar.name = target.value.toUpperCase();
+};
+
 const onSave = () => {
   updateUser({ username: avatar.name, photoURL: photoURL.value });
   emit("submit", avatar);
@@ -48,11 +53,12 @@ const onSave = () => {
           <input
             type="text"
             id="first_name"
-            v-model="avatar.name"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-            placeholder="RANDO"
+            :value="avatar.name"
+            @input="upperCaseOnUsernameInputChange"
+            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500 uppercase"
+            placeholder="MEME LORD"
             required
-            maxlength="20"
+            maxlength="12"
           />
         </div>
 
