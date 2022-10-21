@@ -11,13 +11,18 @@ import {
   skinToneOptions,
   useAvatar,
 } from "../composables/useAvatar";
+import { useUser } from "../composables/useUser";
 import MemerButton from "./base/MemerButton.vue";
 
 defineProps<{ saveBtnText?: string }>();
 const emit = defineEmits<(event: "submit", avatar: AvatarAttributes) => void>();
 const { avatar, photoURL } = useAvatar();
+const { updateUser } = useUser();
 
-const onSave = () => emit("submit", avatar);
+const onSave = () => {
+  updateUser({ username: avatar.name, photoURL: photoURL.value });
+  emit("submit", avatar);
+};
 </script>
 
 <template>

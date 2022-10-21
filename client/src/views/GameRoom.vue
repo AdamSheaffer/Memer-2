@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import Modal from "../components/base/Modal.vue";
 import GameArea from "../components/GameArea.vue";
@@ -25,6 +25,7 @@ const onAvatarChange = async () => {
   markAvatarAsSet();
 };
 
+onBeforeMount(() => (game.value = null)); // clear old game if there is one
 onMounted(() => joinGame(gameId, user.value!).then(initialize));
 </script>
 

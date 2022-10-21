@@ -32,7 +32,7 @@ export const useDeck = () => {
     const gameRef = doc(gamesCollectionRef, gameId);
     const playersCollectionRef = collection(gameRef, "players");
 
-    playerIds.forEach((playerId, index) => {
+    const requests = playerIds.map((playerId, index) => {
       const batch = writeBatch(db);
       const playerRef = doc(playersCollectionRef, playerId);
       const handCollection = collection(playerRef, "cards");
@@ -41,8 +41,10 @@ export const useDeck = () => {
         const ref = doc(handCollection, card.uid);
         batch.set(ref, card);
       });
-      batch.commit();
+      return batch.commit();
     });
+
+    return Promise.all(requests);
   };
 
   const createHands = (handsNeeded: number) => {
