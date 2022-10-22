@@ -90,3 +90,9 @@ const beautifulChatMessage = computed<BeautifulChatMessage[]>(() => {
     </beautiful-chat>
   </div>
 </template>
+
+<style scoped>
+:deep(.sc-chat-window.opened) {
+  z-index: 100;
+}
+</style>

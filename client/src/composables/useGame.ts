@@ -11,7 +11,15 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { onUnmounted, ref } from "vue";
-import { Game, Maybe, Meme, Player, PlayerChanges } from "../../../types";
+import {
+  Game,
+  Maybe,
+  Meme,
+  Player,
+  PlayerChanges,
+  RoundType,
+  RoundTypeOption,
+} from "../../../types";
 import { db } from "../firebase";
 import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
 import { useUser } from "./useUser";
@@ -21,6 +29,20 @@ const { user } = useUser();
 
 const game = ref<Maybe<Game>>(null);
 const players = ref<Player[]>([]);
+
+const getNextRoundType = (): RoundType => {
+  if (!game.value) {
+    throw Error("`game` is null`");
+  }
+
+  const isReverseRound = Boolean(
+    Math.round(Math.random() * 2 * (game.value.reverseRoundFrequency ?? 0))
+  );
+
+  return isReverseRound
+    ? { roundType: RoundTypeOption.Reverse, isSpecial: true }
+    : { roundType: RoundTypeOption.Standard, isSpecial: false };
+};
 
 export const useGame = (gameId: string) => {
   const firestoreGameRef = doc(gamesCollectionRef, gameId);
@@ -93,6 +115,10 @@ export const useGame = (gameId: string) => {
     return activePlayers.value.length;
   });
 
+  const isReverseRound = computed(() => {
+    return game.value?.round?.roundType === RoundTypeOption.Reverse;
+  });
+
   const judge = computed(() => {
     return players.value.find((p) => p.uid === game.value?.turn);
   });
@@ -103,6 +129,14 @@ export const useGame = (gameId: string) => {
 
   const judgeIsPickingCategory = computed(() => {
     return !!game.value?.tagOptions?.length && !game.value.tagSelection;
+  });
+
+  const judgeIsPickingReverseRoundCaption = computed(() => {
+    if (!isReverseRound.value) {
+      return false;
+    }
+
+    return !game.value?.memeTemplate;
   });
 
   const judgeIsPickingGif = computed(() => {
@@ -185,14 +219,15 @@ export const useGame = (gameId: string) => {
     });
 
     const gameChanges: Partial<Game> = {
-      tagOptions: nextTagOptions,
-      turn: nextPlayerTurn.value?.uid,
-      roundWinner: null,
-      winningMeme: null,
-      tagSelection: null,
       gifOptionURLs: [],
       memeTemplate: null,
       memeTemplateTimestamp: null,
+      round: getNextRoundType(),
+      roundWinner: null,
+      tagOptions: nextTagOptions,
+      tagSelection: null,
+      turn: nextPlayerTurn.value?.uid,
+      winningMeme: null,
     };
 
     batch.update(firestoreGameRef, gameChanges);
@@ -243,12 +278,14 @@ export const useGame = (gameId: string) => {
     gameWinner,
     host,
     isPickingWinner,
+    isReverseRound,
     isSubmissionRound,
     isYourTurn,
     judge,
     judgeShouldStartTurn,
     judgeIsPickingCategory,
     judgeIsPickingGif,
+    judgeIsPickingReverseRoundCaption,
     nextPlayerTurn,
     playerCount,
     players,

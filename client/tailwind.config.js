@@ -76,6 +76,37 @@ module.exports = {
     },
     extend: {
       colors,
+
+      keyframes: {
+        "fade-in-down": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-2rem)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "fade-in-spin": {
+          "0%": {
+            opacity: "0",
+            transform: "rotate(0deg)",
+          },
+          "50%": {
+            opacity: "0.5",
+            transform: "rotate(90deg) scale(1.4)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "rotate(180deg)",
+          },
+        },
+      },
+      animation: {
+        "fade-in-down": "fade-in-down 1s ease-out",
+        "fade-in-spin-once": "fade-in-spin .8s linear",
+      },
     },
   },
   plugins: [

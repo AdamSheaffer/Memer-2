@@ -23,7 +23,9 @@ const startNextGame = async () => {
         <h1 class="text-5xl translate-y-9">👑</h1>
         <img :src="gameWinner!.photoURL!" :alt="gameWinner!.username!" class="h-36 mx-auto" />
       </div>
-      <h2 class="text-purple-400 text-shadow text-3xl lg:text-57xl xl:text-8xl mb-1 -rotate-6">
+      <h2
+        class="text-purple-400 text-shadow text-3xl lg:text-57xl xl:text-8xl mb-1 -rotate-6 animate-fade-in-down"
+      >
         {{ gameWinner?.username }}
       </h2>
       <h2

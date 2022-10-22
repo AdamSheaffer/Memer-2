@@ -1,4 +1,3 @@
-// import { Timestamp } from "firebase/firestore";
 import { Timestamp } from "./Firebase";
 import { Maybe } from "./helpers";
 import { Meme } from "./Meme";
@@ -19,7 +18,7 @@ export interface Game {
   roundWinner: Maybe<string>;
   winner: Maybe<string>;
   winningMeme: Maybe<Meme>;
-  roundType: Maybe<RoundType>;
+  round: Maybe<RoundType>;
   maxPlayers?: number;
   pointsToWin?: number;
   safeForWork?: boolean;

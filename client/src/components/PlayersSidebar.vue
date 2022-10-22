@@ -4,7 +4,7 @@ import { check, gavel, heart } from "../services/icons";
 
 const props = defineProps<{ gameId: string }>();
 
-const { activePlayers, game } = useGame(props.gameId);
+const { activePlayers, game, currentPlayer } = useGame(props.gameId);
 </script>
 
 <template>
@@ -15,7 +15,11 @@ const { activePlayers, game } = useGame(props.gameId);
         <img
           :src="player.photoURL!"
           :alt="`${player.username} Avatar`"
-          class="rounded-full border-2 border-gold-500 bg-teal-500 w-12"
+          class="rounded-full border-2 border-gold-500 w-12"
+          :class="{
+            'bg-teal-500': currentPlayer?.uid !== player.uid,
+            'bg-purple-400': currentPlayer?.uid === player.uid,
+          }"
         />
         <div class="flex flex-col">
           <div class="flex">
