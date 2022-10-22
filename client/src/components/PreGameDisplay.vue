@@ -6,7 +6,7 @@ import { useUser } from "../composables/useUser";
 import MemerButton from "./base/MemerButton.vue";
 
 const props = defineProps<{ gameId: string }>();
-const { activePlayers, players, startGame, userIsHost, host } = useGame(props.gameId);
+const { game, activePlayers, players, startGame, userIsHost, host } = useGame(props.gameId);
 const { user } = useUser();
 const { dealToPlayers } = useDeck();
 const hasMinimumPlayers = computed(() => activePlayers.value.length >= 3);
@@ -19,7 +19,10 @@ const onStartButtonClick = async () => {
 
   loading.value = true;
   const playerIds = players.value.map((p) => p.uid);
-  await Promise.all([startGame(user.value.uid), dealToPlayers(props.gameId, playerIds)]);
+  await Promise.all([
+    startGame(user.value.uid),
+    dealToPlayers(props.gameId, playerIds, game.value?.safeForWork),
+  ]);
   loading.value = false;
 };
 </script>

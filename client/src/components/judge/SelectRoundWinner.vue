@@ -51,7 +51,7 @@ const pickMeme = () => {
           v-if="showCarousel"
           :player-submissions="playerSubmissions"
           @end="showCarousel = false"
-          class="mx-6"
+          class="mx-auto"
         />
         <div v-if="!showCarousel">
           <h2

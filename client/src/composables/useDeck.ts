@@ -1,5 +1,5 @@
 import { getDocs } from "@firebase/firestore";
-import { collection, doc, writeBatch } from "firebase/firestore";
+import { collection, doc, query, where, writeBatch } from "firebase/firestore";
 import chunk from "lodash.chunk";
 import shuffle from "lodash.shuffle";
 import { ref } from "vue";
@@ -12,20 +12,23 @@ const deck = ref<Card[]>([]);
 export const useDeck = () => {
   const loading = ref(false);
 
-  const load = async () => {
+  const load = async (safeForWork: boolean) => {
     loading.value = true;
+    const deckQuery = safeForWork
+      ? query(captionsCollectionRef, where("safeForWork", "==", true))
+      : captionsCollectionRef;
 
     if (!deck.value.length) {
-      const snapshot = await getDocs(captionsCollectionRef);
+      const snapshot = await getDocs(deckQuery);
       deck.value = mapCollection<Card>(snapshot);
     }
 
     loading.value = false;
   };
 
-  const dealToPlayers = async (gameId: string, playerIds: string[]) => {
+  const dealToPlayers = async (gameId: string, playerIds: string[], safeForWork = false) => {
     if (!deck.value.length) {
-      await load();
+      await load(safeForWork);
     }
 
     const hands = createHands(playerIds.length);

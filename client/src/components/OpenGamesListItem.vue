@@ -46,7 +46,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
             class="mt-1"
             color="red"
             :icon="briefcase"
-            :title="`${!game.safeForWork && 'Not '}Safe for Work`"
+            :title="`${game.safeForWork ? '' : 'Not '}Safe for Work`"
           >
             {{ game.safeForWork ? "SFW" : "NSFW" }}
           </PillBadge>
