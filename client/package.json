@@ -18,7 +18,8 @@
     "lodash.chunk": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue3-beautiful-chat": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

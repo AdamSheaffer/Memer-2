@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from "vue";
+import { defineAsyncComponent, onBeforeMount, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import Modal from "../components/base/Modal.vue";
 import GameArea from "../components/GameArea.vue";
@@ -9,6 +9,8 @@ import { useAvatar } from "../composables/useAvatar";
 import { useGame } from "../composables/useGame";
 import { useUser } from "../composables/useUser";
 import { joinGame } from "../services/gameService";
+
+const Chat = defineAsyncComponent(() => import("../components/Chat.vue"));
 
 const gameId = useRoute().params.id as string;
 const { user } = useUser();
@@ -42,6 +44,7 @@ onMounted(() => joinGame(gameId, user.value!).then(initialize));
         </div>
         <div class="flex-1">
           <GameArea :game-id="game.uid" />
+          <Chat :game-id="game.uid" />
         </div>
       </div>
     </div>
