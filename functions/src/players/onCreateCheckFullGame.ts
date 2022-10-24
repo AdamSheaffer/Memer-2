@@ -17,7 +17,7 @@ export const onCreateCheckFullGame = functions.firestore
 
     const playerCount = playersSnapshot.size;
 
-    if (game.maxPlayers! > playerCount) return;
+    if ((game.maxPlayers ?? 0) > playerCount) return;
 
     // Set game's `hasStarted` to true
     const startGameRequest = gameRef.update({
@@ -47,6 +47,7 @@ export const onCreateCheckFullGame = functions.firestore
       return batch.commit();
     });
 
-    const allRequests: Promise<any>[] = [startGameRequest, ...handRequests];
+    const allRequests: Promise<FirebaseFirestore.WriteResult | FirebaseFirestore.WriteResult[]>[] =
+      [startGameRequest, ...handRequests];
     return Promise.all(allRequests);
   });

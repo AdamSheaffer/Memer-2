@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 
 export const onUpdateChangePlayerStatus = functions.database
   .ref("status/{uid}")
-  .onWrite(async (change, context) => {
+  .onWrite(async (change) => {
     if (!change || !change.after || !change.before) {
       console.log("No updates made");
       return Promise.resolve();
