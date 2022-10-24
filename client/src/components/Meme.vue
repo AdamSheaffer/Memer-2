@@ -33,9 +33,10 @@ const fontSizeClass = (text: Maybe<string>) => {
         </h2>
       </div>
       <img
+        v-if="meme.photoURL"
         :src="meme.photoURL!"
         :alt="`${meme.bottom} ${meme.top}`"
-        class="object-cover w-full h-64"
+        class="object-cover w-full h-64 bg-purple-400"
       />
       <div
         class="flex items-center justify-center rounded-b-xl bg-darkblue-600 text-slate-200 px-2 py-4 min-h-min h-16"

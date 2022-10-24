@@ -30,11 +30,15 @@ const {
     <PickCategory v-else-if="judgeIsPickingCategory" :game-id="gameId" />
     <PickGif v-else-if="judgeIsPickingGif" :game-id="gameId" />
     <WaitingForSubmissions v-else-if="isSubmissionRound" :game-id="gameId" />
-    <SelectRoundWinner v-if="isPickingWinner" :game-id="gameId" />
-    <RoundWinner v-if="roundWinner && !gameWinner" :game-id="gameId" />
-    <GameWinner v-if="gameWinner" :game-id="gameId" />
+    <SelectRoundWinner v-else-if="isPickingWinner" :game-id="gameId" />
+    <RoundWinner v-else-if="roundWinner && !gameWinner" :game-id="gameId" />
+    <GameWinner v-else-if="gameWinner" :game-id="gameId" />
   </div>
   <div v-else class="h-full w-full">
     <PickReverseRoundCaption v-if="judgeIsPickingReverseRoundCaption" :game-id="gameId" />
+    <WaitingForSubmissions v-else-if="isSubmissionRound" :game-id="gameId" />
+    <SelectRoundWinner v-else-if="isPickingWinner" :game-id="gameId" />
+    <RoundWinner v-else-if="roundWinner && !gameWinner" :game-id="gameId" />
+    <GameWinner v-else-if="gameWinner" :game-id="gameId" />
   </div>
 </template>

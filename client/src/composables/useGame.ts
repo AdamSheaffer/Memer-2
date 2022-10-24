@@ -10,6 +10,7 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
+import orderby from "lodash.orderby";
 import { onUnmounted, ref } from "vue";
 import {
   Game,
@@ -176,10 +177,9 @@ export const useGame = (gameId: string) => {
           photoURL: player.memePlayed.photoURL,
         };
         return meme;
-      })
-      .sort((a, b) => (a.bottom! < b.bottom! ? -1 : 1));
+      });
 
-    return submissions;
+    return orderby(submissions, ["top", "bottom", "photoURL"]);
   });
 
   const roundWinner = computed(() => {

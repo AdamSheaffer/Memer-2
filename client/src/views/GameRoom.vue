@@ -39,7 +39,7 @@ onMounted(() => joinGame(gameId, user.value!).then(initialize));
       </Modal>
 
       <div class="flex h-full">
-        <div>
+        <div class="hidden md:block">
           <PlayersSidebar :game-id="game.uid" />
         </div>
         <div class="flex-1">

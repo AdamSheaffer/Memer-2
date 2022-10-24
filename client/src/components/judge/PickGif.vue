@@ -1,19 +1,31 @@
 <script lang="ts" setup>
 import { Timestamp } from "@firebase/firestore";
+import { GiphyFetch } from "@giphy/js-fetch-api";
 import { computed } from "@vue/reactivity";
 import { onMounted, ref } from "vue";
 import { useGame } from "../../composables/useGame";
-import { useGiphy } from "../../composables/useGiphy";
 import { arrowLeft, arrowRight } from "../../services/icons";
 import BackgroundBox from "../base/BackgroundBox.vue";
 
 const props = defineProps<{ gameId: string }>();
 
 const { updateGame, game } = useGame(props.gameId);
-const { getGifs } = useGiphy();
 
+const API_KEY = import.meta.env.VITE_GIPHY_KEY as string;
+const giphyClient = new GiphyFetch(API_KEY);
 const isLoading = ref(false);
 const isSaving = ref(false);
+
+const getGifs = async (category: string, count = 8): Promise<string[]> => {
+  isLoading.value = true;
+  const resp = await giphyClient.search(category, {
+    limit: count,
+    offset: Math.floor(Math.random() * 50),
+  });
+  isLoading.value = false;
+
+  return resp.data.map((g) => g.images.fixed_height.url);
+};
 
 onMounted(async () => {
   if (!game.value?.tagSelection) {

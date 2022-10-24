@@ -4,7 +4,7 @@ import GameBoard from "../base/GameBoard.vue";
 
 const props = defineProps<{ gameId: string }>();
 
-const { game } = useGame(props.gameId);
+const { game, isReverseRound } = useGame(props.gameId);
 </script>
 
 <template>
@@ -12,6 +12,7 @@ const { game } = useGame(props.gameId);
     <div class="flex items-center justify-center h-full">
       <div class="text-center">
         <img
+          v-if="!isReverseRound"
           :src="game!.memeTemplate!.photoURL!"
           :alt="`Meme template photo for ${game!.tagSelection}`"
           class="mx-auto block object-cover h-48 w-64 xl:h-52 xl:w-72 2xl:h-72 2xl:w-96 rounded-xl border-4 md:border-8 border-purple-400 mb-16 shadow-lg"

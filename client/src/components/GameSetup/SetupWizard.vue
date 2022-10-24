@@ -31,9 +31,9 @@ const pointsToWinOptions: SetupOption<number>[] = [
   { text: "7", value: 7 },
 ];
 const reverseRoundOptions: SetupOption<number>[] = [
+  { text: "NEVER", value: 0 },
   { text: "SOMETIMES", value: 0.25 },
   { text: "HALF N' HALF", value: 0.5 },
-  { text: "NEVER", value: 0 },
 ];
 const timerOptions: SetupOption<number>[] = [
   { text: "NO LIMITS", value: 0 },
