@@ -11,11 +11,13 @@ const props = withDefaults(
     firstStep?: boolean;
     lastStep?: boolean;
     smallText?: boolean;
+    smallCol?: boolean;
   }>(),
   {
     firstStep: false,
     lastStep: false,
     smallText: false,
+    smallCol: false,
   }
 );
 
@@ -38,7 +40,12 @@ const onSelectChange = (val: typeof props.modelValue) => {
         {{ props.subheader }}
       </h4>
     </div>
-    <div class="flex justify-around">
+    <div
+      class="flex justify-around"
+      :class="{
+        'flex-col md:flex-row items-center': smallCol,
+      }"
+    >
       <h4
         v-for="option in options"
         :key="option.value"

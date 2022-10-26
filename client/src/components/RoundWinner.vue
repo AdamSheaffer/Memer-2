@@ -50,18 +50,16 @@ const startNextTurn = async () => {
       </div>
       <div v-if="currentPlayerIsNextJudge">
         <h4
-          class="text-xs lg:text-sm 2xl:text-base text-center font-['Antonio'] text-gold-400 tracking-widest text-shadow-md mb-6"
+          class="text-xs lg:text-sm 2xl:text-base text-center font-['Antonio'] text-gold-400 tracking-widest text-shadow-md mb-2"
         >
           👋 HEY <span class="text-teal-400">{{ user?.username }}</span
           >! IT'S YOUR TURN NEXT
         </h4>
-        <MemerButton round color="teal" outline @click="startNextTurn" class="mb-4">
-          START ROUND
-        </MemerButton>
+        <MemerButton round color="teal" outline @click="startNextTurn"> START ROUND </MemerButton>
       </div>
       <h4
         v-else
-        class="text-xs lg:text-sm 2xl:text-base text-center font-['Antonio'] text-gold-400 tracking-widest text-shadow-md mb-6"
+        class="text-xs lg:text-sm 2xl:text-base text-center font-['Antonio'] text-gold-400 tracking-widest text-shadow-md"
       >
         WAITING ON <span class="text-teal-400">{{ nextPlayerTurn?.username }}</span> TO START THE
         NEXT ROUND

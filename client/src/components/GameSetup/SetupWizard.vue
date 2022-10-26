@@ -96,6 +96,7 @@ const completeAvatarStep = () => {
       header="REVERSE ROUNDS"
       subheader="HOW OFTEN DO YOU WANT REVERSE ROUNDS?"
       small-text
+      small-col
       @next="() => stepNumber++"
       @back="() => stepNumber--"
     />

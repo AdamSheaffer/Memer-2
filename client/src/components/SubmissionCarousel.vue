@@ -27,14 +27,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex w-full justify-center">
+  <div class="flex w-full justify-center relative">
     <TransitionGroup
-      enter-active-class="duration-300 delay-200"
-      enter-from-class="transform opacity-0 translate-x-12 md:translate-x-20 scale-90"
-      enter-to-class="opacity-100 scale-100"
-      leave-active-class="duration-200 ease-in"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="transform opacity-0 -translate-x-10 md:-translate-x-20 scale-90"
+      enter-active-class="duration-300 transition delay-500 ease-out origin-center"
+      enter-from-class="transform opacity-0 scale-0 translate-x-24 rotate-[270deg]"
+      enter-to-class="opacity-100 scale-100 translate-x-0 rotate-0"
+      leave-active-class="duration-300 ease-in absolute origin-center"
+      leave-from-class="opacity-100 scale-100 rotate-0"
+      leave-to-class="transform opacity-0 scale-0 rotate-[270deg]"
     >
       <MemeDisplay
         v-for="(submission, i) in playerSubmissions"
