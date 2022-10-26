@@ -48,7 +48,7 @@ const subheaderText = computed(() => {
           <img
             :src="game!.memeTemplate!.photoURL!"
             :alt="`Meme template photo for ${game!.tagSelection}`"
-            class="mx-auto mb-8 block object-cover h-48 w-64 xl:h-52 xl:w-72 2xl:h-72 2xl:w-96 rounded-xl border-4 md:border-8 border-purple-400 shadow-xl"
+            class="mx-auto mb-8 block object-cover h-48 w-64 xl:h-52 xl:w-72 2xl:h-72 2xl:w-96 rounded-xl border-4 md:border-8 bg-purple-400 border-purple-400 shadow-xl"
           />
           <h2 class="text-white mb-2 text-shadow-purple text-3xl lg:text-5xl xl:text-7xl">
             {{ headerText }}

@@ -27,5 +27,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <MemeDisplay v-if="activeMeme" :meme="activeMeme"> </MemeDisplay>
+  <div class="flex w-full justify-center">
+    <TransitionGroup
+      enter-active-class="duration-300 delay-200"
+      enter-from-class="transform opacity-0 translate-x-12 md:translate-x-20 scale-90"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="transform opacity-0 -translate-x-10 md:-translate-x-20 scale-90"
+    >
+      <MemeDisplay
+        v-for="(submission, i) in playerSubmissions"
+        :key="i"
+        v-show="i === activeIndex"
+        :meme="submission"
+      >
+      </MemeDisplay>
+    </TransitionGroup>
+  </div>
 </template>
