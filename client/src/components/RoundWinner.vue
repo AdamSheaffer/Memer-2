@@ -12,6 +12,14 @@ const { roundWinner, game, nextPlayerTurn, resetRound } = useGame(props.gameId);
 const { getSomeCategories } = useCategories();
 const { user } = useUser();
 
+const currentPlayerIsWinner = computed(() => {
+  return roundWinner.value?.uid === user.value?.uid;
+});
+
+const headerText = computed(() => {
+  return currentPlayerIsWinner.value ? "🏆 YOU WON THE ROUND! 🏆" : "🏆 WINS THE ROUND 🏆";
+});
+
 const currentPlayerIsNextJudge = computed(() => {
   return nextPlayerTurn.value?.uid === user.value?.uid;
 });
@@ -27,6 +35,7 @@ const startNextTurn = async () => {
     <div class="px-6 text-center">
       <h2 class="text-2xl lg:text-4xl xl:text-5xl mb-3"></h2>
       <h2
+        v-if="!currentPlayerIsWinner"
         class="text-purple-400 text-shadow text-3xl lg:text-5xl xl:text-6xl mb-1 -rotate-6 animate-fade-in-down"
       >
         {{ roundWinner?.username }}
@@ -34,7 +43,7 @@ const startNextTurn = async () => {
       <h2
         class="text-slate-200 text-center text-shadow-purple text-lg lg:text-2xl xl:text-3xl mb-6"
       >
-        🏆 WINS THE ROUND 🏆
+        {{ headerText }}
       </h2>
       <div class="flex justify-center items-center mb-6">
         <Meme :meme="game!.winningMeme!" class="border-0 shadow-none" />

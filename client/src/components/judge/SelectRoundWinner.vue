@@ -41,12 +41,18 @@ const pickMeme = () => {
   <GameBoard>
     <div class="flex h-full w-full items-center justify-center text-center">
       <div>
-        <h2
-          v-if="showCarousel"
-          class="text-gold-500 text-shadow-purple text-3xl lg:text-5xl xl:text-7xl mb-6 text-center"
-        >
-          SUBMISSIONS
-        </h2>
+        <div v-if="showCarousel" class="mb-6">
+          <h2
+            class="text-slate-200 text-center text-shadow-purple text-shadow-purple text-3xl lg:text-5xl xl:text-7xl"
+          >
+            SUBMISSIONS
+          </h2>
+          <h4
+            class="text-sm md:text-lg text-center font-['Antonio'] text-gold-400 tracking-widest text-shadow-md mb-6"
+          >
+            LET'S SHOW EM OFF!
+          </h4>
+        </div>
         <SubmissionCarousel
           v-if="showCarousel"
           :player-submissions="playerSubmissions"

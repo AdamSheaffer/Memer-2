@@ -1,15 +1,44 @@
 <script setup lang="ts">
+import { onKeyStroke } from "@vueuse/core";
+import { ref } from "vue";
 import { useGame } from "../composables/useGame";
-import { check, gavel, heart } from "../services/icons";
+import { check, gavel, heart, users, xMark } from "../services/icons";
 
 const props = defineProps<{ gameId: string }>();
 
 const { activePlayers, game, currentPlayer } = useGame(props.gameId);
+
+const isOpen = ref(false);
+
+onKeyStroke("Escape", () => (isOpen.value = false));
 </script>
 
 <template>
-  <aside class="w-72 flex flex-col space-y-4 bg-darkblue-500 h-full px-4 py-2">
+  <button
+    class="z-10 md:hidden absolute top-4 left-4 rounded-full bg-purple-400"
+    title="SHOW PLAYERS"
+    @click="isOpen = true"
+  >
+    <FaIcon :icon="users" class="text-xl p-4 text-white"></FaIcon>
+  </button>
+  <aside
+    :class="{
+      '-translate-x-full': !isOpen,
+      'translate-x-0 z-10': isOpen,
+    }"
+    class="overflow-hidden md:translate-x-0 md:relative md:z-0 w-full md:w-72 absolute md:flex flex-col space-y-4 bg-darkblue-500 h-full px-4 py-2 transition duration-300"
+  >
     <h1 class="text-purple-400 text-6xl text-shadow-lg mb-4 mt-2">MEMER</h1>
+
+    <button class="absolute top-1 right-3 md:hidden">
+      <FaIcon
+        :icon="xMark"
+        class="text-xl text-slate-400 hover:scale-x-105 hover:text-slate-200 transition-all"
+        title="CLOSE"
+        @click="isOpen = false"
+      ></FaIcon>
+    </button>
+
     <div v-for="player in activePlayers" :key="player.uid">
       <div class="flex space-x-4">
         <img
