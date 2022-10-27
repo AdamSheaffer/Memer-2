@@ -27,10 +27,7 @@ export const onCreateCheckFullGame = functions.firestore
 
     // Deal to all players
     const cardsSnapshot = await admin.firestore().collection("captions").get();
-    const cards = cardsSnapshot.docs.map((doc) => ({
-      uid: doc.id,
-      ...doc.data(),
-    }));
+    const cards = cardsSnapshot.docs.map((doc) => doc.data());
 
     const shuffledDeck = shuffle(cards);
     const chunkSize = Math.floor(shuffledDeck.length / playerCount);

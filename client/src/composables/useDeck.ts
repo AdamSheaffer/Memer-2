@@ -5,7 +5,6 @@ import shuffle from "lodash.shuffle";
 import { ref } from "vue";
 import { Card } from "../../../types";
 import { captionsCollectionRef, db, gamesCollectionRef } from "../firebase";
-import { mapCollection } from "../utils/mapCollectionDocs";
 
 const deck = ref<Card[]>([]);
 
@@ -20,7 +19,8 @@ export const useDeck = () => {
 
     if (!deck.value.length) {
       const snapshot = await getDocs(deckQuery);
-      deck.value = mapCollection<Card>(snapshot);
+      // Don't use `mapCollection` here because we actually don't want the card ID from the deck
+      deck.value = snapshot.docs.map((d) => d.data() as Card);
     }
 
     loading.value = false;
