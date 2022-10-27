@@ -3,6 +3,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faArrowAltCircleLeft,
   faArrowAltCircleRight,
+  faArrowLeft,
   faBriefcase,
   faCheck,
   faFaceDizzy,
@@ -13,6 +14,7 @@ import {
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
+library.add(faArrowLeft);
 library.add(faArrowAltCircleLeft);
 library.add(faArrowAltCircleRight);
 library.add(faBriefcase);
@@ -24,6 +26,7 @@ library.add(faRepeat);
 library.add(faUsers);
 library.add(faXmarkCircle);
 
+export const backArrow = faArrowLeft.iconName;
 export const arrowLeft = faArrowAltCircleLeft.iconName;
 export const arrowRight = faArrowAltCircleRight.iconName;
 export const briefcase = faBriefcase.iconName;
