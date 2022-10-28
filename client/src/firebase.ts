@@ -1,6 +1,5 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
-import { connectDatabaseEmulator, getDatabase } from "firebase/database";
 import { collection, connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
@@ -17,7 +16,6 @@ const firebaseConfig: FirebaseOptions = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-export const realtimeDb = getDatabase(app);
 export const functions = getFunctions(app);
 
 // firestore refs
@@ -29,7 +27,6 @@ export const captionsCollectionRef = collection(db, "captions");
 if (import.meta.env.MODE === "development") {
   console.info("development: MEMER is using Firebase Emulators...");
   connectFirestoreEmulator(db, "localhost", 8000);
-  connectDatabaseEmulator(realtimeDb, "localhost", 9000);
   connectFunctionsEmulator(functions, "localhost", 5001);
   connectAuthEmulator(auth, "http://localhost:9099");
 }

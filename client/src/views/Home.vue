@@ -28,6 +28,7 @@ import MemerButton from "../components/base/MemerButton.vue";
           to="/open-games"
           outline
           color="purple"
+          sound="affirmative"
           class="mx-auto hover:bg-purple-400 hover:text-white py-4 text-lg md:text-2xl w-56 md:w-96"
         >
           VIEW OPEN GAMES
@@ -37,6 +38,7 @@ import MemerButton from "../components/base/MemerButton.vue";
           to="/create"
           outline
           color="purple"
+          sound="affirmative"
           class="mx-auto hover:bg-purple-400 hover:text-white border-2 py-4 text-lg md:text-2xl w-56 md:w-96"
         >
           CREATE NEW GAME

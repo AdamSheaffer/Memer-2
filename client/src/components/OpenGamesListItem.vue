@@ -56,6 +56,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
     <MemerButton
       color="teal"
       class="w-full md:w-24 px-4 py-2 tracking-wider"
+      sound="affirmative"
       @click="$emit('join', game.uid!)"
     >
       JOIN

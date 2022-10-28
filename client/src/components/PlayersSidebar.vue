@@ -4,10 +4,11 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useGame } from "../composables/useGame";
 import { backArrow, check, gavel, heart, users, xMark } from "../services/icons";
+import { negativeSound } from "../services/sounds";
 
 const props = defineProps<{ gameId: string }>();
 
-const { activePlayers, game, currentPlayer } = useGame(props.gameId);
+const { activePlayers, game, currentPlayer, updatePlayer } = useGame(props.gameId);
 const router = useRouter();
 
 const isOpen = ref(false);
@@ -15,7 +16,9 @@ const isOpen = ref(false);
 onKeyStroke("Escape", () => (isOpen.value = false));
 
 const leaveGame = () => {
+  negativeSound.play();
   router.push("/open-games");
+  return updatePlayer(currentPlayer.value!.uid, { isActive: false });
 };
 </script>
 

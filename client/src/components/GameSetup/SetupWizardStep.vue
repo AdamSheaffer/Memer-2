@@ -71,6 +71,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
         color="teal"
         class="w-full md:w-24 tracking-wider"
         data-back
+        sound="affirmative"
         @click="emit('back')"
       >
         BACK
@@ -80,6 +81,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
         color="teal"
         class="w-full ml-auto md:w-24 tracking-wider"
         data-next
+        sound="affirmative"
         @click="emit('next')"
       >
         NEXT
@@ -89,6 +91,7 @@ const onSelectChange = (val: typeof props.modelValue) => {
         color="teal"
         class="w-full ml-auto md:w-24 tracking-wider"
         data-start
+        sound="affirmative"
         @click="emit('next')"
       >
         START

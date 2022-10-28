@@ -213,6 +213,7 @@ const onSave = () => {
           class="w-full ml-auto md:w-24 tracking-wider"
           data-avatar-save
           type="submit"
+          sound="affirmative"
         >
           {{ saveBtnText ?? "SAVE" }}
         </MemerButton>

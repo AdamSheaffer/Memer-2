@@ -8,8 +8,6 @@ export * from "./captions/onCreateNormalize";
 export * from "./categories/onCreateAddTimestamp";
 // game
 export * from "./game/onUpdateAddPoint";
-// online detection
-export * from "./online-detection/onUpdateChangePlayerStatus";
 // players
 export * from "./players/onCreateCheckFullGame";
 export * from "./players/onCreateSetTurnOrder";
