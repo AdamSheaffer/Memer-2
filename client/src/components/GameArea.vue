@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useGame } from "../composables/useGame";
-import JudgeRound from "./Judge_temp/JudgeRound.vue";
+import JudgeRound from "./Judge/JudgeRound.vue";
 import PlayerRound from "./Player/PlayerRound.vue";
 import PreGameDisplay from "./PreGameDisplay.vue";
 
