@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeMount, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { defineAsyncComponent, onBeforeMount, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import Modal from "../components/base/Modal.vue";
 import GameArea from "../components/GameArea.vue";
 import PlayersSidebar from "../components/PlayersSidebar.vue";
@@ -13,10 +13,11 @@ import { joinGame } from "../services/gameService";
 const Chat = defineAsyncComponent(() => import("../components/Chat.vue"));
 
 const gameId = useRoute().params.id as string;
+const router = useRouter();
 const { user } = useUser();
 const { needsAvatarSet, markAvatarAsSet, avatar, photoURL } = useAvatar();
 const showAvatarCreator = ref(Boolean(needsAvatarSet.value));
-const { game, initialize, updatePlayer } = useGame(gameId);
+const { game, initialize, updatePlayer, currentPlayer, clearGame } = useGame(gameId);
 
 const onAvatarChange = async () => {
   await updatePlayer(user.value!.uid, {
@@ -27,8 +28,18 @@ const onAvatarChange = async () => {
   markAvatarAsSet();
 };
 
-onBeforeMount(() => (game.value = null)); // clear old game if there is one
+onBeforeMount(clearGame); // clear old game if there is one
 onMounted(() => joinGame(gameId, user.value!).then(initialize));
+onUnmounted(clearGame);
+
+const removalAlertShown = ref(false); // make sure there's no way we show the removal alert more that once
+watchEffect(() => {
+  if (currentPlayer.value?.removed && !removalAlertShown.value) {
+    removalAlertShown.value = true;
+    router.push("/");
+    alert("You were removed from this game");
+  }
+});
 </script>
 
 <template>

@@ -265,12 +265,18 @@ export const useGame = (gameId: string) => {
     return batch.commit();
   };
 
+  const clearGame = () => {
+    game.value = null;
+    players.value = [];
+  };
+
   onUnmounted(() => {
     unsubscribes.forEach((fn) => fn());
   });
 
   return {
     activePlayers,
+    clearGame,
     currentPlayer,
     everyoneHasSubmitted,
     firestoreGameRef,

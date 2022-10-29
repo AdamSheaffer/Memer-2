@@ -10,6 +10,7 @@ import {
   faGavel,
   faHeart,
   faRepeat,
+  faThumbsDown,
   faUsers,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
@@ -23,6 +24,7 @@ library.add(faFaceDizzy);
 library.add(faGavel);
 library.add(faHeart);
 library.add(faRepeat);
+library.add(faThumbsDown);
 library.add(faUsers);
 library.add(faXmarkCircle);
 
@@ -35,5 +37,6 @@ export const faceDizzy = faFaceDizzy.iconName;
 export const gavel = faGavel.iconName;
 export const heart = faHeart.iconName;
 export const reverse = faRepeat.iconName;
+export const thumbsDown = faThumbsDown.iconName;
 export const users = faUsers.iconName;
 export const xMark = faXmarkCircle.iconName;

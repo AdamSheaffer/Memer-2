@@ -105,6 +105,7 @@ module.exports = {
       },
       animation: {
         "fade-in-down": "fade-in-down 1s ease-out",
+        "fade-in-down-500": "fade-in-down .5s ease-out",
         "fade-in-spin-once": "fade-in-spin .8s linear",
       },
     },

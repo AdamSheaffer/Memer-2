@@ -2,21 +2,46 @@
 import { onKeyStroke } from "@vueuse/core";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { Maybe, Player } from "../../../types";
 import { useGame } from "../composables/useGame";
-import { backArrow, check, gavel, heart, users, xMark } from "../services/icons";
+import { backArrow, check, gavel, heart, thumbsDown, users, xMark } from "../services/icons";
+import MemerButton from "./base/MemerButton.vue";
+import Modal from "./base/Modal.vue";
 
 const props = defineProps<{ gameId: string }>();
 
-const { activePlayers, game, currentPlayer, updatePlayer } = useGame(props.gameId);
+const { activePlayers, game, currentPlayer, updatePlayer, userIsHost } = useGame(props.gameId);
 const router = useRouter();
 
 const isOpen = ref(false);
 
-onKeyStroke("Escape", () => (isOpen.value = false));
+onKeyStroke("Escape", () => {
+  isOpen.value = false;
+  playerToRemove.value = null;
+});
 
 const leaveGame = () => {
   router.push("/open-games");
   return updatePlayer(currentPlayer.value!.uid, { isActive: false });
+};
+
+const showRemoveButtonForUserId = ref<Maybe<string>>(null);
+const playerToRemove = ref<Maybe<Player>>(null);
+
+const onPlayerHover = (playerId: Maybe<string>) => {
+  if (userIsHost.value) {
+    showRemoveButtonForUserId.value = playerId;
+  }
+};
+
+const removePlayer = async () => {
+  if (!playerToRemove.value || !userIsHost.value) {
+    return;
+  }
+
+  await updatePlayer(playerToRemove.value.uid, { isActive: false, removed: true });
+
+  playerToRemove.value = null;
 };
 </script>
 
@@ -33,10 +58,10 @@ const leaveGame = () => {
       '-translate-x-full': !isOpen,
       'translate-x-0 z-10': isOpen,
     }"
-    class="overflow-hidden md:translate-x-0 md:relative md:z-0 w-full md:w-72 absolute flex flex-col justify-between bg-darkblue-500 h-full px-4 py-2 transition duration-300"
+    class="overflow-hidden md:translate-x-0 md:relative md:z-0 w-full md:w-72 absolute flex flex-col justify-between bg-darkblue-500 h-full py-2 transition duration-300"
   >
-    <div class="flex flex-col space-y-4">
-      <h1 class="text-purple-400 text-6xl text-shadow-lg mb-4 mt-2">MEMER</h1>
+    <div class="flex flex-col space-y-2">
+      <h1 class="text-purple-400 text-6xl text-shadow-lg mb-4 mt-2 px-4">MEMER</h1>
 
       <button class="absolute top-1 right-3 md:hidden">
         <FaIcon
@@ -47,7 +72,14 @@ const leaveGame = () => {
         ></FaIcon>
       </button>
 
-      <div v-for="player in activePlayers" :key="player.uid">
+      <div
+        v-for="player in activePlayers"
+        :key="player.uid"
+        class="px-4 py-2"
+        :class="{ 'hover:bg-slate-700': userIsHost }"
+        @mouseenter="onPlayerHover(player.uid)"
+        @mouseleave="onPlayerHover(null)"
+      >
         <div class="flex space-x-4">
           <img
             :src="player.photoURL!"
@@ -82,6 +114,24 @@ const leaveGame = () => {
               ></FaIcon>
             </div>
           </div>
+
+          <div
+            v-if="
+              userIsHost &&
+              player.uid !== currentPlayer?.uid &&
+              showRemoveButtonForUserId === player.uid
+            "
+            class="self-center flex-1"
+          >
+            <div class="text-right">
+              <FaIcon
+                :icon="thumbsDown"
+                class="cursor-pointer text-red-500 hover:text-red-600 text-xl"
+                title="REMOVE PLAYER"
+                @click="playerToRemove = player"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -95,4 +145,25 @@ const leaveGame = () => {
       </button>
     </div>
   </aside>
+  <Modal v-if="playerToRemove">
+    <div class="p-8 text-center">
+      <h2 class="text-slate-200 text-3xl text-shadow-purple">
+        REMOVE {{ playerToRemove.username }}
+      </h2>
+      <h4 class="text-gold-500 font-['Antonio'] mb-8 tracking-wide">
+        THIS WILL KICK THE PLAYER FROM THE GAME. ARE YOU SURE?
+      </h4>
+      <div class="flex space-x-2">
+        <MemerButton
+          outline
+          class="flex-1"
+          @click="playerToRemove = null"
+          @keydown.esc="playerToRemove = null"
+          tabindex="0"
+          >CANCEL</MemerButton
+        >
+        <MemerButton class="flex-1" @click="removePlayer">REMOVE</MemerButton>
+      </div>
+    </div>
+  </Modal>
 </template>
