@@ -4,7 +4,6 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useGame } from "../composables/useGame";
 import { backArrow, check, gavel, heart, users, xMark } from "../services/icons";
-import { negativeSound } from "../services/sounds";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -16,7 +15,6 @@ const isOpen = ref(false);
 onKeyStroke("Escape", () => (isOpen.value = false));
 
 const leaveGame = () => {
-  negativeSound.play();
   router.push("/open-games");
   return updatePlayer(currentPlayer.value!.uid, { isActive: false });
 };
@@ -91,7 +89,7 @@ const leaveGame = () => {
     <div
       class="mb-6 text-slate-400 hover:text-slate-200 transition-colors text-center font-['Antonio'] text-lg"
     >
-      <button class="tracking-wide" @click="leaveGame">
+      <button class="tracking-wide" v-sound:click.negative @click="leaveGame">
         <FaIcon :icon="backArrow"></FaIcon>
         LEAVE GAME
       </button>

@@ -32,6 +32,7 @@ const selectCategory = async (category: string) => {
             v-for="category in game!.tagOptions"
             :key="category"
             class="cursor-pointer transition-all text-shadow hover:text-2xl hover:text-gold-400"
+            v-sound:click.affirmative
             @click="selectCategory(category)"
           >
             {{ category }}

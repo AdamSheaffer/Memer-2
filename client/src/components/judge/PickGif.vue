@@ -78,6 +78,7 @@ const selectGif = () => {
         <div class="flex flex-col xl:flex-row justify-between items-center">
           <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
             <button
+              v-sound:click.swipeBack
               @click="gifIndex--"
               :disabled="isFirstGif"
               class="disabled:opacity-25 disabled:cursor-not-allowed"
@@ -92,10 +93,12 @@ const selectGif = () => {
             :src="gifURL"
             :alt="`${game!.tagSelection} Option ${gifIndex + 1}`"
             class="object-cover h-48 w-64 xl:h-52 xl:w-72 2xl:h-72 2xl:w-96 rounded-xl md:mx-4 2xl:mx-8 border-4 bg-purple-400 border-gold-400 hover:border-purple-400 cursor-pointer hover:scale-105 transition-all"
+            v-sound:click.affirmative
             @click="selectGif"
           />
           <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
             <button
+              v-sound:click.swipeForward
               @click="gifIndex++"
               :disabled="isLastGif"
               class="disabled:opacity-25 disabled:cursor-not-allowed"
@@ -105,6 +108,7 @@ const selectGif = () => {
           </div>
           <div class="xl:hidden flex justify-around w-full mt-10">
             <button
+              v-sound:click.swipeBack
               @click="gifIndex--"
               :disabled="isFirstGif"
               class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
@@ -112,6 +116,7 @@ const selectGif = () => {
               <FaIcon :icon="arrowLeft"></FaIcon>
             </button>
             <button
+              v-sound:click.swipeForward
               @click="gifIndex++"
               :disabled="isLastGif"
               class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"

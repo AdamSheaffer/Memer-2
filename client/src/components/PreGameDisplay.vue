@@ -36,6 +36,7 @@ const onStartButtonClick = async () => {
       class="py-4 md:py-6 tracking-widest text-xl w-64 shadow-2xl"
       data-start-button
       :disabled="!hasMinimumPlayers || loading"
+      sound="affirmative"
       @click="onStartButtonClick"
     >
       START GAME

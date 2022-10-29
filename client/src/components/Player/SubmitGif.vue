@@ -7,6 +7,7 @@ import { computed, ref } from "vue";
 import { Maybe, Meme } from "../../../../types";
 import { useGame } from "../../composables/useGame";
 import { useUser } from "../../composables/useUser";
+import { affirmativeSound } from "../../services/sounds";
 import GameBoard from "../base/GameBoard.vue";
 import MemeDisplay from "../Meme.vue";
 
@@ -56,6 +57,8 @@ const onSelect = async (gif: IGif) => {
   if (!game?.value?.memeTemplate) {
     throw Error("Tried to select GIF but there is no meme template");
   }
+
+  affirmativeSound.play();
 
   isSaving.value = true;
 

@@ -2,6 +2,7 @@
 import { Card } from "../../../types";
 import { useHand } from "../composables/useHand";
 import { useUser } from "../composables/useUser";
+import { affirmativeSound } from "../services/sounds";
 
 const props = defineProps<{ gameId: string; playable?: boolean }>();
 const emit = defineEmits<(event: "select", card: Card) => void>();
@@ -11,6 +12,7 @@ const { hand } = useHand(props.gameId, user.value!.uid);
 
 const onClick = (card: Card) => {
   if (props.playable) {
+    affirmativeSound.play();
     emit("select", card);
   }
 };

@@ -55,7 +55,9 @@ const startNextTurn = async () => {
           👋 HEY <span class="text-teal-400">{{ user?.username }}</span
           >! IT'S YOUR TURN NEXT
         </h4>
-        <MemerButton round color="teal" outline @click="startNextTurn"> START ROUND </MemerButton>
+        <MemerButton round color="teal" outline sound="affirmative" @click="startNextTurn">
+          START ROUND
+        </MemerButton>
       </div>
       <h4
         v-else

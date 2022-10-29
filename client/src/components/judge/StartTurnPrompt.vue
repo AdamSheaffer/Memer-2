@@ -34,6 +34,7 @@ const startTurn = async () => {
           class="py-2 md:py-4 tracking-widest w-36 md:w-52 shadow-2xl"
           data-start-turn-button
           :disabled="isLoading"
+          sound="affirmative"
           @click="startTurn"
         >
           START TURN

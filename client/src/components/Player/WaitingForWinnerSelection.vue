@@ -56,6 +56,7 @@ const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.va
               <button
                 :disabled="viewingMemeIndex === 0"
                 class="disabled:opacity-50 disabled:cursor-not-allowed"
+                v-sound:click.swipeBack
                 @click="viewingMemeIndex--"
               >
                 <FaIcon :icon="arrowLeft"></FaIcon>
@@ -66,6 +67,7 @@ const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.va
               <button
                 :disabled="viewingMemeIndex === playerSubmissions.length - 1"
                 class="disabled:opacity-50 disabled:cursor-not-allowed"
+                v-sound:click.swipeForward
                 @click="viewingMemeIndex++"
               >
                 <FaIcon :icon="arrowRight"></FaIcon>
@@ -73,6 +75,7 @@ const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.va
             </div>
             <div class="xl:hidden flex justify-around w-full mt-10">
               <button
+                v-sound:click.swipeBack
                 @click="viewingMemeIndex--"
                 :disabled="viewingMemeIndex === 0"
                 class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
@@ -80,6 +83,7 @@ const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.va
                 <FaIcon :icon="arrowLeft"></FaIcon>
               </button>
               <button
+                v-sound:click.swipeForward
                 @click="viewingMemeIndex++"
                 :disabled="viewingMemeIndex === playerSubmissions.length - 1"
                 class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
