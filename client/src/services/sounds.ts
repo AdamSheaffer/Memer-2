@@ -1,5 +1,4 @@
 import { Howl } from "howler";
-import { Plugin } from "vue";
 import affirmative from "../assets/sounds/affirmative-click.mp3";
 import negative from "../assets/sounds/negative-click.mp3";
 import swipe from "../assets/sounds/swipe.mp3";
@@ -15,21 +14,4 @@ const modifierDictionary: Record<string, Howl> = {
   negative: negativeSound,
   swipeForward: swipeForwardSound,
   swipeBack: swipeBackSound,
-};
-
-export const SoundsPlugin: Plugin = {
-  install(app) {
-    app.directive("sound", (el, binding) => {
-      if (!binding.arg) {
-        console.warn("No argument was provided for v-sound directive");
-        return;
-      }
-
-      el.addEventListener(binding.arg, () => {
-        Object.entries(binding.modifiers)
-          .filter(([, val]) => val)
-          .forEach(([key]) => modifierDictionary[key].play());
-      });
-    });
-  },
 };

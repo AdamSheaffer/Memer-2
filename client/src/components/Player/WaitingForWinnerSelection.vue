@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { useGame } from "../../composables/useGame";
 import { arrowLeft, arrowRight } from "../../services/icons";
+import { swipeBackSound, swipeForwardSound } from "../../services/sounds";
 import GameBoard from "../base/GameBoard.vue";
 import Meme from "../Meme.vue";
 import SubmissionCarousel from "../SubmissionCarousel.vue";
@@ -13,6 +14,16 @@ const showCarousel = ref(true);
 
 const viewingMemeIndex = ref(0);
 const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.value]);
+
+const previousMeme = () => {
+  swipeBackSound.play();
+  viewingMemeIndex.value--;
+};
+
+const nextMeme = () => {
+  swipeForwardSound.play();
+  viewingMemeIndex.value++;
+};
 </script>
 
 <template>
@@ -56,8 +67,7 @@ const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.va
               <button
                 :disabled="viewingMemeIndex === 0"
                 class="disabled:opacity-50 disabled:cursor-not-allowed"
-                v-sound:click.swipeBack
-                @click="viewingMemeIndex--"
+                @click="previousMeme"
               >
                 <FaIcon :icon="arrowLeft"></FaIcon>
               </button>
@@ -67,24 +77,21 @@ const viewingMeme = computed(() => playerSubmissions.value?.[viewingMemeIndex.va
               <button
                 :disabled="viewingMemeIndex === playerSubmissions.length - 1"
                 class="disabled:opacity-50 disabled:cursor-not-allowed"
-                v-sound:click.swipeForward
-                @click="viewingMemeIndex++"
+                @click="nextMeme"
               >
                 <FaIcon :icon="arrowRight"></FaIcon>
               </button>
             </div>
             <div class="xl:hidden flex justify-around w-full mt-10">
               <button
-                v-sound:click.swipeBack
-                @click="viewingMemeIndex--"
+                @click="previousMeme"
                 :disabled="viewingMemeIndex === 0"
                 class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
               >
                 <FaIcon :icon="arrowLeft"></FaIcon>
               </button>
               <button
-                v-sound:click.swipeForward
-                @click="viewingMemeIndex++"
+                @click="nextMeme"
                 :disabled="viewingMemeIndex === playerSubmissions.length - 1"
                 class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
               >

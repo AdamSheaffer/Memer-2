@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { Maybe, Player } from "../../../types";
 import { useGame } from "../composables/useGame";
 import { backArrow, check, gavel, heart, thumbsDown, users, xMark } from "../services/icons";
+import { negativeSound } from "../services/sounds";
 import MemerButton from "./base/MemerButton.vue";
 import Modal from "./base/Modal.vue";
 
@@ -21,6 +22,7 @@ onKeyStroke("Escape", () => {
 });
 
 const leaveGame = () => {
+  negativeSound.play();
   router.push("/open-games");
   return updatePlayer(currentPlayer.value!.uid, { isActive: false });
 };
@@ -139,7 +141,7 @@ const removePlayer = async () => {
     <div
       class="mb-6 text-slate-400 hover:text-slate-200 transition-colors text-center font-['Antonio'] text-lg"
     >
-      <button class="tracking-wide" v-sound:click.negative @click="leaveGame">
+      <button class="tracking-wide" @click="leaveGame">
         <FaIcon :icon="backArrow"></FaIcon>
         LEAVE GAME
       </button>

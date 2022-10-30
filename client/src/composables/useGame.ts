@@ -36,9 +36,7 @@ const getNextRoundType = (): RoundType => {
     throw Error("`game` is null`");
   }
 
-  const isReverseRound = Boolean(
-    Math.round(Math.random() * 2 * (game.value.reverseRoundFrequency ?? 0))
-  );
+  const isReverseRound = Math.random() < (game.value.reverseRoundFrequency ?? 0);
 
   return isReverseRound
     ? { roundType: RoundTypeOption.Reverse, isSpecial: true }

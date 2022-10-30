@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
 import { useGame } from "../../composables/useGame";
+import { affirmativeSound } from "../../services/sounds";
 import BackgroundBox from "../base/BackgroundBox.vue";
 
 const props = defineProps<{ gameId: string }>();
@@ -9,6 +10,7 @@ const { game, updateGame } = useGame(props.gameId);
 const isSaving = ref(false);
 
 const selectCategory = async (category: string) => {
+  affirmativeSound.play();
   isSaving.value = true;
   await updateGame({ tagSelection: category });
   isSaving.value = false;
@@ -32,7 +34,6 @@ const selectCategory = async (category: string) => {
             v-for="category in game!.tagOptions"
             :key="category"
             class="cursor-pointer transition-all text-shadow hover:text-2xl hover:text-gold-400"
-            v-sound:click.affirmative
             @click="selectCategory(category)"
           >
             {{ category }}

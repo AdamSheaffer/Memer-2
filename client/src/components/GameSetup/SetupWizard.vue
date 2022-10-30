@@ -3,6 +3,7 @@ import { reactive, ref } from "vue";
 import { GameSettings, SetupOption } from "../../../../types";
 import { useAvatar } from "../../composables/useAvatar";
 import { xMark } from "../../services/icons";
+import { negativeSound } from "../../services/sounds";
 import BackgroundBox from "../base/BackgroundBox.vue";
 import ProfileCreate from "../ProfileCreate.vue";
 import SetupWizardStep from "./SetupWizardStep.vue";
@@ -58,6 +59,11 @@ const completeAvatarStep = () => {
   const { markAvatarAsSet } = useAvatar();
   markAvatarAsSet();
 };
+
+const cancel = () => {
+  negativeSound.play();
+  emit("cancelled");
+};
 </script>
 
 <template>
@@ -67,8 +73,7 @@ const completeAvatarStep = () => {
         :icon="xMark"
         class="cursor-pointer absolute right-4 top-4 text-slate-300 text-xl"
         title="CANCEL"
-        v-sound:click:negative
-        @click="emit('cancelled')"
+        @click="cancel"
       ></FaIcon>
     </div>
     <ProfileCreate v-if="stepNumber === 1" save-btn-text="NEXT" @submit="completeAvatarStep" />
