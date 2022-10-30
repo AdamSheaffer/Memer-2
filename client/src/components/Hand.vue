@@ -50,14 +50,14 @@ const onClick = (card: Card) => {
   </div>
   <!-- Mobile View -->
 
-  <div class="flex flex-1 overflow-auto md:hidden w-80 min-w-full mb-4">
+  <div class="flex flex-1 overflow-auto md:hidden w-80 min-w-full -mb-6">
     <div class="flex min-h-fit space-x-3">
       <div
         v-for="(card, i) in hand"
         class="bg-darkblue-600 text-slate-200 shadow-2xl w-32 h-40 p-2 border-2 border-purple-400 rounded-lg text-xs cursor-pointer hover:text-gold-500 transition-all text-center"
         @click="onClick(card)"
       >
-        <div class="flex flex-col justify-between">
+        <div class="flex flex-col justify-between h-full">
           <div>{{ card.top }}</div>
           <div>{{ card.bottom }}</div>
         </div>

@@ -60,7 +60,9 @@ const subheaderText = computed(() => {
           </h4>
         </div>
       </div>
-      <Hand :game-id="gameId" :playable="!isSaving && !hasSubmitted" @select="onSelect" />
+      <div>
+        <Hand :game-id="gameId" :playable="!isSaving && !hasSubmitted" @select="onSelect" />
+      </div>
     </div>
   </GameBoard>
 </template>

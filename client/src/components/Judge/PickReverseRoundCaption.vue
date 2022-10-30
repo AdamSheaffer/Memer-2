@@ -49,7 +49,9 @@ const selectCard = async (card: Card) => {
           </h4>
         </div>
       </div>
-      <Hand :game-id="gameId" @select="selectCard" :playable="!isSaving" />
+      <div>
+        <Hand :game-id="gameId" @select="selectCard" :playable="!isSaving" />
+      </div>
     </div>
   </GameBoard>
 </template>

@@ -29,7 +29,9 @@ const { judge } = useGame(props.gameId);
           </h4>
         </div>
       </div>
-      <Hand :game-id="gameId" />
+      <div>
+        <Hand :game-id="gameId" />
+      </div>
     </div>
   </GameBoard>
 </template>

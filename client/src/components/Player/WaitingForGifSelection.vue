@@ -23,7 +23,9 @@ const { game } = useGame(props.gameId);
           </h4>
         </div>
       </div>
-      <Hand :game-id="gameId" :playable="false" />
+      <div>
+        <Hand :game-id="gameId" :playable="false" />
+      </div>
     </div>
   </GameBoard>
 </template>
