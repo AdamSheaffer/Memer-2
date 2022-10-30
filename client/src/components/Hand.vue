@@ -19,7 +19,7 @@ const onClick = (card: Card) => {
 </script>
 
 <template>
-  <div class="flex -space-x-16 lg:-space-x-8 xl:-space-x-3">
+  <div class="hidden md:flex -space-x-16 lg:-space-x-8 xl:-space-x-3">
     <div
       v-for="(card, i) in hand"
       class="flex flex-col justify-between bg-darkblue-600 text-slate-200 shadow-2xl w-32 h-40 p-2 border-2 border-purple-400 rounded-lg text-xs cursor-pointer hover:z-[80] hover:text-gold-500 transition-all hover:scale-110 text-center"
@@ -46,6 +46,21 @@ const onClick = (card: Card) => {
     >
       <div>{{ card.top }}</div>
       <div>{{ card.bottom }}</div>
+    </div>
+  </div>
+  <!-- Mobile View -->
+
+  <div class="flex flex-1 overflow-auto md:hidden w-80 min-w-full mb-4">
+    <div class="flex min-h-fit space-x-3">
+      <div
+        v-for="(card, i) in hand"
+        class="bg-darkblue-600 text-slate-200 shadow-2xl w-32 h-40 p-2 border-2 border-purple-400 rounded-lg text-xs cursor-pointer hover:text-gold-500 transition-all text-center"
+      >
+        <div class="flex flex-col justify-between">
+          <div>{{ card.top }}</div>
+          <div>{{ card.bottom }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
