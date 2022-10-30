@@ -3,13 +3,15 @@ import { Timestamp } from "@firebase/firestore";
 import { ref } from "vue";
 import { Card } from "../../../../types";
 import { useGame } from "../../composables/useGame";
+import { useHand } from "../../composables/useHand";
 import { reverse } from "../../services/icons";
 import GameBoard from "../base/GameBoard.vue";
 import Hand from "../Hand.vue";
 
 const props = defineProps<{ gameId: string }>();
 
-const { updateGame } = useGame(props.gameId);
+const { updateGame, currentPlayer } = useGame(props.gameId);
+const { removeCard } = useHand(props.gameId, currentPlayer.value!.uid);
 
 const isSaving = ref(false);
 
@@ -23,6 +25,7 @@ const selectCard = async (card: Card) => {
     },
     memeTemplateTimestamp: Timestamp.now(),
   });
+  await removeCard(card.uid!);
   isSaving.value = false;
 };
 </script>
