@@ -197,7 +197,7 @@ export const useGame = (gameId: string) => {
 
     const sortedPlayers = [...activePlayers.value].sort((a, b) => a.turnIndex - b.turnIndex);
     const playerIndex = sortedPlayers.findIndex((p) => p.uid === game.value?.turn);
-    const nextIndex = playerIndex === players.value.length - 1 ? 0 : playerIndex + 1;
+    const nextIndex = playerIndex === activePlayers.value.length - 1 ? 0 : playerIndex + 1;
     return sortedPlayers[nextIndex];
   });
 
