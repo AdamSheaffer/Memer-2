@@ -30,7 +30,10 @@ const pickMeme = () => {
   affirmativeSound.play();
   const winningMeme = viewingMeme.value;
   const roundWinner = players.value.find(
-    (p) => p.memePlayed?.top === winningMeme.top && p.memePlayed?.bottom === winningMeme.bottom
+    (p) =>
+      p.memePlayed?.top === winningMeme.top &&
+      p.memePlayed?.bottom === winningMeme.bottom &&
+      p.memePlayed?.photoURL === winningMeme.photoURL
   );
 
   if (!roundWinner) {
