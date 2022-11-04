@@ -3,11 +3,13 @@ import { onKeyStroke } from "@vueuse/core";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { Maybe, Player } from "../../../types";
+import { useAvatar } from "../composables/useAvatar";
 import { useGame } from "../composables/useGame";
 import { backArrow, check, gavel, heart, thumbsDown, users, xMark } from "../services/icons";
 import { negativeSound } from "../services/sounds";
 import MemerButton from "./base/MemerButton.vue";
 import Modal from "./base/Modal.vue";
+import ProfileCreate from "./ProfileCreate.vue";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -19,6 +21,7 @@ const isOpen = ref(false);
 onKeyStroke("Escape", () => {
   isOpen.value = false;
   playerToRemove.value = null;
+  showAvatarModal.value = false;
 });
 
 const leaveGame = () => {
@@ -44,6 +47,25 @@ const removePlayer = async () => {
   await updatePlayer(playerToRemove.value.uid, { isActive: false, removed: true });
 
   playerToRemove.value = null;
+};
+
+const showAvatarModal = ref(false);
+const { avatar, photoURL: avatarPhotoURL } = useAvatar();
+
+const onProfileClick = (player: Player) => {
+  if (player.uid !== currentPlayer.value?.uid) {
+    return;
+  }
+
+  showAvatarModal.value = true;
+};
+
+const onAvatarChange = async () => {
+  await updatePlayer(currentPlayer.value!.uid, {
+    username: avatar.name,
+    photoURL: avatarPhotoURL.value,
+  });
+  showAvatarModal.value = false;
 };
 </script>
 
@@ -89,8 +111,11 @@ const removePlayer = async () => {
             class="rounded-full border-2 border-gold-500 w-12"
             :class="{
               'bg-teal-500': currentPlayer?.uid !== player.uid,
-              'bg-purple-400': currentPlayer?.uid === player.uid,
+              'bg-purple-400 cursor-pointer hover:scale-105 hover:shadow-2xl':
+                currentPlayer?.uid === player.uid,
             }"
+            :title="currentPlayer?.uid === player.uid ? 'UPDATE AVATAR' : ''"
+            @click="onProfileClick(player)"
           />
           <div class="flex flex-col">
             <div class="flex">
@@ -167,5 +192,17 @@ const removePlayer = async () => {
         <MemerButton class="flex-1" @click="removePlayer">REMOVE</MemerButton>
       </div>
     </div>
+  </Modal>
+
+  <Modal v-if="showAvatarModal">
+    <button class="absolute top-10 right-12">
+      <FaIcon
+        :icon="xMark"
+        class="text-xl text-slate-400 hover:scale-x-105 hover:text-slate-200 transition-all"
+        title="CLOSE"
+        @click="showAvatarModal = false"
+      ></FaIcon>
+    </button>
+    <ProfileCreate @submit="onAvatarChange" />
   </Modal>
 </template>

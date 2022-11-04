@@ -36,11 +36,6 @@ const reverseRoundOptions: SetupOption<number>[] = [
   { text: "SOMETIMES", value: 0.25 },
   { text: "HALF N' HALF", value: 0.5 },
 ];
-const timerOptions: SetupOption<number>[] = [
-  { text: "NO LIMITS", value: 0 },
-  { text: "30 SEC", value: 30 },
-  { text: "60 SEC", value: 60 },
-];
 const nsfwOptions: SetupOption<boolean>[] = [
   { text: "YUH BOI NSFW", value: false },
   { text: "KEEP IT PG", value: true },
@@ -108,16 +103,6 @@ const cancel = () => {
     />
     <SetupWizardStep
       v-if="stepNumber === 5"
-      v-model.number="gameSettings.timeLimit"
-      :options="timerOptions"
-      header="TIMER"
-      subheader="HOW LONG SHOULD ONE ROUND LAST?"
-      small-text
-      @next="() => stepNumber++"
-      @back="() => stepNumber--"
-    />
-    <SetupWizardStep
-      v-if="stepNumber === 6"
       v-model.number="gameSettings.safeForWork"
       :options="nsfwOptions"
       header="NSFW?"
