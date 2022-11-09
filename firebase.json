@@ -47,6 +47,12 @@
     "ui": {
       "host": "0.0.0.0",
       "enabled": true
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
     }
   }
 }
