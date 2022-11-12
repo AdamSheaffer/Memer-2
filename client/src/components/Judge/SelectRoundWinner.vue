@@ -9,7 +9,7 @@ import Meme from "../Meme.vue";
 import SubmissionCarousel from "../SubmissionCarousel.vue";
 
 const props = defineProps<{ gameId: string }>();
-const { playerSubmissions, updateGame, players, game } = useGame(props.gameId);
+const { playerSubmissions, updateGame, updatePlayer, players, game } = useGame(props.gameId);
 
 const showCarousel = ref(true);
 
@@ -26,7 +26,7 @@ const nextMeme = () => {
   viewingMemeIndex.value++;
 };
 
-const pickMeme = () => {
+const pickMeme = async () => {
   affirmativeSound.play();
   const winningMeme = viewingMeme.value;
   const roundWinner = players.value.find(
@@ -48,7 +48,11 @@ const pickMeme = () => {
     updates.winner = roundWinner.uid;
   }
 
-  return updateGame(updates);
+  await updateGame(updates);
+
+  return updatePlayer(roundWinner.uid, {
+    score: (roundWinner.score ?? 0) + 1,
+  });
 };
 </script>
 

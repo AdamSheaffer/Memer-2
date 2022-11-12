@@ -8,8 +8,6 @@ export * from "./captions/onCreateNormalize";
 export * from "./categories/onCreateAddTimestamp";
 // cleanup
 export * from "./game/cleanup";
-// game
-export * from "./game/onUpdateAddPoint";
 // players
 export * from "./players/onCreateCheckFullGame";
 export * from "./players/onCreateSetTurnOrder";
