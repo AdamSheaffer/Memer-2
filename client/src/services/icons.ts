@@ -9,6 +9,7 @@ import {
   faFaceDizzy,
   faGavel,
   faHeart,
+  faMessage,
   faRepeat,
   faThumbsDown,
   faUsers,
@@ -23,6 +24,7 @@ library.add(faCheck);
 library.add(faFaceDizzy);
 library.add(faGavel);
 library.add(faHeart);
+library.add(faMessage);
 library.add(faRepeat);
 library.add(faThumbsDown);
 library.add(faUsers);
@@ -36,6 +38,7 @@ export const check = faCheck.iconName;
 export const faceDizzy = faFaceDizzy.iconName;
 export const gavel = faGavel.iconName;
 export const heart = faHeart.iconName;
+export const message = faMessage.iconName;
 export const reverse = faRepeat.iconName;
 export const thumbsDown = faThumbsDown.iconName;
 export const users = faUsers.iconName;

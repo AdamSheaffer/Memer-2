@@ -4,6 +4,7 @@ import { BeautifulChatMessage } from "../../../types";
 import { useChat } from "../composables/useChat";
 import { useGame } from "../composables/useGame";
 import { useUser } from "../composables/useUser";
+import { message } from "../services/icons";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -87,6 +88,12 @@ const beautifulChatMessage = computed<BeautifulChatMessage[]>(() => {
       :disable-user-list-toggle="true"
       :message-styling="true"
     >
+      <template #header>
+        <div class="flex items-center text-slate-100">
+          <FaIcon :icon="message"></FaIcon>
+          <p class="ml-3 text-sm">MESSAGES</p>
+        </div>
+      </template>
     </beautiful-chat>
   </div>
 </template>
