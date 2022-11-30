@@ -89,9 +89,9 @@ const beautifulChatMessage = computed<BeautifulChatMessage[]>(() => {
       :message-styling="true"
     >
       <template #header>
-        <div class="flex items-center text-slate-100">
+        <div class="flex items-center text-slate-100 font-['Anton']">
           <FaIcon :icon="message"></FaIcon>
-          <p class="ml-3 text-sm">MESSAGES</p>
+          <p class="ml-3">MESSAGES</p>
         </div>
       </template>
     </beautiful-chat>

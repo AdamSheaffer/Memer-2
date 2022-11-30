@@ -21,6 +21,11 @@ const routes: RouteRecordRaw[] = [
     name: "Game Room",
     component: () => import("./views/GameRoom.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "Not Found",
+    component: () => import("./views/NotFound.vue"),
+  },
 ];
 
 const router = createRouter({
