@@ -38,7 +38,7 @@ const onSave = () => {
       <img
         :src="photoURL"
         alt="Avatar"
-        class="w-16 sm:w-48 md:w-64 bg-teal-500 border-gold-500 border-4 rounded-lg"
+        class="w-16 h-16 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-teal-500 border-gold-500 border-4 rounded-lg"
       />
     </div>
     <form
@@ -48,6 +48,7 @@ const onSave = () => {
       <div class="flex flex-row flex-wrap font-['Antonio']">
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerInput
+            autofocus
             label="USERNAME"
             type="text"
             id="username"

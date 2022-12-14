@@ -1,10 +1,10 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="relative z-[100]" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-slate-900 backdrop-blur-lg bg-opacity-25 transition-opacity"></div>
 
-    <div class="fixed inset-0 z-10 overflow-y-auto">
+    <div class="fixed inset-0 z-[100] overflow-y-auto">
       <div
         class="flex min-h-full justify-center text-center items-center p-0 animate-fade-in-down-500"
       >
