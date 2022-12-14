@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onKeyStroke } from "@vueuse/core";
 import { Maybe, SetupOption } from "../../../../types";
 import MemerButton from "../base/MemerButton.vue";
 
@@ -30,6 +31,29 @@ const emit = defineEmits<{
 const onSelectChange = (val: typeof props.modelValue) => {
   emit("update:modelValue", val);
 };
+
+onKeyStroke("ArrowLeft", () => {
+  const currentOptionIndex = props.options.findIndex((opt) => opt.value === props.modelValue);
+  const isFirstOption = currentOptionIndex === 0;
+
+  if (!isFirstOption) {
+    const previousOption = props.options[currentOptionIndex - 1].value;
+    onSelectChange(previousOption);
+  }
+});
+
+onKeyStroke("ArrowRight", () => {
+  const currentOptionIndex = props.options.findIndex((opt) => opt.value === props.modelValue);
+  const isLastOption = currentOptionIndex === props.options.length - 1;
+
+  if (!isLastOption) {
+    const nextOption = props.options[currentOptionIndex + 1].value;
+    onSelectChange(nextOption);
+  }
+});
+
+onKeyStroke("Enter", () => emit("next"));
+onKeyStroke("Backspace", () => emit("back"));
 </script>
 
 <template>

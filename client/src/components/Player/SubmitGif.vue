@@ -9,6 +9,7 @@ import { useGame } from "../../composables/useGame";
 import { useUser } from "../../composables/useUser";
 import { affirmativeSound } from "../../services/sounds";
 import GameBoard from "../base/GameBoard.vue";
+import MemerInput from "../base/MemerInput.vue";
 import MemeDisplay from "../Meme.vue";
 
 const props = defineProps<{ gameId: string }>();
@@ -95,15 +96,14 @@ const subheaderText = computed(() =>
           <div v-if="!hasSubmitted" class="flex flex-col justify-center items-center">
             <MemeDisplay
               :meme="game!.memeTemplate!"
-              class="mb-6 shadow-lg shadow-slate-900"
+              class="mb-10 shadow-lg shadow-slate-900"
             ></MemeDisplay>
-            <div class="py-4 w-full lg:w-96 flex justify-center">
-              <input
+            <div class="mb-5 w-full lg:w-96 flex justify-center">
+              <MemerInput
                 autofocus
-                type="text"
                 v-model="searchTerm"
-                class="bg-gray-500 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500 uppercase font-['Antonio']"
                 placeholder="SEARCH GIFS..."
+                class="text-xl p-3 uppercase"
               />
             </div>
             <div class="overflow-hidden h-[200px] max-w-[20rem] lg:max-w[40rem] xl:max-w-[50rem]">

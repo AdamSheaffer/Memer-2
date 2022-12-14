@@ -13,6 +13,8 @@ import {
 } from "../composables/useAvatar";
 import { useUser } from "../composables/useUser";
 import MemerButton from "./base/MemerButton.vue";
+import MemerInput from "./base/MemerInput.vue";
+import MemerSelect from "./base/MemerSelect.vue";
 
 defineProps<{ saveBtnText?: string }>();
 const emit = defineEmits<(event: "submit", avatar: AvatarAttributes) => void>();
@@ -36,174 +38,106 @@ const onSave = () => {
       <img
         :src="photoURL"
         alt="Avatar"
-        class="w-16 sm:w-48 md:w-64 bg-teal-500 border-gold-500 border-4 rounded-lg"
+        class="w-16 h-16 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-teal-500 border-gold-500 border-4 rounded-lg"
       />
     </div>
     <form
       @submit.prevent="onSave"
-      class="flex flex-1 flex-col justify-between mr-auto mt-4 pl-6 tracking-widest"
+      class="flex flex-1 flex-col justify-between mr-auto mt-4 pl-6 tracking-wider"
     >
       <div class="flex flex-row flex-wrap font-['Antonio']">
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-            >USERNAME</label
-          >
-          <input
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerInput
+            autofocus
+            label="USERNAME"
             type="text"
-            id="first_name"
+            id="username"
             :value="avatar.name"
             @input="upperCaseOnUsernameInputChange"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500 uppercase"
             placeholder="MEME LORD"
             required
             maxlength="12"
           />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            EYES
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.eyes"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in eyeOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            id="eyes"
+            label="EYES"
+            null-option
+            :options="eyeOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            HAIR
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.hair"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in hairOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="HAIR"
+            id="hair"
+            null-option
+            :options="hairOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            BODY
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.body"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in bodyOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="BODY"
+            id="body"
+            null-option
+            :options="bodyOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            MOUTH
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.mouth"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in mouthOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="MOUTH"
+            id="mouth"
+            null-option
+            :options="mouthOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            NOSE
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.nose"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in noseOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="NOSE"
+            id="nose"
+            null-option
+            :options="noseOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            FACIAL HAIR
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.facialHair"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in facialHairOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="FACIAL HAIR"
+            id="facial_hair"
+            null-option
+            :options="facialHairOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            HAIR COLOR
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.hairColor"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in hairColorOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="HAIR COLOR"
+            id="hair_color"
+            null-option
+            :options="hairColorOptions"
+          />
         </div>
 
-        <div class="w-1/2 sm:w-1/3 p-2">
-          <label
-            for="first_name"
-            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-300"
-          >
-            SKIN TONE
-          </label>
-          <select
+        <div class="w-1/2 sm:w-1/3 p-2 mb-1">
+          <MemerSelect
             v-model="avatar.skinColor"
-            class="bg-gray-500 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
-          >
-            <option :value="null">---</option>
-            <option v-for="(value, key) in skinToneOptions" :key="key" :value="key">
-              {{ value }}
-            </option>
-          </select>
+            label="SKIN TONE"
+            id="skin_tone"
+            null-option
+            :options="skinToneOptions"
+          />
         </div>
       </div>
 

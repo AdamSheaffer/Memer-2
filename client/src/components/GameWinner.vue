@@ -38,7 +38,6 @@ const headerText = computed(() => {
   <BackgroundBox>
     <div class="px-6 text-center">
       <div v-if="showMeme">
-        <h2 class="text-2xl lg:text-4xl xl:text-5xl mb-3"></h2>
         <h2
           v-if="!currentPlayerIsWinner"
           class="text-purple-400 text-shadow text-3xl lg:text-5xl xl:text-6xl mb-1 -rotate-6 animate-fade-in-down"
