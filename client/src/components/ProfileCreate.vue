@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import { AvatarAttributes, useAvatar } from "../composables/useAvatar";
+import { useUser } from "../composables/useUser";
 import {
-  AvatarAttributes,
   bodyOptions,
   eyeOptions,
   facialHairOptions,
@@ -9,9 +10,7 @@ import {
   mouthOptions,
   noseOptions,
   skinToneOptions,
-  useAvatar,
-} from "../composables/useAvatar";
-import { useUser } from "../composables/useUser";
+} from "../services/avatarOptions";
 import MemerButton from "./base/MemerButton.vue";
 import MemerInput from "./base/MemerInput.vue";
 import MemerSelect from "./base/MemerSelect.vue";

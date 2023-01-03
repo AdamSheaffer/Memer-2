@@ -1,13 +1,14 @@
 import { mount, RouterLinkStub } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
-import { Player, User } from "../../../../types";
+import { Game, Player, User } from "../../../../types";
 import PreGameDisplay from "../PreGameDisplay.vue";
 
 // useUser Mocks
 const mockUser = ref<Partial<User>>({ uid: "abc" });
 
 // useGame Mocks
+const mockGame = ref<Partial<Game>>({ uid: "game_uid" });
 const mockStartGameFn = vi.fn();
 const mockPlayers = ref<Partial<Player>[]>([]);
 const mockActivePlayers = ref<Partial<Player>[]>([]);
@@ -20,6 +21,7 @@ const mockDealToPlayers = vi.fn();
 describe("PreGameDisplay", () => {
   vi.mock("../../composables/useGame", () => ({
     useGame: () => ({
+      game: mockGame,
       activePlayers: mockActivePlayers,
       players: mockPlayers,
       startGame: mockStartGameFn,
@@ -51,7 +53,9 @@ describe("PreGameDisplay", () => {
     mockActivePlayers.value = [{ uid: "1" }, { uid: "2" }];
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      stubs: { RouterLink: RouterLinkStub },
+      global: {
+        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
+      },
     });
 
     const startBtn = wrapper.find("[data-start-button]");
@@ -67,7 +71,9 @@ describe("PreGameDisplay", () => {
     mockActivePlayers.value = [{ uid: "1" }, { uid: "2" }, { uid: "3" }];
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      stubs: { RouterLink: RouterLinkStub },
+      global: {
+        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
+      },
     });
 
     const startBtn = wrapper.find("[data-start-button]");
@@ -81,7 +87,9 @@ describe("PreGameDisplay", () => {
     mockUserIsHost.value = true;
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      stubs: { RouterLink: RouterLinkStub },
+      global: {
+        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
+      },
     });
 
     const msg = wrapper.find("[data-waiting-on-players]");
@@ -100,7 +108,9 @@ describe("PreGameDisplay", () => {
 
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      stubs: { RouterLink: RouterLinkStub },
+      global: {
+        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
+      },
     });
 
     const msg = wrapper.find("[data-waiting-on-players]");

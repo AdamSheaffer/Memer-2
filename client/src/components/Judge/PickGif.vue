@@ -103,7 +103,7 @@ const selectGif = () => {
             :key="gifURL"
             :src="gifURL"
             :alt="`${game!.tagSelection} Option ${gifIndex + 1}`"
-            class="object-cover h-48 w-64 xl:h-52 xl:w-72 2xl:h-72 2xl:w-96 rounded-xl md:mx-4 2xl:mx-8 border-4 bg-purple-400 border-gold-400 hover:border-purple-400 cursor-pointer hover:scale-105 transition-all"
+            class="object-cover h-48 w-64 2xl:h-52 2xl:w-72 3xl:h-72 3xl:w-96 rounded-xl md:mx-4 2xl:mx-8 border-4 bg-purple-400 border-gold-400 hover:border-purple-400 cursor-pointer hover:scale-105 transition-all"
             @click="selectGif"
           />
           <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
