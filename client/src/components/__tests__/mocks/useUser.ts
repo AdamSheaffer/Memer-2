@@ -5,8 +5,13 @@ import { useUser } from "../../../composables/useUser";
 
 type Mock = ReturnType<typeof useUser>;
 
-export const mockUseUserValue = (): Mock => {
-  const mockUser = ref<User>({ uid: "fake_uid", username: "JEFF LEBOWSKI", photoURL: "fake_url" });
+export const mockUseUserValue = (options?: Partial<User>): Mock => {
+  const mockUser = ref<User>({
+    uid: "fake_uid",
+    username: "JEFF LEBOWSKI",
+    photoURL: "fake_url",
+    ...options,
+  });
   const mockUpdateUser = vi.fn();
   const mockAnonymouslySignInUser = vi.fn();
 

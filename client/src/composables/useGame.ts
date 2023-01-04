@@ -26,8 +26,6 @@ import { mapCollection, mapDoc } from "../utils/mapCollectionDocs";
 import { useUser } from "./useUser";
 
 const gamesCollectionRef = collection(db, "games");
-const { user } = useUser();
-
 const game = ref<Maybe<Game>>(null);
 const players = ref<Player[]>([]);
 
@@ -44,6 +42,7 @@ const getNextRoundType = (): RoundType => {
 };
 
 export const useGame = (gameId: string) => {
+  const { user } = useUser();
   const firestoreGameRef = doc(gamesCollectionRef, gameId);
   const firestorePlayersCollectionRef = collection(firestoreGameRef, "players");
 
@@ -277,7 +276,6 @@ export const useGame = (gameId: string) => {
     clearGame,
     currentPlayer,
     everyoneHasSubmitted,
-    firestoreGameRef,
     game,
     gameWinner,
     host,

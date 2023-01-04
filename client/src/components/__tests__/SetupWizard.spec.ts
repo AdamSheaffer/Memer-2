@@ -11,12 +11,12 @@ import { mockUseUserValue } from "./mocks/useUser";
 vi.mock("../../composables/useUser");
 vi.mock("../../composables/useAvatar");
 
-const useUserMock = useUser as Mock;
-const useAvatarMock = useAvatar as Mock;
+const _useUser = useUser as Mock;
+const _useAvatar = useAvatar as Mock;
 
 beforeEach(() => {
-  useUserMock.mockImplementation(mockUseUserValue);
-  useAvatarMock.mockImplementation(mockUseAvatarValue);
+  _useUser.mockImplementation(mockUseUserValue);
+  _useAvatar.mockImplementation(mockUseAvatarValue);
 });
 
 afterEach(() => {
