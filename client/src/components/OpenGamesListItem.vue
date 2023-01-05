@@ -19,10 +19,11 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
       v-if="game.hostPhotoURL"
       :src="game.hostPhotoURL"
       class="hidden md:block rounded-full w-14 h-14 mx-auto border-2 border-gold-500 bg-teal-500"
+      data-host-avatar
     />
     <div class="ml-0">
       <div class="flex flex-col">
-        <div class="text-white text-xs md:text-sm mb-2 font-['Antonio']">
+        <div class="text-white text-xs md:text-sm mb-2 font-['Antonio']" data-created-time>
           Created {{ timeAgoStarted }}
         </div>
         <div class="flex flex-wrap justify-start space-x-2">
@@ -31,6 +32,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
             color="purple"
             :icon="heart"
             :title="`${game.pointsToWin} points to win`"
+            data-pill-points-to-win
           >
             {{ game.pointsToWin }}
           </PillBadge>
@@ -39,6 +41,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
             color="purple"
             :icon="users"
             :title="`${game.maxPlayers} max players`"
+            data-pill-max-players
           >
             {{ game.maxPlayers }}
           </PillBadge>
@@ -47,6 +50,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
             color="red"
             :icon="briefcase"
             :title="`${game.safeForWork ? '' : 'Not '}Safe for Work`"
+            data-pill-sfw
           >
             {{ game.safeForWork ? "SFW" : "NSFW" }}
           </PillBadge>
@@ -58,6 +62,7 @@ const timeAgoStarted = useTimeAgo(props.game.beginDate?.toDate() ?? new Date());
       class="w-full md:w-24 px-4 py-2 tracking-wider"
       sound="affirmative"
       @click="$emit('join', game.uid!)"
+      data-btn-join
     >
       JOIN
     </MemerButton>
