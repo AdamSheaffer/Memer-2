@@ -17,7 +17,11 @@ const goToGameRoom = (gameId: string) => router.push(`/game/${gameId}`);
     <h2 class="text-center text-gold-500 text-shadow text-5xl my-3">OPEN GAMES</h2>
     <h4 v-if="openGames.length" class="text-center text-white text-sm">
       HOST A
-      <router-link to="/create" class="text-teal-500 hover:text-teal-200 text-shadow">
+      <router-link
+        to="/create"
+        class="text-teal-500 hover:text-teal-200 text-shadow"
+        data-host-game-link
+      >
         NEW GAME
       </router-link>
     </h4>
@@ -41,9 +45,13 @@ const goToGameRoom = (gameId: string) => router.push(`/game/${gameId}`);
             <h3 class="text-lg text-white">Welp... There aren't any open games right now</h3>
             <h3 class="text-lg text-white mt-1">
               Try hosting a
-              <router-link to="/create" class="text-purple-400 hover:text-purple-300 text-shadow"
-                >NEW GAME</router-link
+              <router-link
+                to="/create"
+                class="text-purple-400 hover:text-purple-300 text-shadow"
+                data-host-game-link
               >
+                NEW GAME
+              </router-link>
             </h3>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { mount, RouterLinkStub } from "@vue/test-utils";
+import { GlobalMountOptions } from "@vue/test-utils/dist/types";
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from "vitest";
 import { useDeck } from "../../composables/useDeck";
 import { useGame } from "../../composables/useGame";
@@ -34,6 +35,10 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+const globalMountingOptions: GlobalMountOptions = {
+  stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
+};
+
 describe("PreGameDisplay", () => {
   it("hides start button for non-host players and shows waiting on players message", () => {
     const players = [...getFakePlayers(1), currentPlayer];
@@ -46,9 +51,7 @@ describe("PreGameDisplay", () => {
     );
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      global: {
-        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
-      },
+      global: globalMountingOptions,
     });
 
     const startBtn = wrapper.find("[data-start-button]");
@@ -70,9 +73,7 @@ describe("PreGameDisplay", () => {
     );
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      global: {
-        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
-      },
+      global: globalMountingOptions,
     });
 
     const startBtn = wrapper.find("[data-start-button]");
@@ -94,9 +95,7 @@ describe("PreGameDisplay", () => {
 
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      global: {
-        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
-      },
+      global: globalMountingOptions,
     });
 
     const msg = wrapper.find("[data-waiting-on-players]");
@@ -124,9 +123,7 @@ describe("PreGameDisplay", () => {
 
     const wrapper = mount(PreGameDisplay, {
       props: { gameId: "sample_game_id" },
-      global: {
-        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
-      },
+      global: globalMountingOptions,
     });
 
     const msg = wrapper.find("[data-waiting-on-players]");

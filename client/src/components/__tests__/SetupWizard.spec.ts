@@ -1,4 +1,5 @@
 import { mount, RouterLinkStub } from "@vue/test-utils";
+import { GlobalMountOptions } from "@vue/test-utils/dist/types";
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from "vitest";
 import { GameSettings } from "../../../../types";
 import { useAvatar } from "../../composables/useAvatar";
@@ -23,24 +24,20 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+const globalMountingOptions: GlobalMountOptions = {
+  stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
+};
+
 describe("SetupWizard", () => {
   it("should prompt for avatar creation first", () => {
-    const wrapper = mount(SetupWizard, {
-      global: {
-        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
-      },
-    });
+    const wrapper = mount(SetupWizard, { global: globalMountingOptions });
 
     const avatarCreator = wrapper.findComponent(ProfileCreate);
     expect(avatarCreator.exists()).toBe(true);
   });
 
   it("should emit with selected game settings", async () => {
-    const wrapper = mount(SetupWizard, {
-      global: {
-        stubs: { RouterLink: RouterLinkStub, FaIcon: { template: "<div></div>" } },
-      },
-    });
+    const wrapper = mount(SetupWizard, { global: globalMountingOptions });
 
     // Avatar
     const avatarForm = wrapper.get("form");
