@@ -36,7 +36,10 @@ describe("PlayersSidebar", () => {
     const mock = mockUseGameValue({ activePlayers: players });
     _useGame.mockImplementationOnce(() => mock);
 
-    const wrapper = mount(PlayersSidebar, { global: globalMountingOptions });
+    const wrapper = mount(PlayersSidebar, {
+      global: globalMountingOptions,
+      props: { gameId: "fake_uid" },
+    });
     const playerListItems = wrapper.findAll("[data-player]");
 
     expect(playerListItems.length).toBe(3);
@@ -60,7 +63,10 @@ describe("PlayersSidebar", () => {
     });
     _useGame.mockImplementationOnce(() => mock);
 
-    const wrapper = mount(PlayersSidebar, { global: globalMountingOptions });
+    const wrapper = mount(PlayersSidebar, {
+      global: globalMountingOptions,
+      props: { gameId: "fake_uid" },
+    });
 
     // Should only be one indicator
     expect(wrapper.findAll("[data-judge-indicator]").length).toBe(1);
@@ -86,7 +92,10 @@ describe("PlayersSidebar", () => {
     });
     _useGame.mockImplementationOnce(() => mock);
 
-    const wrapper = mount(PlayersSidebar, { global: globalMountingOptions });
+    const wrapper = mount(PlayersSidebar, {
+      global: globalMountingOptions,
+      props: { gameId: "fake_uid" },
+    });
     const [li1, li2, li3, li4] = wrapper.findAll("[data-player]");
 
     expect(li1.find("[data-submitted-indicator]").exists()).toBe(true);
