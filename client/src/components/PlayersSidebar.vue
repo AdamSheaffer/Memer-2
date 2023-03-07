@@ -103,6 +103,7 @@ const onAvatarChange = async () => {
         :class="{ 'hover:bg-slate-700': userIsHost }"
         @mouseenter="onPlayerHover(player.uid)"
         @mouseleave="onPlayerHover(null)"
+        data-player
       >
         <div class="flex space-x-4">
           <img
@@ -126,10 +127,11 @@ const onAvatarChange = async () => {
                   :icon="check"
                   class="text-teal-400"
                   title="MEME SUBMITTED"
+                  data-submitted-indicator
                 ></FaIcon>
               </p>
               <div v-if="game?.turn === player.uid" class="ml-2" title="ROUND JUDGE">
-                <FaIcon :icon="gavel" class="text-gold-400"></FaIcon>
+                <FaIcon :icon="gavel" class="text-gold-400" data-judge-indicator></FaIcon>
               </div>
             </div>
             <div class="flex space-x-0.5">
