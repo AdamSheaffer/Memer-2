@@ -103,4 +103,61 @@ describe("PlayersSidebar", () => {
     expect(li3.find("[data-submitted-indicator]").exists()).toBe(false);
     expect(li4.find("[data-submitted-indicator]").exists()).toBe(false);
   });
+
+  it("should indicate a player's score", () => {
+    const [p1, p2, p3] = getFakePlayers(3);
+    p1.score = 3;
+    p2.score = 1;
+    p3.score = 0;
+
+    const mock = mockUseGameValue({
+      activePlayers: [p1, p2, p3],
+      pointsToWin: 5,
+    });
+    _useGame.mockImplementationOnce(() => mock);
+
+    const wrapper = mount(PlayersSidebar, {
+      global: globalMountingOptions,
+      props: { gameId: "fake_uid" },
+    });
+
+    const [p1Score, p2Score, p3Score] = wrapper.findAll("[data-score]");
+
+    const p1Hearts = p1Score.findAll("[data-point-earned]");
+    const p1PointsEarned = p1Score.findAll(`[data-point-earned="true"]`);
+    const p2Hearts = p2Score.findAll("[data-point-earned]");
+    const p2PointsEarned = p2Score.findAll(`[data-point-earned="true"]`);
+    const p3Hearts = p3Score.findAll("[data-point-earned]");
+    const p3PointsEarned = p3Score.findAll(`[data-point-earned="true"]`);
+
+    expect(p1Hearts.length).toBe(5);
+    expect(p1PointsEarned.length).toBe(3);
+    expect(p2Hearts.length).toBe(5);
+    expect(p2PointsEarned.length).toBe(1);
+    expect(p3Hearts.length).toBe(5);
+    expect(p3PointsEarned.length).toBe(0);
+  });
+
+  it("should allow host to remove another player", async () => {
+    const players = getFakePlayers(3);
+    const mock = mockUseGameValue({ activePlayers: players, userIsHost: true });
+    _useGame.mockImplementationOnce(() => mock);
+
+    const wrapper = mount(PlayersSidebar, {
+      global: globalMountingOptions,
+      props: { gameId: "fake_uid" },
+    });
+
+    const playerListItems = wrapper.findAll("[data-player]");
+    const playerToRemove = playerListItems[1];
+
+    await playerToRemove.trigger("mouseenter");
+    await wrapper.find("[data-remove-player]").trigger("click");
+    await wrapper.find("[data-confirm-remove]").trigger("click");
+
+    expect(mock.updatePlayer).toHaveBeenCalledWith(players[1].uid, {
+      isActive: false,
+      removed: true,
+    });
+  });
 });

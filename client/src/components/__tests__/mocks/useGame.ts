@@ -27,6 +27,7 @@ export interface MockUseGameValueOptions {
   judgeIsPickingReverseRoundCaption?: boolean;
   nextPlayerTurn?: Player;
   playerSubmissions?: Meme[];
+  pointsToWin?: number;
   roundWinner?: Player;
   userIsHost?: boolean;
 }
