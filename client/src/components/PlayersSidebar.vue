@@ -134,12 +134,13 @@ const onAvatarChange = async () => {
                 <FaIcon :icon="gavel" class="text-gold-400" data-judge-indicator></FaIcon>
               </div>
             </div>
-            <div class="flex space-x-0.5">
+            <div class="flex space-x-0.5" data-score>
               <FaIcon
                 v-for="point in game?.pointsToWin"
                 :key="point"
                 :icon="heart"
                 :class="player.score >= point ? 'text-red-500' : 'text-slate-300'"
+                :data-point-earned="player.score >= point"
               ></FaIcon>
             </div>
           </div>
@@ -157,6 +158,7 @@ const onAvatarChange = async () => {
                 :icon="thumbsDown"
                 class="cursor-pointer text-red-500 hover:text-red-600 text-xl"
                 title="REMOVE PLAYER"
+                data-remove-player
                 @click="playerToRemove = player"
               />
             </div>
@@ -189,9 +191,11 @@ const onAvatarChange = async () => {
           @click="playerToRemove = null"
           @keydown.esc="playerToRemove = null"
           tabindex="0"
-          >CANCEL</MemerButton
+          data-cancel-remove
         >
-        <MemerButton class="flex-1" @click="removePlayer">REMOVE</MemerButton>
+          CANCEL
+        </MemerButton>
+        <MemerButton class="flex-1" @click="removePlayer" data-confirm-remove>REMOVE</MemerButton>
       </div>
     </div>
   </Modal>
