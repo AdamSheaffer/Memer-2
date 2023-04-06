@@ -15,6 +15,7 @@ export const cleanup = functions.pubsub.schedule("every day 00:00").onRun(async 
 
   if (snapshot.empty) {
     functions.logger.info("No stale games. Skipping cleanup");
+    return;
   }
 
   functions.logger.info(`Cleaning up ${snapshot.size} games`);

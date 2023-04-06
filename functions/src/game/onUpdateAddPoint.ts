@@ -22,8 +22,8 @@ export const onUpdateAddPoints = functions.firestore
       const playerSnapshot = await playerRef.get();
       const currentPlayerScore = playerSnapshot.data()?.score ?? 0;
 
-      return playerRef.update({ score: currentPlayerScore + 1 });
+      await playerRef.update({ score: currentPlayerScore + 1 });
     }
 
-    return Promise.resolve();
+    return;
   });
