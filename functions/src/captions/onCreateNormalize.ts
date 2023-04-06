@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 
 export const onCreateNormalize = functions.firestore
   .document("captions/{captionId}")
-  .onCreate(async (captionSnapshot) => {
+  .onCreate((captionSnapshot) => {
     const caption = captionSnapshot.data();
 
     if (!caption) {

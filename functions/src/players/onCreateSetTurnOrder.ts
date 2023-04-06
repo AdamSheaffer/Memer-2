@@ -7,7 +7,8 @@ export const onCreateSetTurnOrder = functions.firestore
     const player = playerSnapshot.data();
 
     if (!player) {
-      throw Error("Function triggered but no player was added");
+      functions.logger.debug("Function triggered but no player was added");
+      return null;
     }
 
     const otherPlayersSnapshot = await admin

@@ -1,3 +1,4 @@
+import { getAnalytics } from "firebase/analytics";
 import { FirebaseOptions, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { collection, connectFirestoreEmulator, getFirestore } from "firebase/firestore";
@@ -10,6 +11,7 @@ const firebaseConfig: FirebaseOptions = {
   projectId: import.meta.env.VITE_PROJECT_ID as string,
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET as string,
   messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID as string,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID as string,
   appId: import.meta.env.VITE_APP_ID as string,
 };
 
@@ -17,6 +19,7 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const functions = getFunctions(app);
+export const analytics = getAnalytics(app);
 
 // firestore refs
 export const gamesCollectionRef = collection(db, "games");

@@ -5,19 +5,15 @@ export const onUpdateChangePlayerStatus = functions.database
   .ref("status/{uid}")
   .onWrite(async (change) => {
     if (!change || !change.after || !change.before) {
-      console.log("No updates made");
-      return Promise.resolve();
+      functions.logger.debug("Function was triggered but no updates were made");
+      return null;
     }
     const eventStatus = change.after.val();
 
-    // It is likely that the Realtime Database change that triggered
-    // this event has already been overwritten by a fast change in
-    // online/offline status, so re-read the current data
-    // and compare the timestamps.
     const statusSnapshot = await change.after.ref.once("value");
     const status = statusSnapshot.val();
     if (status.lastChanged > eventStatus.lastChanged) {
-      console.log("Already overwritten", status, eventStatus);
+      functions.logger.debug("Player status was already overwritten");
       return null;
     }
 
@@ -28,7 +24,9 @@ export const onUpdateChangePlayerStatus = functions.database
       const playerFirestoreRef = admin.firestore().doc(`games/${game}/players/${player}`);
       const playerSnapshot = await playerFirestoreRef.get();
       if (playerSnapshot.exists) {
-        return playerFirestoreRef.update({ isActive: false });
+        await playerFirestoreRef.update({ isActive: false });
       }
     }
+
+    return;
   });

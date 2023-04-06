@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 
 export const onCreateAddTimestamp = functions.firestore
   .document("categories/{categoryId}")
-  .onCreate(async (categorySnapshot) => {
+  .onCreate((categorySnapshot) => {
     const category = categorySnapshot.data();
 
     if (!category) {
