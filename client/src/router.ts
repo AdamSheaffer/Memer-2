@@ -1,4 +1,6 @@
+import { logEvent } from "firebase/analytics";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { analytics } from "./firebase";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -31,6 +33,13 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.afterEach((to) => {
+  logEvent(analytics, "screen_view", {
+    firebase_screen: to.name?.toString(),
+    firebase_screen_class: to.matched[0].name?.toString(),
+  });
 });
 
 export default router;
