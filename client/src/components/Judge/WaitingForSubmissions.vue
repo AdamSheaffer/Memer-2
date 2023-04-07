@@ -26,7 +26,7 @@ const { game, isReverseRound } = useGame(props.gameId);
           <h4
             class="text-sm md:text-lg font-['Antonio'] text-gold-400 tracking-widest text-shadow-md"
           >
-            OTHER PLAYERS ARE SUBMITTING THEIR CAPTIONS
+            OTHER PLAYERS ARE SUBMITTING THEIR {{ isReverseRound ? "GIFS" : "CAPTIONS" }}
           </h4>
         </div>
       </div>

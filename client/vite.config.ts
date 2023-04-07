@@ -7,13 +7,7 @@ import svgLoader from "vite-svg-loader";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue({
-      reactivityTransform: true,
-    }),
-    checker({ vueTsc: true }),
-    svgLoader(),
-  ],
+  plugins: [vue(), checker({ vueTsc: true }), svgLoader()],
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
