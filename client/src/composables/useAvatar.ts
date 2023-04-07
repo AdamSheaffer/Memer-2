@@ -59,11 +59,12 @@ const queryString = computed(() => {
   return params ? `?${params}` : "";
 });
 
-const photoURL = computed(
-  () =>
+const photoURL = computed(() =>
+  encodeURI(
     `https://avatars.dicebear.com/api/personas/${debouncedUsername.value ?? "default"}.svg${
       queryString.value
     }`
+  )
 );
 
 const markAvatarAsSet = () => {
