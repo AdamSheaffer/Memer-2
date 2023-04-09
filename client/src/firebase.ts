@@ -1,4 +1,4 @@
-import { getAnalytics } from "firebase/analytics";
+import { Analytics, getAnalytics } from "firebase/analytics";
 import { FirebaseOptions, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { collection, connectFirestoreEmulator, getFirestore } from "firebase/firestore";
@@ -19,7 +19,8 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const functions = getFunctions(app);
-export const analytics = getAnalytics(app);
+export const analytics: Analytics =
+  import.meta.env.MODE === "production" ? getAnalytics(app) : { app };
 
 // firestore refs
 export const gamesCollectionRef = collection(db, "games");

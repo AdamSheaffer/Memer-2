@@ -36,10 +36,12 @@ const router = createRouter({
 });
 
 router.afterEach((to) => {
-  logEvent(analytics, "screen_view", {
-    firebase_screen: to.name?.toString(),
-    firebase_screen_class: to.matched[0].name?.toString(),
-  });
+  if (import.meta.env.MODE === "production") {
+    logEvent(analytics, "screen_view", {
+      firebase_screen: to.name?.toString(),
+      firebase_screen_class: to.matched[0].name?.toString(),
+    });
+  }
 });
 
 export default router;

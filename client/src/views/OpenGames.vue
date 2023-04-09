@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import MemerLogo from "@/assets/memer_logo.svg";
+import MemerLogo from "@/assets/memer_logo.svg?component";
 import { useRouter } from "vue-router";
-import BackgroundBox from "../components/base/BackgroundBox.vue";
 import OpenGamesListItem from "../components/OpenGamesListItem.vue";
+import BackgroundBox from "../components/base/BackgroundBox.vue";
 import { useOpenGames } from "../composables/useOpenGames";
 import { faceDizzy } from "../services/icons";
 
