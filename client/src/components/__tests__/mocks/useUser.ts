@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { ref } from "vue";
-import { User } from "../../../../../types";
+import { Maybe, Profile, User } from "../../../../../types";
 import { useUser } from "../../../composables/useUser";
 
 type Mock = ReturnType<typeof useUser>;
@@ -12,12 +12,15 @@ export const mockUseUserValue = (options?: Partial<User>): Mock => {
     photoURL: "fake_url",
     ...options,
   });
-  const mockUpdateUser = vi.fn();
-  const mockAnonymouslySignInUser = vi.fn();
+
+  const mockProfile = ref<Maybe<Profile>>(null);
 
   return {
     user: mockUser,
-    updateUser: mockUpdateUser,
-    anonymouslySignInUser: mockAnonymouslySignInUser,
+    profile: mockProfile,
+    updateUser: vi.fn(),
+    initializeUser: vi.fn(),
+    signInWithGoogle: vi.fn(),
+    switchToAnonymousUser: vi.fn(),
   };
 };

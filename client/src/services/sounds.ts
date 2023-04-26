@@ -8,10 +8,3 @@ export const negativeSound = new Howl({ src: [negative] });
 export const swipeForwardSound = new Howl({ src: [swipe], volume: 0.2 });
 export const swipeBackSound = new Howl({ src: [swipe], volume: 0.2 });
 export const whooshSound = new Howl({ src: [swipe], rate: 0.5, volume: 0.5 });
-
-const modifierDictionary: Record<string, Howl> = {
-  affirmative: affirmativeSound,
-  negative: negativeSound,
-  swipeForward: swipeForwardSound,
-  swipeBack: swipeBackSound,
-};

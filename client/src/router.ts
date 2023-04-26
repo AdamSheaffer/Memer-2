@@ -1,33 +1,75 @@
 import { logEvent } from "firebase/analytics";
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
+import { useUser } from "./composables/useUser";
 import { analytics } from "./firebase";
 
+const { profile, signInWithGoogle } = useUser();
+
+const HOME: RouteRecordRaw = {
+  path: "/",
+  name: "Home",
+  component: () => import("./views/Home.vue"),
+};
+
+const CREATE_GAME: RouteRecordRaw = {
+  path: "/create",
+  name: "Create Game",
+  component: () => import("./views/CreateGame.vue"),
+};
+
+const OPEN_GAMES: RouteRecordRaw = {
+  path: "/open-games",
+  name: "Open Games",
+  component: () => import("./views/OpenGames.vue"),
+};
+
+const GAME_ROOM: RouteRecordRaw = {
+  path: "/game/:id",
+  name: "Game Room",
+  component: () => import("./views/GameRoom.vue"),
+};
+
+const GAME_MANAGER: RouteRecordRaw = {
+  path: "/game-manager",
+  name: "Game Manager",
+  component: () => import("./views/Admin/GameManager.vue"),
+  beforeEnter() {
+    const hasSufficientPrivileges = Boolean(
+      profile.value?.verified && (profile.value?.roles.admin || profile.value?.roles.editor)
+    );
+
+    if (!profile.value) {
+      return signInWithGoogle();
+    }
+
+    if (profile.value && !hasSufficientPrivileges) {
+      return NO_ACCESS.path;
+    }
+
+    return true;
+  },
+};
+
+const NO_ACCESS: RouteRecordRaw = {
+  path: "/no-access",
+  name: "No Access",
+  component: () => import("./views/Admin/NoAccess.vue"),
+};
+
+const NOT_FOUND: RouteRecordRaw = {
+  path: "/:pathMatch(.*)*",
+  name: "Not Found",
+  component: () => import("./views/NotFound.vue"),
+};
+
 const routes: RouteRecordRaw[] = [
-  {
-    path: "/",
-    name: "Home",
-    component: () => import("./views/Home.vue"),
-  },
-  {
-    path: "/create",
-    name: "Create Game",
-    component: () => import("./views/CreateGame.vue"),
-  },
-  {
-    path: "/open-games",
-    name: "Open Games",
-    component: () => import("./views/OpenGames.vue"),
-  },
-  {
-    path: "/game/:id",
-    name: "Game Room",
-    component: () => import("./views/GameRoom.vue"),
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    name: "Not Found",
-    component: () => import("./views/NotFound.vue"),
-  },
+  HOME,
+  CREATE_GAME,
+  OPEN_GAMES,
+  GAME_ROOM,
+  GAME_MANAGER,
+  NO_ACCESS,
+  NOT_FOUND,
 ];
 
 const router = createRouter({
