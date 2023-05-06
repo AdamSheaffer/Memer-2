@@ -25,6 +25,7 @@
     "vue3-beautiful-chat": "^3.3.1"
   },
   "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
     "@types/howler": "^2.2.7",
     "@types/lodash.chunk": "^4.2.6",
     "@types/lodash.orderby": "^4.6.7",
@@ -43,6 +44,7 @@
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "tailwindcss": "^3.0.24",
+    "typescript": "~4.8.4",
     "vite": "^4.0.0",
     "vite-plugin-checker": "^0.5.3",
     "vite-svg-loader": "^4.0.0",

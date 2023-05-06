@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MemerLogo from "@/assets/memer_logo.svg?component";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import OpenGamesListItem from "../components/OpenGamesListItem.vue";
 import BackgroundBox from "../components/base/BackgroundBox.vue";
 import { useOpenGames } from "../composables/useOpenGames";

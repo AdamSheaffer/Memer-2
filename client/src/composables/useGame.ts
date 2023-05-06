@@ -1,5 +1,4 @@
 import { Unsubscribe } from "@firebase/util";
-import { computed } from "@vue/reactivity";
 import {
   collection,
   doc,
@@ -11,7 +10,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import orderby from "lodash.orderby";
-import { onUnmounted, ref } from "vue";
+import { computed, onUnmounted, ref } from "vue";
 import {
   Game,
   Maybe,
@@ -201,7 +200,7 @@ export const useGame = (gameId: string) => {
   });
 
   const updatePlayer = (playerId: string, changes: PlayerChanges) => {
-    if (!userIsHost) return; // Only host will be in charge of updating players
+    if (!userIsHost.value) return; // Only host will be in charge of updating players
 
     const playerRef = doc(firestorePlayersCollectionRef, playerId);
     return updateDoc(playerRef, changes);

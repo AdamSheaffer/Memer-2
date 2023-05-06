@@ -5,34 +5,48 @@ import { analytics } from "./firebase";
 
 const { profile, signInWithGoogle } = useUser();
 
-const HOME: RouteRecordRaw = {
+export const HOME: RouteRecordRaw = {
   path: "/",
   name: "Home",
   component: () => import("./views/Home.vue"),
 };
 
-const CREATE_GAME: RouteRecordRaw = {
+export const CREATE_GAME: RouteRecordRaw = {
   path: "/create",
   name: "Create Game",
   component: () => import("./views/CreateGame.vue"),
 };
 
-const OPEN_GAMES: RouteRecordRaw = {
+export const OPEN_GAMES: RouteRecordRaw = {
   path: "/open-games",
   name: "Open Games",
   component: () => import("./views/OpenGames.vue"),
 };
 
-const GAME_ROOM: RouteRecordRaw = {
+export const GAME_ROOM: RouteRecordRaw = {
   path: "/game/:id",
   name: "Game Room",
   component: () => import("./views/GameRoom.vue"),
 };
 
-const GAME_MANAGER: RouteRecordRaw = {
+// Admin Routes
+export const CATEGORY_MANAGER: RouteRecordRaw = {
+  path: "/game-manager/categories",
+  name: "Category Manager",
+  component: () => import("./views/Admin/CategoryManager.vue"),
+};
+
+export const CARD_MANAGER: RouteRecordRaw = {
+  path: "/game-manager/cards",
+  name: "Card Manager",
+  component: () => import("./views/Admin/CardManager.vue"),
+};
+
+export const GAME_MANAGER: RouteRecordRaw = {
   path: "/game-manager",
   name: "Game Manager",
   component: () => import("./views/Admin/GameManager.vue"),
+  children: [{ path: "", redirect: CATEGORY_MANAGER.path }, CARD_MANAGER, CATEGORY_MANAGER],
   beforeEnter() {
     const hasSufficientPrivileges = Boolean(
       profile.value?.verified && (profile.value?.roles.admin || profile.value?.roles.editor)
@@ -50,13 +64,14 @@ const GAME_MANAGER: RouteRecordRaw = {
   },
 };
 
-const NO_ACCESS: RouteRecordRaw = {
+// Bad Routes
+export const NO_ACCESS: RouteRecordRaw = {
   path: "/no-access",
   name: "No Access",
   component: () => import("./views/Admin/NoAccess.vue"),
 };
 
-const NOT_FOUND: RouteRecordRaw = {
+export const NOT_FOUND: RouteRecordRaw = {
   path: "/:pathMatch(.*)*",
   name: "Not Found",
   component: () => import("./views/NotFound.vue"),

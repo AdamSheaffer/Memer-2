@@ -1,20 +1,23 @@
 <script setup lang="ts">
-import { computed } from "@vue/reactivity";
-import { RouteLocationRaw } from "vue-router";
+import { computed } from "vue";
+import { RouteLocationRaw, RouterLink } from "vue-router";
+import { Maybe } from "../../../../types";
 import { affirmativeSound, negativeSound } from "../../services/sounds";
 
 const props = withDefaults(
   defineProps<{
     color?: "purple" | "teal" | "gold" | "darkblue" | "red";
     outline?: boolean;
-    to?: RouteLocationRaw;
+    to?: Maybe<RouteLocationRaw>;
     round?: boolean;
-    sound?: "affirmative" | "negative";
+    sound?: Maybe<"affirmative" | "negative">;
   }>(),
   {
     color: "purple",
     outline: false,
     round: false,
+    to: null,
+    sound: null,
   }
 );
 
@@ -29,6 +32,7 @@ const clickHandler = () => {
       break;
     case "negative":
       negativeSound.play();
+      break;
     default:
       break;
   }

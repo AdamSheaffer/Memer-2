@@ -13,8 +13,10 @@ import {
   faLightbulb,
   faMessage,
   faMinusSquare,
+  faPlusCircle,
   faRepeat,
   faThumbsDown,
+  faTrash,
   faUsers,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
@@ -32,7 +34,9 @@ library.add(faHeart);
 library.add(faLightbulb);
 library.add(faMessage);
 library.add(faRepeat);
+library.add(faPlusCircle);
 library.add(faThumbsDown);
+library.add(faTrash);
 library.add(faUsers);
 library.add(faXmarkCircle);
 
@@ -49,6 +53,8 @@ export const heart = faHeart.iconName;
 export const lightbulb = faLightbulb.iconName;
 export const message = faMessage.iconName;
 export const reverse = faRepeat.iconName;
+export const plusCircle = faPlusCircle.iconName;
 export const thumbsDown = faThumbsDown.iconName;
+export const trash = faTrash.iconName;
 export const users = faUsers.iconName;
 export const xMark = faXmarkCircle.iconName;

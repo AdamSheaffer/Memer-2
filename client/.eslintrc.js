@@ -16,9 +16,5 @@ module.exports = {
   plugins: ["prettier"],
   rules: {
     "prettier/prettier": ["error"],
-    "vue/comment-directive": 0,
-  },
-  globals: {
-    _: true,
   },
 };
