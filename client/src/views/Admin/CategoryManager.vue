@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { deleteDoc, doc, onSnapshot, orderBy, query } from "firebase/firestore";
-import { computed, onMounted, ref, watch } from "vue";
-import { Category } from "../../../../types";
+import { Unsubscribe, deleteDoc, doc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { Category, Maybe } from "../../../../types";
 import CategoryForm from "../../components/Admin/CategoryForm.vue";
 import MemerInput from "../../components/base/MemerInput.vue";
 import PaginationControls from "../../components/base/PaginationControls.vue";
@@ -11,9 +11,12 @@ import { format } from "../../utils/dates";
 import { mapCollection } from "../../utils/mapCollectionDocs";
 
 const categories = ref<Category[]>([]);
+const categoriesUnsubscribe = ref<Maybe<Unsubscribe>>(null);
 const searchTerm = ref("");
 const filteredItems = computed(() =>
-  categories.value.filter((c) => c.description.toLowerCase().includes(searchTerm.value))
+  categories.value.filter((c) =>
+    c.description.toLowerCase().includes(searchTerm.value.toLowerCase())
+  )
 );
 const pageSize = 10;
 const currentPage = ref(1);
@@ -29,9 +32,9 @@ watch(searchTerm, () => {
   }
 });
 
-const fetchAllCategories = () => {
+const watchCategories = () => {
   const q = query(categoriesCollectionRef, orderBy("createdAt", "desc"));
-  onSnapshot(q, (snapshot) => {
+  categoriesUnsubscribe.value = onSnapshot(q, (snapshot) => {
     categories.value = mapCollection<Category>(snapshot);
   });
 };
@@ -41,7 +44,11 @@ const deleteCategory = (category: Category) => {
   return deleteDoc(categoryRef);
 };
 
-onMounted(fetchAllCategories);
+onMounted(watchCategories);
+
+onUnmounted(() => {
+  if (categoriesUnsubscribe.value) categoriesUnsubscribe.value();
+});
 </script>
 
 <template>
@@ -91,7 +98,7 @@ onMounted(fetchAllCategories);
                 {{ category.description }}
               </th>
               <td class="px-6 py-4">
-                <FaIcon :icon="check" class="text-xl text-purple-400" />
+                <FaIcon v-if="category.safeForWork" :icon="check" class="text-xl text-purple-400" />
               </td>
               <td class="px-6 py-4 tracking-wider">{{ format(category.createdAt?.toDate()) }}</td>
               <td>

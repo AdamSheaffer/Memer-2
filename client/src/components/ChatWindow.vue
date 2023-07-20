@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from "@vue/reactivity";
+import { computed } from "vue";
 import { BeautifulChatMessage } from "../../../types";
 import { useChat } from "../composables/useChat";
 import { useGame } from "../composables/useGame";

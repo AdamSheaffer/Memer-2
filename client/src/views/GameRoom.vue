@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeMount, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Modal from "../components/base/Modal.vue";
 import GameArea from "../components/GameArea.vue";
 import PlayersSidebar from "../components/PlayersSidebar.vue";
 import ProfileCreate from "../components/ProfileCreate.vue";
+import MemerModal from "../components/base/MemerModal.vue";
 import { useAvatar } from "../composables/useAvatar";
 import { useGame } from "../composables/useGame";
 import { useUser } from "../composables/useUser";
 import { joinGame } from "../services/gameService";
 
-const Chat = defineAsyncComponent(() => import("../components/Chat.vue"));
+const ChatWindow = defineAsyncComponent(() => import("../components/ChatWindow.vue"));
 
 const gameId = useRoute().params.id as string;
 const router = useRouter();
@@ -45,15 +45,15 @@ watchEffect(() => {
 <template>
   <div class="h-full background-pattern bg-cover bg-fixed">
     <div v-if="game?.uid" class="h-full">
-      <Modal v-if="showAvatarCreator">
+      <MemerModal v-if="showAvatarCreator">
         <ProfileCreate @submit="onAvatarChange" />
-      </Modal>
+      </MemerModal>
 
       <div class="flex h-full">
         <PlayersSidebar :game-id="game.uid" />
         <div class="flex-1">
           <GameArea :game-id="game.uid" />
-          <Chat :game-id="game.uid" />
+          <ChatWindow :game-id="game.uid" />
         </div>
       </div>
     </div>
