@@ -26,3 +26,7 @@
     text-shadow: 15px 15px 30px theme("colors.purple.400");
   }
 }
+
+.firebase-emulator-warning {
+  display: none;
+}

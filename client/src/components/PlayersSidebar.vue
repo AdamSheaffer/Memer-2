@@ -7,9 +7,9 @@ import { useAvatar } from "../composables/useAvatar";
 import { useGame } from "../composables/useGame";
 import { backArrow, check, gavel, heart, thumbsDown, users, xMark } from "../services/icons";
 import { negativeSound } from "../services/sounds";
-import MemerButton from "./base/MemerButton.vue";
-import Modal from "./base/Modal.vue";
 import ProfileCreate from "./ProfileCreate.vue";
+import MemerButton from "./base/MemerButton.vue";
+import MemerModal from "./base/MemerModal.vue";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -101,9 +101,9 @@ const onAvatarChange = async () => {
         :key="player.uid"
         class="px-4 py-2"
         :class="{ 'hover:bg-slate-700': userIsHost }"
+        data-player
         @mouseenter="onPlayerHover(player.uid)"
         @mouseleave="onPlayerHover(null)"
-        data-player
       >
         <div class="flex space-x-4">
           <img
@@ -176,7 +176,7 @@ const onAvatarChange = async () => {
       </button>
     </div>
   </aside>
-  <Modal v-if="playerToRemove">
+  <MemerModal v-if="playerToRemove">
     <div class="p-8 text-center">
       <h2 class="text-slate-200 text-3xl text-shadow-purple">
         REMOVE {{ playerToRemove.username }}
@@ -188,19 +188,19 @@ const onAvatarChange = async () => {
         <MemerButton
           outline
           class="flex-1"
-          @click="playerToRemove = null"
-          @keydown.esc="playerToRemove = null"
           tabindex="0"
           data-cancel-remove
+          @click="playerToRemove = null"
+          @keydown.esc="playerToRemove = null"
         >
           CANCEL
         </MemerButton>
-        <MemerButton class="flex-1" @click="removePlayer" data-confirm-remove>REMOVE</MemerButton>
+        <MemerButton class="flex-1" data-confirm-remove @click="removePlayer">REMOVE</MemerButton>
       </div>
     </div>
-  </Modal>
+  </MemerModal>
 
-  <Modal v-if="showAvatarModal">
+  <MemerModal v-if="showAvatarModal">
     <button class="absolute top-10 right-12">
       <FaIcon
         :icon="xMark"
@@ -210,5 +210,5 @@ const onAvatarChange = async () => {
       ></FaIcon>
     </button>
     <ProfileCreate @submit="onAvatarChange" />
-  </Modal>
+  </MemerModal>
 </template>

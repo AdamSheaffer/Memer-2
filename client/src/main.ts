@@ -6,11 +6,12 @@ import { useUser } from "./composables/useUser";
 import router from "./router";
 import "./styles/index.css";
 
-const app = createApp(App);
-app.use(router);
-app.use(Chat);
-app.component("FaIcon", FontAwesomeIcon);
+const { initializeUser } = useUser();
 
-const { anonymouslySignInUser } = useUser();
-
-anonymouslySignInUser().then(() => app.mount("#app"));
+initializeUser().then(() => {
+  const app = createApp(App);
+  app.use(router);
+  app.use(Chat);
+  app.component("FaIcon", FontAwesomeIcon);
+  app.mount("#app");
+});

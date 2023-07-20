@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MemerLogo from "@/assets/memer_logo.svg";
+import MemerLogo from "@/assets/memer_logo.svg?component";
 import BackgroundBox from "../components/base/BackgroundBox.vue";
 import MemerButton from "../components/base/MemerButton.vue";
 </script>

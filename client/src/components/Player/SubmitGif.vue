@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { renderCarousel } from "@giphy/js-components";
 import { GiphyFetch } from "@giphy/js-fetch-api";
-import { IGif } from "@giphy/js-types";
+import type { IGif } from "@giphy/js-types";
 import { watchDebounced } from "@vueuse/shared";
 import { computed, ref } from "vue";
 import { Maybe, Meme } from "../../../../types";
 import { useGame } from "../../composables/useGame";
 import { useUser } from "../../composables/useUser";
 import { affirmativeSound } from "../../services/sounds";
+import MemeDisplay from "../Meme.vue";
 import GameBoard from "../base/GameBoard.vue";
 import MemerInput from "../base/MemerInput.vue";
-import MemeDisplay from "../Meme.vue";
 
 const props = defineProps<{ gameId: string }>();
 

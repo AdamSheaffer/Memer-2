@@ -26,8 +26,9 @@ export default { inheritAttrs: false };
     </label>
     <input
       v-bind="$attrs"
-      @input="onInput"
+      :value="modelValue"
       class="border-2 outline-0 text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-purple-400"
+      @input="onInput"
     />
   </div>
 </template>
