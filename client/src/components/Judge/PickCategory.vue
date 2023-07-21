@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "@vue/reactivity";
+import { ref } from "vue";
 import { useGame } from "../../composables/useGame";
 import { affirmativeSound } from "../../services/sounds";
 import BackgroundBox from "../base/BackgroundBox.vue";
