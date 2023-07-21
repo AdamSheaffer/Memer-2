@@ -20,11 +20,6 @@ const emit = defineEmits<(event: "submit", avatar: AvatarAttributes) => void>();
 const { avatar, photoURL } = useAvatar();
 const { updateUser } = useUser();
 
-const upperCaseOnUsernameInputChange = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  avatar.name = target.value.toUpperCase();
-};
-
 const onSave = () => {
   updateUser({ username: avatar.name, photoURL: photoURL.value });
   emit("submit", avatar);
@@ -41,18 +36,17 @@ const onSave = () => {
       />
     </div>
     <form
-      @submit.prevent="onSave"
       class="flex flex-1 flex-col justify-between mr-auto mt-4 pl-6 tracking-wider"
+      @submit.prevent="onSave"
     >
       <div class="flex flex-row flex-wrap font-['Antonio']">
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerInput
+            id="username"
+            v-model="avatar.name"
             autofocus
             label="USERNAME"
             type="text"
-            id="username"
-            :value="avatar.name"
-            @input="upperCaseOnUsernameInputChange"
             placeholder="MEME LORD"
             required
             maxlength="12"
@@ -61,8 +55,8 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
-            v-model="avatar.eyes"
             id="eyes"
+            v-model="avatar.eyes"
             label="EYES"
             null-option
             :options="eyeOptions"
@@ -71,9 +65,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="hair"
             v-model="avatar.hair"
             label="HAIR"
-            id="hair"
             null-option
             :options="hairOptions"
           />
@@ -81,9 +75,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="body"
             v-model="avatar.body"
             label="BODY"
-            id="body"
             null-option
             :options="bodyOptions"
           />
@@ -91,9 +85,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="mouth"
             v-model="avatar.mouth"
             label="MOUTH"
-            id="mouth"
             null-option
             :options="mouthOptions"
           />
@@ -101,9 +95,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="nose"
             v-model="avatar.nose"
             label="NOSE"
-            id="nose"
             null-option
             :options="noseOptions"
           />
@@ -111,9 +105,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="facial_hair"
             v-model="avatar.facialHair"
             label="FACIAL HAIR"
-            id="facial_hair"
             null-option
             :options="facialHairOptions"
           />
@@ -121,9 +115,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="hair_color"
             v-model="avatar.hairColor"
             label="HAIR COLOR"
-            id="hair_color"
             null-option
             :options="hairColorOptions"
           />
@@ -131,9 +125,9 @@ const onSave = () => {
 
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerSelect
+            id="skin_tone"
             v-model="avatar.skinColor"
             label="SKIN TONE"
-            id="skin_tone"
             null-option
             :options="skinToneOptions"
           />

@@ -14,25 +14,33 @@ const initializeUser = () => {
   let initialAuthCheckComplete = false;
 
   return new Promise<void>((resolve) => {
-    auth.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged(async (firebaseUser) => {
       if (initialAuthCheckComplete) {
         return;
       }
 
       initialAuthCheckComplete = true;
 
-      if (user && !user?.isAnonymous) {
-        const existingProfile = await getProfile(user.uid);
+      if (firebaseUser) {
+        user.value = {
+          uid: firebaseUser.uid,
+          username: localStorage.getItem("username") || "RANDO",
+          photoURL: localStorage.getItem("photoURL") || defaultPhotoURL,
+        };
+      }
+
+      if (firebaseUser && !firebaseUser?.isAnonymous) {
+        const existingProfile = await getProfile(firebaseUser.uid);
 
         if (existingProfile) {
           profile.value = existingProfile;
         } else {
-          const newProfile = await createProfile(user);
+          const newProfile = await createProfile(firebaseUser);
           profile.value = newProfile;
         }
       }
 
-      if (!user) {
+      if (!firebaseUser) {
         await anonymouslySignInUser();
       }
       resolve();

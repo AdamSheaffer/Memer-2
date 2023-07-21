@@ -200,8 +200,6 @@ export const useGame = (gameId: string) => {
   });
 
   const updatePlayer = (playerId: string, changes: PlayerChanges) => {
-    if (!userIsHost.value) return; // Only host will be in charge of updating players
-
     const playerRef = doc(firestorePlayersCollectionRef, playerId);
     return updateDoc(playerRef, changes);
   };

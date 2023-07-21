@@ -6,7 +6,7 @@ import MemerButton from "../components/base/MemerButton.vue";
 
 <template>
   <BackgroundBox>
-    <div>
+    <div class="py-8">
       <h1 class="text-4xl md:text-6xl text-center">
         <span class="text-white text-shadow-lg">WELCOME TO </span>
         <span class="text-purple-400 text-shadow-lg">MEMER</span>
