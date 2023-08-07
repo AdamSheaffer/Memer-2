@@ -35,8 +35,8 @@ const onChange = (event: Event) => {
   <select
     v-bind="$attrs"
     :value="modelValue"
+    class="appearance-none border-2 outline-0 text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-purple-400 uppercase"
     @change="onChange"
-    class="border-2 outline-0 text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-purple-400 uppercase"
   >
     <option v-if="nullOption" :value="null">---</option>
     <option v-for="option in computedOptions" :key="option.value" :value="option.value">
