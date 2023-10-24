@@ -24,6 +24,8 @@ export interface AvatarAttributes {
   skinColor: Maybe<keyof typeof skinToneOptions>;
 }
 
+const diceBearBaseUrl = "https://api.dicebear.com/7.x/personas/svg";
+
 const avatarObj = JSON.parse(localStorage.getItem("avatar") ?? "{}");
 const avatar = reactive<AvatarAttributes>({
   name: "RANDO",
@@ -51,21 +53,49 @@ watch(usernameRef, (newVal, oldVal) => {
 const queryString = computed(() => {
   const params = Object.entries(avatar)
     .filter(([, val]) => !!val)
-    .map(([key, val]) => (val === "none" ? `${key}[]` : `${key}=${val}`))
+    .map(([key, val]) => {
+      // unique conditions for facial hair and hair color
+      if (key === "facialHair") {
+        if (val === "none") {
+          return "&facialHairProbability=0";
+        } else {
+          return `${key}=${val}&facialHairProbability=100`;
+        }
+      }
+
+      return `${key}=${val}`;
+    })
     .join("&");
 
   return params ? `?${params}` : "";
 });
 
-const photoURL = computed(() =>
-  encodeURI(`https://api.dicebear.com/7.x/personas/svg${queryString.value}`)
-);
+const photoURL = computed(() => {
+  return encodeURI(`https://api.dicebear.com/7.x/personas/svg${queryString.value}`);
+});
 
 const markAvatarAsSet = () => {
   localStorage.setItem("avatarSet", "true");
   needsAvatarSet.value = false;
 };
 
+const resetLegacyUrl = () => {
+  const localStorageUrl = localStorage.getItem("photoURL");
+  if (!localStorageUrl?.startsWith(diceBearBaseUrl)) {
+    avatar.eyes = null;
+    avatar.hair = null;
+    avatar.body = null;
+    avatar.mouth = null;
+    avatar.nose = null;
+    avatar.facialHair = null;
+    avatar.hairColor = null;
+    avatar.skinColor = null;
+    localStorage.setItem("photoURL", photoURL.value);
+  }
+};
+
 export const useAvatar = () => {
+  resetLegacyUrl();
+
   return { avatar, photoURL, needsAvatarSet, markAvatarAsSet };
 };
