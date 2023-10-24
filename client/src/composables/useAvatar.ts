@@ -1,4 +1,3 @@
-import { refDebounced } from "@vueuse/core";
 import { computed, reactive, ref, toRef, watch, watchEffect } from "vue";
 import { Maybe } from "../../../types";
 import {
@@ -40,7 +39,6 @@ const avatar = reactive<AvatarAttributes>({
 });
 const needsAvatarSet = ref(localStorage.getItem("avatarSet") !== "true");
 const usernameRef = toRef(avatar, "name");
-const debouncedUsername = refDebounced(usernameRef, 1000);
 watchEffect(() => localStorage.setItem("avatar", JSON.stringify(avatar)));
 
 watch(usernameRef, (newVal, oldVal) => {
@@ -52,7 +50,7 @@ watch(usernameRef, (newVal, oldVal) => {
 
 const queryString = computed(() => {
   const params = Object.entries(avatar)
-    .filter(([key, val]) => !!val)
+    .filter(([, val]) => !!val)
     .map(([key, val]) => (val === "none" ? `${key}[]` : `${key}=${val}`))
     .join("&");
 
@@ -60,11 +58,7 @@ const queryString = computed(() => {
 });
 
 const photoURL = computed(() =>
-  encodeURI(
-    `https://avatars.dicebear.com/api/personas/${debouncedUsername.value ?? "default"}.svg${
-      queryString.value
-    }`
-  )
+  encodeURI(`https://api.dicebear.com/7.x/personas/svg${queryString.value}`)
 );
 
 const markAvatarAsSet = () => {

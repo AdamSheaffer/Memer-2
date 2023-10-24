@@ -32,7 +32,6 @@ export const bodyOptions = {
   squared: "SQUARED",
   rounded: "ROUNDED",
   small: "SMALL",
-  checkered: "PLAID",
 };
 export const mouthOptions = {
   smile: "SMILE",
