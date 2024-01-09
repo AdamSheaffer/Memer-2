@@ -11,6 +11,7 @@ import {
   noseOptions,
   skinToneOptions,
 } from "../services/avatarOptions";
+import { whooshSound } from "../services/sounds";
 import MemerButton from "./base/MemerButton.vue";
 import MemerInput from "./base/MemerInput.vue";
 import MemerSelect from "./base/MemerSelect.vue";
@@ -23,6 +24,24 @@ const { updateUser } = useUser();
 const onSave = () => {
   updateUser({ username: avatar.name, photoURL: photoURL.value });
   emit("submit", avatar);
+};
+
+const randomize = () => {
+  avatar.eyes = randomOption(eyeOptions);
+  avatar.hair = randomOption(hairOptions);
+  avatar.body = randomOption(bodyOptions);
+  avatar.mouth = randomOption(mouthOptions);
+  avatar.nose = randomOption(noseOptions);
+  avatar.facialHair = randomOption(facialHairOptions);
+  avatar.hairColor = randomOption(hairColorOptions);
+  avatar.skinColor = randomOption(skinToneOptions);
+  whooshSound.play();
+};
+
+const randomOption = <T extends Object>(options: T): keyof T => {
+  const values = Object.keys(options) as Array<keyof T>;
+  const index = Math.floor(Math.random() * values.length);
+  return values[index];
 };
 </script>
 
@@ -39,6 +58,15 @@ const onSave = () => {
       class="flex flex-1 flex-col justify-between mr-auto mt-4 pl-6 tracking-wider"
       @submit.prevent="onSave"
     >
+      <div class="flex justify-center">
+        <button
+          outline
+          class="text-sm text-slate-100 border-b-4 font-['Antonio'] tracking-wider cursor-pointer border-purple-400 hover:border-yellow-400 hover:scale-110 hover:tracking-widest transition-all"
+          @click.prevent="randomize"
+        >
+          RANDOMIZE
+        </button>
+      </div>
       <div class="flex flex-row flex-wrap font-['Antonio']">
         <div class="w-1/2 sm:w-1/3 p-2 mb-1">
           <MemerInput

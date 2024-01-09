@@ -38,5 +38,17 @@
   "gitlens.hovers.currentLine.over": "line",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.formatOnPaste": true,
-  "cSpell.words": ["composables", "Gameroom", "Gifs", "Giphy", "MEMER"]
+  "cSpell.words": [
+    "composables",
+    "Gameroom",
+    "Gifs",
+    "Giphy",
+    "MEMER"
+  ],
+  "[typescript][vue]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }

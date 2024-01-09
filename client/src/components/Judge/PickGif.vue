@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { Timestamp } from "@firebase/firestore";
 import { GiphyFetch } from "@giphy/js-fetch-api";
-import { computed } from "@vue/reactivity";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useGame } from "../../composables/useGame";
 import { arrowLeft, arrowRight } from "../../services/icons";
 import { affirmativeSound, swipeBackSound, swipeForwardSound } from "../../services/sounds";
@@ -90,9 +89,9 @@ const selectGif = () => {
         <div class="flex flex-col xl:flex-row justify-between items-center">
           <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
             <button
-              @click="previousGif"
               :disabled="isFirstGif"
               class="disabled:opacity-25 disabled:cursor-not-allowed"
+              @click="previousGif"
             >
               <FaIcon :icon="arrowLeft"></FaIcon>
             </button>
@@ -108,25 +107,25 @@ const selectGif = () => {
           />
           <div class="hidden xl:block text-center text-gold-400 text-4xl 2xl:text-6xl">
             <button
-              @click="nextGif"
               :disabled="isLastGif"
               class="disabled:opacity-25 disabled:cursor-not-allowed"
+              @click="nextGif"
             >
               <FaIcon :icon="arrowRight"></FaIcon>
             </button>
           </div>
           <div class="xl:hidden flex justify-around w-full mt-10">
             <button
-              @click="previousGif"
               :disabled="isFirstGif"
               class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
+              @click="previousGif"
             >
               <FaIcon :icon="arrowLeft"></FaIcon>
             </button>
             <button
-              @click="nextGif"
               :disabled="isLastGif"
               class="text-gold-400 text-5xl disabled:opacity-25 disabled:cursor-not-allowed"
+              @click="nextGif"
             >
               <FaIcon :icon="arrowRight"></FaIcon>
             </button>
