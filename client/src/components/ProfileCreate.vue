@@ -55,7 +55,7 @@ const randomOption = <T extends Object>(options: T): keyof T => {
       />
     </div>
     <form
-      class="flex flex-1 flex-col justify-between mr-auto mt-4 pl-6 tracking-wider"
+      class="flex flex-1 flex-col justify-between mr-auto mt-4 tracking-wider"
       @submit.prevent="onSave"
     >
       <div class="flex justify-center">
