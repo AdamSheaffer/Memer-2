@@ -1,13 +1,13 @@
-FROM node:14.20.0
+FROM node:20-alpine
 
 ADD . /src
 WORKDIR /src
-# Install OpenJDK-11
-RUN echo 'deb http://ftp.debian.org/debian stretch-backports main' | tee /etc/apt/sources.list.d/stretch-backports.list
 
-RUN apt-get update && \
-  apt-get install -y openjdk-11-jre-headless && \
-  apt-get clean;
+ARG FIREBASE_VERSION=13.3.0
+
+RUN apk --no-cache add openjdk11-jre bash curl openssl gettext nano nginx sudo && \
+    npm cache clean --force && \
+    npm i -g firebase-tools@$FIREBASE_VERSION
 RUN npm i -g firebase-tools
 RUN firebase --version
 RUN cd functions && npm run build

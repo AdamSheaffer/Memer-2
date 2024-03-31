@@ -26,8 +26,7 @@ export const onCreateCheckFullGame = functions.firestore
     });
 
     // Deal to all players
-    const cardsSnapshot = await admin.firestore().collection("captions").get();
-    const cards = cardsSnapshot.docs.map((doc) => doc.data());
+    const cards = await getDeck(game.safeForWork);
 
     const shuffledDeck = shuffle(cards);
     const chunkSize = Math.floor(shuffledDeck.length / playerCount);
@@ -48,3 +47,17 @@ export const onCreateCheckFullGame = functions.firestore
       [startGameRequest, ...handRequests];
     return Promise.all(allRequests);
   });
+
+const getDeck = async (safeForWork: boolean) => {
+  const collectionRef = admin.firestore().collection("captions");
+
+  if (!safeForWork) {
+    const cardsSnapshot = await collectionRef.get();
+    const allCards = cardsSnapshot.docs.map((doc) => doc.data());
+    return allCards;
+  }
+
+  const query = await collectionRef.where("safeForWork", "==", true).get();
+  const safeForWorkCards = query.docs.map((doc) => doc.data());
+  return safeForWorkCards;
+};

@@ -6,10 +6,10 @@ services:
     volumes:
       - ./emulator_data:/emulator_data
     ports:
-      - 4000:4000
-      - 4400:4400
-      - 5001:5001
-      - 8000:8000
-      - 9000:9000
-      - 9099:9099
+      - 4000:4000 # UI
+      - 4400:4400 # hub
+      - 5001:5001 # functions
+      - 8000:8000 # firestore
+      - 9000:9000 # realtime db
+      - 9099:9099 # auth
     command: firebase emulators:start --export-on-exit=./emulator_data --import=./emulator_data

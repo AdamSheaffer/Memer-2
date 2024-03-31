@@ -48,7 +48,7 @@ const submit = async () => {
         <MemerInput
           v-model="form.top"
           placeholder="TOP"
-          maxlength="25"
+          maxlength="32"
           class="h-14 text-xl uppercase"
         />
       </div>
@@ -56,7 +56,7 @@ const submit = async () => {
         <MemerInput
           v-model="form.bottom"
           placeholder="BOTTOM"
-          maxlength="25"
+          maxlength="32"
           class="h-14 text-xl uppercase"
         />
       </div>
@@ -73,7 +73,7 @@ const submit = async () => {
       :disabled="(!form.top && !form.bottom) || isSaving"
     >
       <FaIcon :icon="plusCircle" class="mr-1"></FaIcon>
-      ADD CATEGORY
+      ADD CARD
     </MemerButton>
   </form>
 </template>
